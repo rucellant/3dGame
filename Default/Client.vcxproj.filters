@@ -14,6 +14,18 @@
     <Filter Include="98. Headers">
       <UniqueIdentifier>{261162af-0e03-409e-985c-dff318a0eb01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene">
+      <UniqueIdentifier>{9628785d-091f-4ac8-b818-22e6262866b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Logo">
+      <UniqueIdentifier>{3dbd2d20-8d3a-439f-8b7b-04dbbd0f7b52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stage">
+      <UniqueIdentifier>{b8445c04-6964-4969-b968-27646868ca89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Boss">
+      <UniqueIdentifier>{3f2a5063-c651-4cfa-bdcd-b09b8ea37fde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -37,6 +49,9 @@
     <ClInclude Include="..\Headers\Client_Macro.h">
       <Filter>98. Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Logo.h">
+      <Filter>01. Scene\Logo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -47,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\MainApp.cpp">
       <Filter>00. MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Logo.cpp">
+      <Filter>01. Scene\Logo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

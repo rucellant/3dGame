@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\MainApp.h"
+#include "Scene_Logo.h"
 
 
 USING(Client)
@@ -33,14 +34,25 @@ _int CMainApp::Update_MainApp(double TimeDelta)
 	if (FAILED(m_pManagement->Update_Input_Device()))
 		return -1;
 
-	//SetCursorPos(g_iWinCX / 2, g_iWinCY / 2);
-
-	return 	0;//m_pManagement->Update_Current_Scene(TimeDelta);
+	return 	m_pManagement->Update_Current_Scene(TimeDelta);
 }
 
 HRESULT CMainApp::Render_MainApp()
 {
-	return E_NOTIMPL;
+	if (m_pGraphic_Device == nullptr ||
+		m_pManagement == nullptr)
+		return E_FAIL;
+
+	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
+	m_pGraphic_Device->BeginScene();
+
+	//m_pRenderer->Render();
+	m_pManagement->Render_Current_Scene();
+
+	m_pGraphic_Device->EndScene();
+	m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);
+
+	return NOERROR;
 }
 
 HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::MODE eMode, _uint iWinCX, _uint iWinCY)
@@ -72,12 +84,38 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::MODE eMode, _uint iWinC
 
 HRESULT CMainApp::Ready_Current_Scene(SCENEID eSceneID)
 {
-	return E_NOTIMPL;
+	if (m_pManagement == nullptr)
+		return E_FAIL;
+
+	CScene* pScene = nullptr;
+
+	switch (eSceneID)
+	{
+	case SCENE_LOGO:
+		pScene = CScene_Logo::Create(m_pGraphic_Device);
+		break;
+	case SCENE_STAGE:
+		//pScene = CScene_Stage::Create(m_pGraphic_Device);
+		break;
+	case SCENE_BOSS:
+		//pScene = CScene_Boss::Create(m_pGraphic_Device);
+		break;
+	}
+
+	if (pScene == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pManagement->Ready_Current_Scene(pScene)))
+		return E_FAIL;
+
+	Safe_Release(pScene);
+
+	return NOERROR;
 }
 
 HRESULT CMainApp::Ready_Component_Prototype()
 {
-	return E_NOTIMPL;
+	return NOERROR;
 }
 
 CMainApp * CMainApp::Create()

@@ -55,11 +55,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Safe_AddRef(pManagement);
 
 	// for. Timer_Default
-	if (FAILED(pManagement->Add_Timer(L"Timer_Default")))
+	if (FAILED(pManagement->Add_Timer(L"Timer_Default", pManagement->Get_Graphic_Device())))
 		return FALSE;
 
 	// for. Timer_60
-	if (FAILED(pManagement->Add_Timer(L"Timer_60")))
+	if (FAILED(pManagement->Add_Timer(L"Timer_60", pManagement->Get_Graphic_Device())))
 		return FALSE;
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
