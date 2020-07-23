@@ -14,17 +14,20 @@
     <Filter Include="98. Headers">
       <UniqueIdentifier>{261162af-0e03-409e-985c-dff318a0eb01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene">
+    <Filter Include="02. Scene">
       <UniqueIdentifier>{9628785d-091f-4ac8-b818-22e6262866b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Logo">
+    <Filter Include="02. Scene\Logo">
       <UniqueIdentifier>{3dbd2d20-8d3a-439f-8b7b-04dbbd0f7b52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Stage">
+    <Filter Include="02. Scene\Stage">
       <UniqueIdentifier>{b8445c04-6964-4969-b968-27646868ca89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Boss">
+    <Filter Include="02. Scene\Boss">
       <UniqueIdentifier>{3f2a5063-c651-4cfa-bdcd-b09b8ea37fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Loading">
+      <UniqueIdentifier>{3fddc165-fbce-412d-b7b7-bdbcd416d0e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -50,7 +53,10 @@
       <Filter>98. Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Scene_Logo.h">
-      <Filter>01. Scene\Logo</Filter>
+      <Filter>02. Scene\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Loading.h">
+      <Filter>01. Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +70,10 @@
       <Filter>00. MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Logo.cpp">
-      <Filter>01. Scene\Logo</Filter>
+      <Filter>02. Scene\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Loading.cpp">
+      <Filter>01. Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
