@@ -19,6 +19,8 @@ private:
 private:
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 private:
+	CRenderer*			m_pRenderer = nullptr;
+private:
 	HRESULT Ready_Default_Setting(CGraphic_Device::MODE eMode, _uint iWinCX, _uint iWinCY);
 	HRESULT Ready_Current_Scene(SCENEID eSceneID);
 	HRESULT Ready_Component_Prototype();

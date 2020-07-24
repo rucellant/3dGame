@@ -46,7 +46,7 @@ HRESULT CMainApp::Render_MainApp()
 	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
 	m_pGraphic_Device->BeginScene();
 
-	//m_pRenderer->Render();
+	m_pRenderer->Render_Game();
 	m_pManagement->Render_Current_Scene();
 
 	m_pGraphic_Device->EndScene();
@@ -115,6 +115,15 @@ HRESULT CMainApp::Ready_Current_Scene(SCENEID eSceneID)
 
 HRESULT CMainApp::Ready_Component_Prototype()
 {
+	if (m_pManagement == nullptr)
+		return E_FAIL;
+
+	// For.Component_Renderer
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pRenderer);
+
 	return NOERROR;
 }
 
@@ -133,6 +142,7 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+	Safe_Release(m_pRenderer);
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);
 

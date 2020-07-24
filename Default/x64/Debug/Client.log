@@ -1,2 +1,9 @@
-﻿  Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
+﻿  Loading.cpp
+c:\users\zooz2\desktop\portfolio\client\codes\loading.cpp(91): warning C4244: '인수': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  건너뛰고 있습니다... (관련된 변경 내용 없음)
+  Client.cpp
+  Scene_Logo.cpp
+  MainApp.cpp
+  Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

@@ -17,7 +17,7 @@ HRESULT CLoading::Ready_Loading(SCENEID eSceneID)
 	InitializeCriticalSection(&m_CS);
 
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 1, Thread_Main, this, 0, nullptr);
-	if (0 == m_hThread)
+	if (m_hThread == 0)
 		return E_FAIL;
 
 	return NOERROR;
