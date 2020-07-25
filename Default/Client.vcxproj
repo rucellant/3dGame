@@ -116,6 +116,12 @@
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalLibraryDirectories>../../Reference/Librarys/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -154,6 +160,12 @@
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalLibraryDirectories>../../Reference/Librarys/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -162,6 +174,7 @@
     <ClInclude Include="..\Headers\Client_Defines.h" />
     <ClInclude Include="..\Headers\Client_Macro.h" />
     <ClInclude Include="..\Headers\Loading.h" />
+    <ClInclude Include="..\Headers\Loading_Background.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="Client.h" />
@@ -171,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Loading.cpp" />
+    <ClCompile Include="..\Codes\Loading_Background.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -187,6 +201,17 @@
   <ItemGroup>
     <Image Include="Client.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Blend.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Collider.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

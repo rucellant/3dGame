@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Logo.h"
+#include "Loading.h"
 #include "Management.h"
+#include "Loading_Background.h"
 
 USING(Client)
 
@@ -11,6 +13,16 @@ CScene_Logo::CScene_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Logo::Ready_Scene()
 {
+	if (FAILED(Ready_GameObject_Prototype()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_BackGround(L"Layer_Loading")))
+		return E_FAIL;
+
+	m_pLoading = CLoading::Create(Get_Graphic_Device(), SCENE_STAGE);
+	if (m_pLoading == nullptr)
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -34,6 +46,36 @@ HRESULT CScene_Logo::Render_Scene()
 	pMangement->Render_FPS(L"Timer_60");
 
 	Safe_Release(pMangement);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Logo::Ready_GameObject_Prototype()
+{
+	CManagement* pManagement = CManagement::GetInstance();
+	if (pManagement == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pManagement);
+
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Loading_Background", CLoading_Background::Create(pManagement->Get_Graphic_Device()))))
+		return E_FAIL;
+
+	Safe_Release(pManagement);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
+{
+	CManagement* pManagement = CManagement::GetInstance();
+	if (pManagement == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pManagement);
+
+	if (FAILED(pManagement->Add_GameObject_Clone(g_eScene, pLayerTag, L"GameObject_Loading_Background")))
+		return E_FAIL;
+
+	Safe_Release(pManagement);
 
 	return NOERROR;
 }

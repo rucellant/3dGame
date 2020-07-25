@@ -67,15 +67,15 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::MODE eMode, _uint iWinC
 		Safe_AddRef(m_pManagement);
 	}
 
-	// 엔진에서 사용할 수 있는 객체들의 생성작업을 한다.
+	// For. Engine
 	if (FAILED(m_pManagement->Ready_Engine(SCENE_END)))
 		return E_FAIL;
 
-	// For.Graphic_Device
+	// For. Graphic_Device
 	if (FAILED(m_pManagement->Ready_Graphic_Device(g_hWnd, eMode, iWinCX, iWinCY, &m_pGraphic_Device)))
 		return E_FAIL;
 
-	// For.Input_Device
+	// For. Input_Device
 	if (FAILED(m_pManagement->Ready_Input_Device(g_hInst, g_hWnd)))
 		return E_FAIL;
 
@@ -118,11 +118,39 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (m_pManagement == nullptr)
 		return E_FAIL;
 
-	// For.Component_Renderer
+	// For. Component_Renderer
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
 	Safe_AddRef(m_pRenderer);
+
+	// For. Component_Transform
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	
+	// For. Component_Shader_Default
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Default.fx"))))
+		return E_FAIL;
+
+	// For. Component_VIBuffer_VRect
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_VIBuffer_VRect", CVIBuffer_VRect::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For. Component_VIBuffer_HRect
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_VIBuffer_HRect", CVIBuffer_HRect::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For. Component_Texture_Loading_Background
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC,
+		L"Component_Texture_Loading_Background", 
+		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Static/Textures/Loading_Background/Loading_Background_%d.png",
+			4))))
+		return E_FAIL;
+
+	// For. Component_Texture_Loading_Icon
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC,
+		L"Component_Texture_Loading_Icon",
+		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Static/Textures/Loading_Icon/Loading_Icon_%d.png"))))
+		return E_FAIL;
 
 	return NOERROR;
 }

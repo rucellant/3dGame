@@ -29,6 +29,33 @@
     <Filter Include="01. Loading">
       <UniqueIdentifier>{3fddc165-fbce-412d-b7b7-bdbcd416d0e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject">
+      <UniqueIdentifier>{e7f2f70c-63b9-4f72-a1d4-219696f1e6ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage">
+      <UniqueIdentifier>{197bcec3-0208-4437-9894-2ba3bded3092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Logo">
+      <UniqueIdentifier>{9f6e9e25-71f5-4075-96c4-5eb7c7801514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Boss">
+      <UniqueIdentifier>{44d1655f-e8e4-4e4e-96b8-06e82d550931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static">
+      <UniqueIdentifier>{ccc21c77-473a-4b1f-87fe-b6b2e0d2d572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\SceneChange">
+      <UniqueIdentifier>{0cef9f39-9397-4081-a6d1-3896ecb75ed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\SceneChange\LoadingBgr">
+      <UniqueIdentifier>{440f38f5-4fbb-4e67-bc94-02007f91c471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\SceneChange\LoadingIcon">
+      <UniqueIdentifier>{6f55c9a7-05d6-4e29-8f7e-099848618dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Headers\ShaderFiles">
+      <UniqueIdentifier>{6ac26d53-94aa-4f2f-b519-d840ce434717}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -58,6 +85,9 @@
     <ClInclude Include="..\Headers\Loading.h">
       <Filter>01. Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Loading_Background.h">
+      <Filter>03. GameObject\Static\SceneChange\LoadingBgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -74,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Loading.cpp">
       <Filter>01. Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Loading_Background.cpp">
+      <Filter>03. GameObject\Static\SceneChange\LoadingBgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,5 +126,19 @@
     <Text Include="ReadMe.txt">
       <Filter>99. Default</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Blend.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Collider.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -3,8 +3,14 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\vc140.pdb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\vc140.idb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\stdafx.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mainapp.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_logo.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_background.obj
+c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
+c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso
+c:\users\zooz2\desktop\portfolio\client\bin\shader_default.cso
+c:\users\zooz2\desktop\portfolio\client\bin\shader_lightacc.cso
 c:\users\zooz2\desktop\portfolio\client\bin\client.ilk
 c:\users\zooz2\desktop\portfolio\client\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\bin\client.pdb
@@ -13,6 +19,10 @@ c:\users\zooz2\desktop\portfolio\client\default\..\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.command.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.read.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.write.1.tlog
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\client.write.1u.tlog
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\fxc.command.1.tlog
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\fxc.read.1.tlog
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\fxc.write.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\link.command.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\link.read.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\link.write.1.tlog

@@ -37,7 +37,11 @@ _uint CLoading::Thread_Main(void * pArg)
 		hr = pLoading->Ready_Stage();
 		break;
 	case SCENE_BOSS:
+		hr = pLoading->Ready_Boss();
 		break;	
+	case SCENE_LOGO:
+		hr = pLoading->Ready_Logo();
+		break;
 	}
 
 	if (FAILED(hr))
