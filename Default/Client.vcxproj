@@ -175,8 +175,11 @@
     <ClInclude Include="..\Headers\Client_Macro.h" />
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\Loading_Background.h" />
+    <ClInclude Include="..\Headers\Loading_Icon.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
+    <ClInclude Include="..\Headers\Scene_Boss.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
+    <ClInclude Include="..\Headers\Scene_Stage.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -185,8 +188,11 @@
   <ItemGroup>
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\Loading_Background.cpp" />
+    <ClCompile Include="..\Codes\Loading_Icon.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
+    <ClCompile Include="..\Codes\Scene_Boss.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
+    <ClCompile Include="..\Codes\Scene_Stage.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -2,6 +2,8 @@
 #include "..\Headers\Scene_Logo.h"
 #include "Loading.h"
 #include "Management.h"
+#include "Scene_Stage.h"
+#include "Loading_Icon.h"
 #include "Loading_Background.h"
 
 USING(Client)
@@ -33,6 +35,28 @@ _int CScene_Logo::Update_Scene(_double TimeDelta)
 
 _int CScene_Logo::LateUpdate_Scene(_double TimeDelta)
 {
+	if ((GetKeyState(VK_SPACE) & 0x8000) && (m_pLoading->Get_Complete() == 1))
+	{
+		CManagement* pManagement = CManagement::GetInstance();
+		if (pManagement == nullptr)
+			return -1;
+
+		Safe_AddRef(pManagement);
+
+		CScene*	pScene = CScene_Stage::Create(Get_Graphic_Device());
+		if (pScene == nullptr)
+			return -1;
+
+		if (FAILED(pManagement->Ready_Current_Scene(pScene)))
+			return -1;
+
+		Safe_Release(pScene);
+
+		Safe_Release(pManagement);
+
+		return 0;
+	}
+
 	return _int();
 }
 
@@ -57,7 +81,12 @@ HRESULT CScene_Logo::Ready_GameObject_Prototype()
 		return E_FAIL;
 	Safe_AddRef(pManagement);
 
+	// For. GameObject_Loading_Background
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Loading_Background", CLoading_Background::Create(pManagement->Get_Graphic_Device()))))
+		return E_FAIL;
+
+	// For. GameObject_Loading_Icon
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Loading_Icon", CLoading_Icon::Create(pManagement->Get_Graphic_Device()))))
 		return E_FAIL;
 
 	Safe_Release(pManagement);
@@ -73,6 +102,9 @@ HRESULT CScene_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	Safe_AddRef(pManagement);
 
 	if (FAILED(pManagement->Add_GameObject_Clone(g_eScene, pLayerTag, L"GameObject_Loading_Background")))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(g_eScene, pLayerTag, L"GameObject_Loading_Icon")))
 		return E_FAIL;
 
 	Safe_Release(pManagement);
@@ -95,7 +127,7 @@ CScene_Logo * CScene_Logo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 void CScene_Logo::Free()
 {
-	//Safe_Release(m_pLoading);
+	Safe_Release(m_pLoading);
 
 	CManagement* pManagement = CManagement::GetInstance();
 	if (pManagement == nullptr)
@@ -105,6 +137,8 @@ void CScene_Logo::Free()
 	pManagement->Clear_Scene(SCENE_LOGO);
 
 	Safe_Release(pManagement);
+
+	g_eScene = SCENE_STAGE;
 
 	CScene::Free();
 }

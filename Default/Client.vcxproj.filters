@@ -88,6 +88,15 @@
     <ClInclude Include="..\Headers\Loading_Background.h">
       <Filter>03. GameObject\Static\SceneChange\LoadingBgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Loading_Icon.h">
+      <Filter>03. GameObject\Static\SceneChange\LoadingIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Stage.h">
+      <Filter>02. Scene\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Boss.h">
+      <Filter>02. Scene\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -107,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Loading_Background.cpp">
       <Filter>03. GameObject\Static\SceneChange\LoadingBgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Loading_Icon.cpp">
+      <Filter>03. GameObject\Static\SceneChange\LoadingIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Stage.cpp">
+      <Filter>02. Scene\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Boss.cpp">
+      <Filter>02. Scene\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

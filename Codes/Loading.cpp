@@ -54,17 +54,22 @@ _uint CLoading::Thread_Main(void * pArg)
 
 HRESULT CLoading::Ready_Logo()
 {
+	m_iComplete = 1;
+
 	return NOERROR;
 }
 
 HRESULT CLoading::Ready_Stage()
 {
+	m_iComplete = 1;
 
 	return NOERROR;
 }
 
 HRESULT CLoading::Ready_Boss()
 {
+	m_iComplete = 1;
+
 	return NOERROR;
 }
 

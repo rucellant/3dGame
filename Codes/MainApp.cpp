@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\MainApp.h"
+#include "Scene_Boss.h"
 #include "Scene_Logo.h"
+#include "Scene_Stage.h"
 
 
 USING(Client)
@@ -95,10 +97,10 @@ HRESULT CMainApp::Ready_Current_Scene(SCENEID eSceneID)
 		pScene = CScene_Logo::Create(m_pGraphic_Device);
 		break;
 	case SCENE_STAGE:
-		//pScene = CScene_Stage::Create(m_pGraphic_Device);
+		pScene = CScene_Stage::Create(m_pGraphic_Device);
 		break;
 	case SCENE_BOSS:
-		//pScene = CScene_Boss::Create(m_pGraphic_Device);
+		pScene = CScene_Boss::Create(m_pGraphic_Device);
 		break;
 	}
 

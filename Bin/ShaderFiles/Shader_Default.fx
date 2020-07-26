@@ -58,6 +58,8 @@ technique Default_Technique
 	pass Background_Rendering
 	{
 		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
 
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_BACKGROUND();
