@@ -50,7 +50,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	vector		vShade = tex2D(ShadeSampler, In.vTexUV);
 	vector		vSpecular = tex2D(SpecularSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular;
+	Out.vColor = vDiffuse;// *vShade + vSpecular;
 
 	return Out;
 }

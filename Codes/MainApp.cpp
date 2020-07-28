@@ -144,14 +144,14 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	// For. Component_Texture_Loading_Background
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC,
 		L"Component_Texture_Loading_Background", 
-		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Static/Textures/Loading_Background/Loading_Background_%d.png",
+		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading_Background/Loading_Background_%d.png",
 			4))))
 		return E_FAIL;
 
 	// For. Component_Texture_Loading_Icon
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC,
 		L"Component_Texture_Loading_Icon",
-		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Static/Textures/Loading_Icon/Loading_Icon_%d.png"))))
+		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading_Icon/Loading_Icon_%d.png"))))
 		return E_FAIL;
 
 	return NOERROR;

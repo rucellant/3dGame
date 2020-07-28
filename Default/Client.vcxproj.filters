@@ -158,5 +158,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

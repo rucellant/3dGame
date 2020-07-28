@@ -2,11 +2,14 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.pch
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\vc140.pdb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\vc140.idb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\stdafx.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mainapp.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_logo.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_background.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_icon.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mainapp.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_boss.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_logo.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_stage.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.obj
 c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_default.cso
