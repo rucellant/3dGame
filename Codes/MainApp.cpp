@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\MainApp.h"
+#include "IOManager.h"
 #include "Scene_Boss.h"
 #include "Scene_Logo.h"
 #include "Scene_Stage.h"
@@ -175,6 +176,8 @@ void CMainApp::Free()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);
+
+	CIOManager::GetInstance()->DestroyInstance();
 
 	CManagement::Release_Engine();
 }

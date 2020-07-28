@@ -56,6 +56,15 @@
     <Filter Include="98. Headers\ShaderFiles">
       <UniqueIdentifier>{6ac26d53-94aa-4f2f-b519-d840ce434717}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Terrain">
+      <UniqueIdentifier>{98c12579-be1c-410a-b4a7-611a88269130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Manager">
+      <UniqueIdentifier>{9a09c656-ece7-4ee4-b92c-6a6bc9661fa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Manager\IOManager">
+      <UniqueIdentifier>{a75f06cc-2c17-4133-b32a-444f25994501}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -97,6 +106,12 @@
     <ClInclude Include="..\Headers\Scene_Boss.h">
       <Filter>02. Scene\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Terrain.h">
+      <Filter>03. GameObject\Static\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\IOManager.h">
+      <Filter>09. Manager\IOManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -125,6 +140,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Boss.cpp">
       <Filter>02. Scene\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Terrain.cpp">
+      <Filter>03. GameObject\Static\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\IOManager.cpp">
+      <Filter>09. Manager\IOManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

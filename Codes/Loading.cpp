@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "..\Headers\Loading.h"
+#include "IOManager.h"
 #include "Management.h"
 
 USING(Client)
 
-CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: m_pGraphic_Device(pGraphic_Device)	
+CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphic_Device, CManagement* pManagement)
+	: m_pGraphic_Device(pGraphic_Device)
+	, m_pManagement(pManagement)
 {
 	
 }
@@ -61,6 +63,21 @@ HRESULT CLoading::Ready_Logo()
 
 HRESULT CLoading::Ready_Stage()
 {
+	// For. Component_Shader_Terrain
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Terrain", CShader::Create(m_pGraphic_Device,L"../Bin/ShaderFiles/Shader_Terrain.fx"))))
+		return E_FAIL;
+
+	_matrix matLocal;
+	D3DXMatrixIdentity(&matLocal);
+
+	// For. Component_Mesh_Terrain_Stage
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Terrain_Stage", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Terrain/SoulValley/", L"SoulValley.X", &matLocal))))
+		return E_FAIL;
+
+	// For. GameObject_Terrain
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	m_iComplete = 1;
 
 	return NOERROR;
@@ -68,31 +85,28 @@ HRESULT CLoading::Ready_Stage()
 
 HRESULT CLoading::Ready_Boss()
 {
+	_matrix matLocal;
+	D3DXMatrixIdentity(&matLocal);
+
+	// For. Component_Mesh_Terrain_Boss
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_BOSS, L"Component_Mesh_Terrain_Boss", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Terrain/Volsland_UT/", L"Volsland_UT.X", &matLocal))))
+		return E_FAIL;
+
 	m_iComplete = 1;
 
 	return NOERROR;
 }
 
-CLoading * CLoading::Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eSceneID)
+CLoading * CLoading::Create(LPDIRECT3DDEVICE9 pGraphic_Device, CManagement* pManagement, SCENEID eSceneID)
 {
-	CLoading* pInstance = new CLoading(pGraphic_Device);
+	CLoading* pInstance = new CLoading(pGraphic_Device, pManagement);
 
 	if (FAILED(pInstance->Ready_Loading(eSceneID)))
 	{
 		MSG_BOX("CLoading Created Failed");
 		Safe_Release(pInstance);
 	}
-	
 	return pInstance;
-
-	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-
-	//m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	//m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 0);
-	//m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-
 }
 
 void CLoading::Free()

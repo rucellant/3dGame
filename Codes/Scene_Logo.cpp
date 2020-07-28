@@ -21,7 +21,7 @@ HRESULT CScene_Logo::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_Loading")))
 		return E_FAIL;
 
-	m_pLoading = CLoading::Create(Get_Graphic_Device(), SCENE_STAGE);
+	m_pLoading = CLoading::Create(Get_Graphic_Device(), CManagement::GetInstance(), SCENE_STAGE);
 	if (m_pLoading == nullptr)
 		return E_FAIL;
 
@@ -42,6 +42,8 @@ _int CScene_Logo::LateUpdate_Scene(_double TimeDelta)
 			return -1;
 
 		Safe_AddRef(pManagement);
+
+		g_eScene = SCENE_STAGE;
 
 		CScene*	pScene = CScene_Stage::Create(Get_Graphic_Device());
 		if (pScene == nullptr)
@@ -137,8 +139,6 @@ void CScene_Logo::Free()
 	pManagement->Clear_Scene(SCENE_LOGO);
 
 	Safe_Release(pManagement);
-
-	g_eScene = SCENE_STAGE;
 
 	CScene::Free();
 }

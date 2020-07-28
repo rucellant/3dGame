@@ -19,6 +19,9 @@ public:
 	virtual HRESULT Render_Scene();
 private:
 	CLoading* m_pLoading = nullptr;
+private:
+	HRESULT Ready_Layer_Terrain();
+	HRESULT Ready_Layer_Camera();
 public:
 	static CScene_Boss* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();

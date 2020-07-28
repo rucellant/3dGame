@@ -4,6 +4,7 @@
 #include "Client_Defines.h"
 
 BEGIN(Engine)
+class CManagement;
 class CComponent_Manager;
 END
 
@@ -12,7 +13,7 @@ BEGIN(Client)
 class CLoading final : public CBase
 {
 private:
-	explicit CLoading(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CLoading(LPDIRECT3DDEVICE9 pGraphic_Device, CManagement* pManagement);
 	virtual ~CLoading() = default;
 public:
 	SCENEID Get_SceneID() const {
@@ -24,6 +25,7 @@ public:
 public:
 	static _uint APIENTRY Thread_Main(void* pArg);
 private:
+	CManagement*			m_pManagement = nullptr;
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 	SCENEID					m_eSceneID;
 	HANDLE					m_hThread;
@@ -40,7 +42,7 @@ private: // Boss
 	HRESULT Ready_Boss();
 
 public:
-	static CLoading* Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eSceneID);
+	static CLoading* Create(LPDIRECT3DDEVICE9 pGraphic_Device, CManagement* pManagement, SCENEID eSceneID);
 	virtual void Free();
 };
 
