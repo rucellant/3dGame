@@ -37,9 +37,13 @@ private: // Logo
 
 private: // Stage
 	HRESULT Ready_Stage();
+	HRESULT Ready_Terrain_Stage();
+	HRESULT Ready_Dynamic_Stage();
+	HRESULT Ready_Static_Stage();
 
 private: // Boss
 	HRESULT Ready_Boss();
+	HRESULT Ready_Terrain_Boss();
 
 public:
 	static CLoading* Create(LPDIRECT3DDEVICE9 pGraphic_Device, CManagement* pManagement, SCENEID eSceneID);
