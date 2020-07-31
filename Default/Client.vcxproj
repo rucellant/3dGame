@@ -171,32 +171,46 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\Babegazi_Axe.h" />
+    <ClInclude Include="..\Headers\Babegazi_Bow.h" />
+    <ClInclude Include="..\Headers\Babegazi_Warrior.h" />
     <ClInclude Include="..\Headers\Client_Defines.h" />
     <ClInclude Include="..\Headers\Client_Macro.h" />
     <ClInclude Include="..\Headers\IOManager.h" />
+    <ClInclude Include="..\Headers\Knole_Commander.h" />
+    <ClInclude Include="..\Headers\Knole_Warrior.h" />
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\Loading_Background.h" />
     <ClInclude Include="..\Headers\Loading_Icon.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
+    <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\Scene_Boss.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="..\Headers\Scene_Stage.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
+    <ClInclude Include="..\Headers\WitchBlade.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\Babegazi_Axe.cpp" />
+    <ClCompile Include="..\Codes\Babegazi_Bow.cpp" />
+    <ClCompile Include="..\Codes\Babegazi_Warrior.cpp" />
     <ClCompile Include="..\Codes\IOManager.cpp" />
+    <ClCompile Include="..\Codes\Knole_Commander.cpp" />
+    <ClCompile Include="..\Codes\Knole_Warrior.cpp" />
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\Loading_Background.cpp" />
     <ClCompile Include="..\Codes\Loading_Icon.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
+    <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\Scene_Boss.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="..\Codes\Scene_Stage.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
+    <ClCompile Include="..\Codes\WitchBlade.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -222,7 +236,9 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_WitchBlade.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

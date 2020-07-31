@@ -1,9 +1,14 @@
-﻿C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_Terrain.fx(60,2-68): warning X3206: implicit truncation of vector type
-C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_Terrain.fx(61,2-67): warning X3206: implicit truncation of vector type
+﻿C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_Terrain.fx(55,2-68): warning X3206: implicit truncation of vector type
+C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_Terrain.fx(56,2-67): warning X3206: implicit truncation of vector type
 FXC : warning X4717: Effects deprecated for D3DCompiler_47
   
   compilation object save succeeded; see C:\Users\zooz2\Desktop\Portfolio\Client\Bin\Shader_Terrain.cso
-  IOManager.cpp
+C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_WitchBlade.fx(55,2-68): warning X3206: implicit truncation of vector type
+C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_WitchBlade.fx(56,2-67): warning X3206: implicit truncation of vector type
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\zooz2\Desktop\Portfolio\Client\Bin\Shader_WitchBlade.cso
+  Babegazi_Axe.cpp
 C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
           with
           [
@@ -15,6 +20,348 @@ C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C42
           [
               _Kty=const Engine::_tchar *,
               _Ty=Engine::CComponent *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  Babegazi_Bow.cpp
+C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+  C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  Babegazi_Warrior.cpp
+C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+  C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  Knole_Commander.cpp
+C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+  C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  Knole_Warrior.cpp
+C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+  C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
+          with
+          [
+              _Kty=const Engine::_tchar *,
+              _Ty=Engine::CComponent *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=IDirect3DBaseTexture9 *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CGameObject *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::CCell *
+          ]
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
+c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
+          ]
+  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
+          with
+          [
+              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
           ]
   Loading.cpp
 C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
@@ -87,8 +434,8 @@ c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C
           [
               _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
           ]
-..\Codes\Loading.cpp(114): warning C4244: '인수': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Loading_Background.cpp
+..\Codes\Loading.cpp(235): warning C4244: '인수': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Monster.cpp
 C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
           with
           [
@@ -159,7 +506,7 @@ c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C
           [
               _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
           ]
-  Loading_Icon.cpp
+  WitchBlade.cpp
 C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
           with
           [
@@ -167,432 +514,6 @@ C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C42
               _Ty=Engine::CComponent *
           ]
   C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  MainApp.cpp
-c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  Scene_Boss.cpp
-c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  Scene_Logo.cpp
-c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  Scene_Stage.cpp
-C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-  C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  Terrain.cpp
-C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-  C:\Users\zooz2\Desktop\Portfolio\Reference\Headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Transform.h(49): warning C4251: 'Engine::CTransform::m_WorldMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CTransform'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(35): warning C4251: 'Engine::CCamera::m_ViewMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Camera.h(36): warning C4251: 'Engine::CCamera::m_ProjMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CCamera'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(21): warning C4251: 'Engine::CFrustum::m_vProjPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Frustum.h(23): warning C4251: 'Engine::CFrustum::m_Plane': struct 'D3DXPLANE'에서는 class 'Engine::CFrustum'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(472): note: 'D3DXPLANE' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): warning C4251: 'Engine::CTexture::m_Textures': class 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>'에서는 class 'Engine::CTexture'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Texture.h(24): note: 'std::vector<IDirect3DBaseTexture9 *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=IDirect3DBaseTexture9 *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Renderer.h(27): warning C4251: 'Engine::CRenderer::m_RenderList': class 'std::list<Engine::CGameObject *,std::allocator<_Ty>>'에서는 class 'Engine::CRenderer'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Layer.h(24): note: 'std::list<Engine::CGameObject *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CGameObject *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMin': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(65): warning C4251: 'Engine::CCollider::m_vMax': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Collider.h(68): warning C4251: 'Engine::CCollider::m_vPoint': struct 'D3DXVECTOR3'에서는 class 'Engine::CCollider'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(162): note: 'D3DXVECTOR3' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): warning C4251: 'Engine::CNavigation::m_Cells': class 'std::vector<Engine::CCell *,std::allocator<_Ty>>'에서는 class 'Engine::CNavigation'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Navigation.h(26): note: 'std::vector<Engine::CCell *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::CCell *
-          ]
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(37): warning C4251: 'Engine::CMesh_Dynamic::m_LocalMatrix': struct 'D3DXMATRIX'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3dx9math.h(312): note: 'D3DXMATRIX' 선언을 참조하십시오.
-c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C4251: 'Engine::CMesh_Dynamic::m_MeshContainers': class 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>'에서는 class 'Engine::CMesh_Dynamic'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): note: 'std::vector<Engine::D3DXMESHCONTAINER_DERIVED *,std::allocator<_Ty>>' 선언을 참조하십시오.
-          with
-          [
-              _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
-          ]
-  Client.cpp
-c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): warning C4251: 'Engine::CGameObject::m_mapComponents': class 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>'에서는 class 'Engine::CGameObject'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
-          with
-          [
-              _Kty=const Engine::_tchar *,
-              _Ty=Engine::CComponent *
-          ]
-  c:\users\zooz2\desktop\portfolio\reference\headers\GameObject.h(45): note: 'std::unordered_map<const Engine::_tchar *,Engine::CComponent *,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' 선언을 참조하십시오.
           with
           [
               _Kty=const Engine::_tchar *,
@@ -657,9 +578,9 @@ c:\users\zooz2\desktop\portfolio\reference\headers\Mesh_Dynamic.h(39): warning C
               _Ty=Engine::D3DXMESHCONTAINER_DERIVED *
           ]
   코드를 생성하고 있습니다.
-  75 of 148 functions (50.7%) were compiled, the rest were copied from previous compilation.
-    34 functions were new in current compilation
-    14 functions had inline decision re-evaluated but remain unchanged
+  36 of 166 functions (21.7%) were compiled, the rest were copied from previous compilation.
+    14 functions were new in current compilation
+    24 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

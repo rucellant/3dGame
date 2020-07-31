@@ -84,7 +84,7 @@ HRESULT CLoading::Ready_Terrain_Stage()
 		return E_FAIL;
 
 	_matrix matLocal;
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
 	// For. Component_Mesh_Terrain_Stage
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Terrain_Stage", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Terrain/SoulValley/", L"SoulValley.X", &matLocal))))
@@ -137,26 +137,31 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Babegazi_Warrior", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Monster/Babegazi_Warrior/", L"Babegazi_Warrior.X", &matLocal))))
 		return E_FAIL;
 
-	// For. Component_Mesh_WitchBlade
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_WitchBlade", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Player_WitchBlade/", L"WitchBlade.X", &matLocal))))
-		return E_FAIL;
-
 	// For. Component_Mesh_Ruisa
 	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Ruisa", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/NPC/Ruisa/", L"Ruisa.X", &matLocal))))
 		return E_FAIL;
 
-	// Read File
-	HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_Monster.dat", GENERIC_READ, 0, 0,
-		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	// For. Component_Mesh_WitchBlade
+	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
 
-	_ulong dwBytes = 0;
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_WitchBlade", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Player_WitchBlade/", L"WitchBlade.X", &matLocal))))
+		return E_FAIL;
 
-	while (1)
+	// 플레이어 몬스터 NPC 순으로 파일 입출력 진행
+
+	// Read File Player
 	{
+		// For. Component_Shader_WitchBlade
+		if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_WitchBlade", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_WitchBlade.fx"))))
+			return E_FAIL;
+
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_WitchBlade.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
 		_tchar szFileName[MAX_STR];
 		ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
 
@@ -172,10 +177,55 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 		_matrix matWorld;
 		ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
 
-		if (dwBytes == 0)
-			break;
+		CWitchBlade::OBJDESC tWitchBladeDesc;
+		tWitchBladeDesc.fFrustumRadius = fFrustumRadius;
+		tWitchBladeDesc.matWorld = matWorld;
 
-		CIOManager::GetInstance();
+		CIOManager::GetInstance()->Store(CIOManager::TYPE_PLAYER, &tWitchBladeDesc);
+
+		CloseHandle(hFile);
+	}
+
+	// Read File Monster
+	{
+		// For. Component_Shader_Monster
+		if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Monster", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Monster.fx"))))
+			return E_FAIL;
+
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_Monster_Idle.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szComponentTag[MAX_STR];
+			ReadFile(hFile, szComponentTag, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CMonster::OBJDESC tMonsterDesc;
+			tMonsterDesc.fFrustumRadius = fFrustumRadius;
+			tMonsterDesc.matWorld = matWorld;
+			lstrcpy(tMonsterDesc.szFileName, szFileName);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);
+		}
+
+		CloseHandle(hFile);
 	}
 
 	return NOERROR;

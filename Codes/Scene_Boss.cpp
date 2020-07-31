@@ -82,11 +82,12 @@ HRESULT CScene_Boss::Ready_Layer_Camera()
 	tCameraDesc.fNear = 0.2f;
 	tCameraDesc.fFovy = D3DXToRadian(60.f);
 	tCameraDesc.fAspect = g_iWinCX / _float(g_iWinCY);
+	tCameraDesc.iSceneID = SCENE_BOSS;
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_BOSS, L"Layer_Camera", L"GameObject_Camera_Free", &tCameraDesc)))
 		return E_FAIL;
 
-	pManagement->Play_Camera(L"Camera_Free");
+	pManagement->Play_Camera(SCENE_BOSS, L"Camera_Free");
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

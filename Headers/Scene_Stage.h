@@ -22,6 +22,8 @@ private:
 private:
 	HRESULT Ready_Layer_Terrain();
 	HRESULT Ready_Layer_Camera();
+	HRESULT Ready_Layer_Player();
+	HRESULT Ready_Layer_Monster();
 public:
 	static CScene_Stage* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();

@@ -65,6 +65,27 @@
     <Filter Include="09. Manager\IOManager">
       <UniqueIdentifier>{a75f06cc-2c17-4133-b32a-444f25994501}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Monster">
+      <UniqueIdentifier>{3db8a26f-a2da-4499-a574-e36ec47fbc1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\WitchBlade">
+      <UniqueIdentifier>{029a1f75-3a5c-4c0a-8c79-9c0a9fd40134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Knole_Commander">
+      <UniqueIdentifier>{6a0f70e7-bb1c-4909-a095-b80ce6593515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Knole_Warrior">
+      <UniqueIdentifier>{2150d2f3-5a94-41ef-854a-b9c68fc6211c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Babegazi_Axe">
+      <UniqueIdentifier>{841166fc-34e0-4bca-b05d-01738d288539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Babegazi_Bow">
+      <UniqueIdentifier>{4b2ac9d0-c3d8-498e-8602-22b12866fd5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Babegazi_Warrior">
+      <UniqueIdentifier>{dd2892d0-45c6-4ad8-9682-927368b95ef5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -112,6 +133,27 @@
     <ClInclude Include="..\Headers\IOManager.h">
       <Filter>09. Manager\IOManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Monster.h">
+      <Filter>03. GameObject\Static\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\WitchBlade.h">
+      <Filter>03. GameObject\Static\WitchBlade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Knole_Warrior.h">
+      <Filter>03. GameObject\Stage\Knole_Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Knole_Commander.h">
+      <Filter>03. GameObject\Stage\Knole_Commander</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Babegazi_Axe.h">
+      <Filter>03. GameObject\Stage\Babegazi_Axe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Babegazi_Bow.h">
+      <Filter>03. GameObject\Stage\Babegazi_Bow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Babegazi_Warrior.h">
+      <Filter>03. GameObject\Stage\Babegazi_Warrior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -147,6 +189,27 @@
     <ClCompile Include="..\Codes\IOManager.cpp">
       <Filter>09. Manager\IOManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Monster.cpp">
+      <Filter>03. GameObject\Static\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\WitchBlade.cpp">
+      <Filter>03. GameObject\Static\WitchBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Knole_Warrior.cpp">
+      <Filter>03. GameObject\Stage\Knole_Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Knole_Commander.cpp">
+      <Filter>03. GameObject\Stage\Knole_Commander</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Babegazi_Axe.cpp">
+      <Filter>03. GameObject\Stage\Babegazi_Axe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Babegazi_Bow.cpp">
+      <Filter>03. GameObject\Stage\Babegazi_Bow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Babegazi_Warrior.cpp">
+      <Filter>03. GameObject\Stage\Babegazi_Warrior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -180,6 +243,12 @@
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_WitchBlade.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
