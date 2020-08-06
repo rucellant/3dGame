@@ -8,6 +8,7 @@ class CShader;
 class CFrustum;
 class CRenderer;
 class CTransform;
+class CNavigation;
 class CMesh_Dynamic;
 END
 
@@ -45,6 +46,7 @@ private:
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
+	CNavigation*		m_pNavigationCom = nullptr;
 	CMesh_Dynamic*		m_pMeshCom = nullptr;
 private:
 	OBJDESC				m_tObjDesc;

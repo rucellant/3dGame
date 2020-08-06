@@ -92,6 +92,10 @@ HRESULT CWitchBlade::Add_Component(void * pArg)
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom))
 		return E_FAIL;
 
+	// For. Com_Navigation
+	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Navigation_Stage", L"Com_Navigation", (CComponent**)&m_pNavigationCom))
+		return E_FAIL;
+
 	// For. Com_Mesh
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_WitchBlade", L"Com_Mesh", (CComponent**)&m_pMeshCom))
 		return E_FAIL;
@@ -148,6 +152,8 @@ HRESULT CWitchBlade::Render(_uint iPassIndex)
 	m_pShaderCom->End_Pass();
 	m_pShaderCom->End_Shader();
 
+	m_pNavigationCom->Render_Navigation();
+
 	return NOERROR;
 }
 
@@ -183,6 +189,7 @@ void CWitchBlade::Free()
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pMeshCom);
 
 	CGameObject::Free();

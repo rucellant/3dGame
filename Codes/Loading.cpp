@@ -72,6 +72,9 @@ HRESULT CLoading::Ready_Stage()
 	if (FAILED(Ready_Static_Stage()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Navigation_Stage()))
+		return E_FAIL;
+
 	m_iComplete = 1;
 
 	return NOERROR;
@@ -240,6 +243,16 @@ HRESULT CLoading::Ready_Static_Stage()
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Arrow", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Arrow/", L"Arrow.X", &matLocal))))
 		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CLoading::Ready_Navigation_Stage()
+{
+	// For. Component_Navigation_Stage
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../Bin/Resources/Data/Stage_Navigation.dat"))))
+		return E_FAIL;
+
 
 	return NOERROR;
 }

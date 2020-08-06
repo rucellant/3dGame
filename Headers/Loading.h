@@ -40,6 +40,7 @@ private: // Stage
 	HRESULT Ready_Terrain_Stage();
 	HRESULT Ready_Dynamic_Stage();
 	HRESULT Ready_Static_Stage();
+	HRESULT Ready_Navigation_Stage();
 
 private: // Boss
 	HRESULT Ready_Boss();
