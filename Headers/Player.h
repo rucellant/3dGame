@@ -8,13 +8,16 @@ class CShader;
 class CFrustum;
 class CRenderer;
 class CTransform;
+class CSpringArm;
 class CNavigation;
 class CMesh_Dynamic;
 END
 
 BEGIN(Client)
 
-class CWitchBlade final : public CGameObject
+class CSubject_Player;
+
+class CPlayer final : public CGameObject
 {
 public:
 	typedef struct tagObjDesc
@@ -32,9 +35,9 @@ public:
 		_int iCurLv; _int iMaxLv;
 	}PLAYERINFO;
 private:
-	explicit CWitchBlade(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CWitchBlade(const CWitchBlade& rhs);
-	virtual ~CWitchBlade() = default;
+	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CPlayer(const CPlayer& rhs);
+	virtual ~CPlayer() = default;
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
@@ -46,19 +49,26 @@ private:
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
+	CSpringArm*			m_pSpringArmCom = nullptr;
 	CNavigation*		m_pNavigationCom = nullptr;
 	CMesh_Dynamic*		m_pMeshCom = nullptr;
 private:
 	OBJDESC				m_tObjDesc;
 	PLAYERINFO			m_tPlayerInfo;
 private:
+	CSubject_Player*	m_pSubject = nullptr;
+private: // Camera
+	_vec3				m_vSpringArm;
+private:
 	_double				m_TimeDelta = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);
+private:
+	HRESULT Update_CameraPosition(_double TimeDelta);
 public:
-	static CWitchBlade* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);
 	virtual void Free();
 };

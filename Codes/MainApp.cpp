@@ -134,6 +134,10 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Frustum", CFrustum::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For. Component_SpringArm
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_SpringArm", CSpringArm::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For. Component_Shader_Default
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Default.fx"))))
 		return E_FAIL;

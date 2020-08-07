@@ -152,15 +152,21 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_WitchBlade", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Player_WitchBlade/", L"WitchBlade.X", &matLocal))))
 		return E_FAIL;
 
+	// For. Component_Mesh_Lups
+	D3DXMatrixScaling(&matLocal, 0.8f, 0.8f, 0.8f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Lups", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Lups_00/", L"Lups_00.X", &matLocal))))
+		return E_FAIL;
+
 	// 플레이어 몬스터 NPC 순으로 파일 입출력 진행
 
 	// Read File Player
 	{
-		// For. Component_Shader_WitchBlade
-		if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_WitchBlade", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_WitchBlade.fx"))))
+		// For. Component_Shader_Player
+		if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Player", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Player.fx"))))
 			return E_FAIL;
 
-		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_WitchBlade.dat", GENERIC_READ, 0, 0,
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_Player.dat", GENERIC_READ, 0, 0,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 		_ulong dwBytes = 0;
@@ -180,11 +186,11 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 		_matrix matWorld;
 		ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
 
-		CWitchBlade::OBJDESC tWitchBladeDesc;
-		tWitchBladeDesc.fFrustumRadius = fFrustumRadius;
-		tWitchBladeDesc.matWorld = matWorld;
+		CPlayer::OBJDESC tPlayerDesc;
+		tPlayerDesc.fFrustumRadius = fFrustumRadius;
+		tPlayerDesc.matWorld = matWorld;
 
-		CIOManager::GetInstance()->Store(CIOManager::TYPE_PLAYER, &tWitchBladeDesc);
+		CIOManager::GetInstance()->Store(CIOManager::TYPE_PLAYER, &tPlayerDesc);
 
 		CloseHandle(hFile);
 	}

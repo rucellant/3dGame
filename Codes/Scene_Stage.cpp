@@ -1,14 +1,16 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
+#include "Player.h"
 #include "Terrain.h"
 #include "Loading.h"
 #include "IOManager.h"
 #include "Management.h"
 #include "Scene_Boss.h"
-#include "WitchBlade.h"
+#include "Camera_Free.h"
 #include "Babegazi_Axe.h"
 #include "Babegazi_Bow.h"
 #include "Knole_Warrior.h"
+#include "Camera_Player.h"
 #include "Knole_Commander.h"
 #include "Babegazi_Warrior.h"
 
@@ -25,13 +27,13 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (m_pLoading == nullptr)
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera()))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Terrain()))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera()))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Monster()))
@@ -121,22 +123,42 @@ HRESULT CScene_Stage::Ready_Layer_Camera()
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Camera_Free", CCamera_Free::Create(pGraphic_Device))))
 		return E_FAIL;
 
-	CCamera::CAMERADESC tCameraDesc;
-	tCameraDesc.vEye = _vec3(0.f, 0.f, -5.f);
-	tCameraDesc.vAt = _vec3(0.f, 0.f, 0.f);
-	tCameraDesc.vAxisY = _vec3(0.f, 1.f, 0.f);
-	tCameraDesc.fRotationPerSec = D3DXToRadian(90.f);
-	tCameraDesc.fSpeedPerSec = 60.f;
-	tCameraDesc.fFar = 500.f;
-	tCameraDesc.fNear = 0.2f;
-	tCameraDesc.fFovy = D3DXToRadian(60.f);
-	tCameraDesc.fAspect = g_iWinCX / _float(g_iWinCY);
-	tCameraDesc.iSceneID = SCENE_STAGE;
+	CCamera::CAMERADESC tCameraDesc_Free;
+	tCameraDesc_Free.vEye = _vec3(0.f, 0.f, -5.f);
+	tCameraDesc_Free.vAt = _vec3(0.f, 0.f, 0.f);
+	tCameraDesc_Free.vAxisY = _vec3(0.f, 1.f, 0.f);
+	tCameraDesc_Free.fRotationPerSec = D3DXToRadian(90.f);
+	tCameraDesc_Free.fSpeedPerSec = 60.f;
+	tCameraDesc_Free.fFar = 500.f;
+	tCameraDesc_Free.fNear = 0.2f;
+	tCameraDesc_Free.fFovy = D3DXToRadian(60.f);
+	tCameraDesc_Free.fAspect = g_iWinCX / _float(g_iWinCY);
+	tCameraDesc_Free.iSceneID = SCENE_STAGE;
 
-	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Free", &tCameraDesc)))
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Free", &tCameraDesc_Free)))
 		return E_FAIL;
 
-	pManagement->Play_Camera(SCENE_STAGE, L"Camera_Free");
+	// For. GameObject_Camera_Player
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Camera_Player", CCamera_Player::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	CCamera::CAMERADESC tCameraDesc_Player;
+	tCameraDesc_Player.vEye = _vec3(0.f, 0.f, -5.f);
+	tCameraDesc_Player.vAt = _vec3(0.f, 0.f, 0.f);
+	tCameraDesc_Player.vAxisY = _vec3(0.f, 1.f, 0.f);
+	tCameraDesc_Player.fRotationPerSec = D3DXToRadian(90.f);
+	tCameraDesc_Player.fSpeedPerSec = 60.f;
+	tCameraDesc_Player.fFar = 500.f;
+	tCameraDesc_Player.fNear = 0.2f;
+	tCameraDesc_Player.fFovy = D3DXToRadian(60.f);
+	tCameraDesc_Player.fAspect = g_iWinCX / _float(g_iWinCY);
+	tCameraDesc_Player.iSceneID = SCENE_STAGE;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Player", &tCameraDesc_Player)))
+		return E_FAIL;
+
+	// Play Camera
+	pManagement->Play_Camera(SCENE_STAGE, L"Camera_Player");
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);
@@ -156,13 +178,13 @@ HRESULT CScene_Stage::Ready_Layer_Player()
 		return E_FAIL;
 	Safe_AddRef(pGraphic_Device);
 
-	// For. GameObject_WitchBlade
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_WitchBlade", CWitchBlade::Create(pGraphic_Device))))
+	// For. GameObject_Player
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Player", CPlayer::Create(pGraphic_Device))))
 		return E_FAIL;
 
-	vector<CWitchBlade::OBJDESC> vecLoad = *(vector<CWitchBlade::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_PLAYER);
+	vector<CPlayer::OBJDESC> vecLoad = *(vector<CPlayer::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_PLAYER);
 
-	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_WitchBlade", L"GameObject_WitchBlade", &vecLoad[0])))
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Player", L"GameObject_Player", &vecLoad[0])))
 		return E_FAIL;
 
 	Safe_Release(pManagement);

@@ -77,7 +77,7 @@ HRESULT CKnole_Commander::Add_Component(void * pArg)
 	m_tObjDesc = *(OBJDESC*)pArg;
 
 	// For Com_Shader
-	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_WitchBlade", L"Com_Shader", (CComponent**)&m_pShaderCom))
+	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Monster", L"Com_Shader", (CComponent**)&m_pShaderCom))
 		return E_FAIL;
 
 	// For. Com_Frustum

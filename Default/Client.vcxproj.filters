@@ -68,9 +68,6 @@
     <Filter Include="03. GameObject\Static\Monster">
       <UniqueIdentifier>{3db8a26f-a2da-4499-a574-e36ec47fbc1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. GameObject\Static\WitchBlade">
-      <UniqueIdentifier>{029a1f75-3a5c-4c0a-8c79-9c0a9fd40134}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. GameObject\Stage\Knole_Commander">
       <UniqueIdentifier>{6a0f70e7-bb1c-4909-a095-b80ce6593515}</UniqueIdentifier>
     </Filter>
@@ -85,6 +82,33 @@
     </Filter>
     <Filter Include="03. GameObject\Stage\Babegazi_Warrior">
       <UniqueIdentifier>{dd2892d0-45c6-4ad8-9682-927368b95ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Observer / Subject">
+      <UniqueIdentifier>{195606d4-fb55-469e-b981-658bc80ce4ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Observer / Subject\Observer">
+      <UniqueIdentifier>{a0f8e831-f25b-4d45-9e4e-564d732af3ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Observer / Subject\Subject">
+      <UniqueIdentifier>{de4ed719-b70e-4d7f-8fee-ce387f67f0fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Observer / Subject\Subject\Subject_Player">
+      <UniqueIdentifier>{f10c6c95-a8c9-4021-a214-de705b0806b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Observer / Subject\Observer\Observer_Player">
+      <UniqueIdentifier>{1fd2a7fd-a923-47fb-9d52-ee35ef4b17bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Camera">
+      <UniqueIdentifier>{0d34af9e-7fb1-4590-9153-d83a21e0d628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Camera\Camera_Free">
+      <UniqueIdentifier>{c1d40113-5520-4c6b-9b80-c5abba3aa620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Camera\Camera_Player">
+      <UniqueIdentifier>{20eba7cb-a913-40e8-b5a2-e031e37d0314}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Player">
+      <UniqueIdentifier>{029a1f75-3a5c-4c0a-8c79-9c0a9fd40134}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +160,6 @@
     <ClInclude Include="..\Headers\Monster.h">
       <Filter>03. GameObject\Static\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\WitchBlade.h">
-      <Filter>03. GameObject\Static\WitchBlade</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Knole_Warrior.h">
       <Filter>03. GameObject\Stage\Knole_Warrior</Filter>
     </ClInclude>
@@ -153,6 +174,21 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Babegazi_Warrior.h">
       <Filter>03. GameObject\Stage\Babegazi_Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Subject_Player.h">
+      <Filter>04. Observer / Subject\Subject\Subject_Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Observer_Player.h">
+      <Filter>04. Observer / Subject\Observer\Observer_Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Free.h">
+      <Filter>03. GameObject\Static\Camera\Camera_Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Player.h">
+      <Filter>03. GameObject\Static\Camera\Camera_Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player.h">
+      <Filter>03. GameObject\Static\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +228,6 @@
     <ClCompile Include="..\Codes\Monster.cpp">
       <Filter>03. GameObject\Static\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\WitchBlade.cpp">
-      <Filter>03. GameObject\Static\WitchBlade</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Knole_Warrior.cpp">
       <Filter>03. GameObject\Stage\Knole_Warrior</Filter>
     </ClCompile>
@@ -209,6 +242,21 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Babegazi_Warrior.cpp">
       <Filter>03. GameObject\Stage\Babegazi_Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Subject_Player.cpp">
+      <Filter>04. Observer / Subject\Subject\Subject_Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Observer_Player.cpp">
+      <Filter>04. Observer / Subject\Observer\Observer_Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Free.cpp">
+      <Filter>03. GameObject\Static\Camera\Camera_Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Player.cpp">
+      <Filter>03. GameObject\Static\Camera\Camera_Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player.cpp">
+      <Filter>03. GameObject\Static\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,10 +293,10 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_WitchBlade.fx">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Player.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

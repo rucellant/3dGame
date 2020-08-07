@@ -19,8 +19,8 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 
 	if (eType == TYPE_PLAYER)
 	{
-		vector<CWitchBlade::OBJDESC> vecElement;
-		vecElement.push_back(*(CWitchBlade::OBJDESC*)pArg);
+		vector<CPlayer::OBJDESC> vecElement;
+		vecElement.push_back(*(CPlayer::OBJDESC*)pArg);
 
 		m_mapWitchBlade.insert({ eType,vecElement });
 	}

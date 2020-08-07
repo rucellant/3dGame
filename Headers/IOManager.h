@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Base.h"
+#include "Player.h"
 #include "Terrain.h"
 #include "Monster.h"
-#include "WitchBlade.h"
 #include "Client_Defines.h"
 
 BEGIN(Client)
@@ -22,7 +22,7 @@ public:
 	HRESULT Clear();
 private:
 	unordered_map<OBJECT_TYPE, vector<CMonster::OBJDESC>> m_mapMonsterDesc;
-	unordered_map<OBJECT_TYPE, vector<CWitchBlade::OBJDESC>> m_mapWitchBlade;
+	unordered_map<OBJECT_TYPE, vector<CPlayer::OBJDESC>> m_mapWitchBlade;
 public:
 	virtual void Free();
 };
