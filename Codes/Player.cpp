@@ -25,7 +25,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	if (FAILED(Add_Component(pArg)))
 		return E_FAIL;
 
-	if (FAILED(m_pMeshCom->SetUp_AnimationSet(47)))
+	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation)))
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, *(_vec3*)&m_tObjDesc.matWorld.m[0]);
@@ -52,6 +52,8 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pSpringArmCom->Set_State(CSpringArm::POSITION, m_vSpringArm);
 	m_pSpringArmCom->Set_State(CSpringArm::TARGET, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
+	m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
 	m_bIsAlive = true;
 
 	return NOERROR;
@@ -61,14 +63,11 @@ _int CPlayer::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
-	_long MouseMove = 0;
-	if (MouseMove = m_pManagement->Get_DIMMove(CInput_Device::DIM_X))
-		m_pTransformCom->Rotation_Axis(&_vec3(0.f, 1.f, 0.f), MouseMove * (TimeDelta * 0.2f));
+	if (FAILED(State_Machine(TimeDelta)))
+		return -1;
 
-	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
-	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
-
-	Update_CameraPosition(TimeDelta);
+	if (FAILED(Post_Update(TimeDelta)))
+		return -1;
 
 	return _int();
 }
@@ -87,6 +86,9 @@ _int CPlayer::LateUpdate_GameObject(_double TimeDelta)
 HRESULT CPlayer::Render_GameObject()
 {
 	if (m_pShaderCom == nullptr || m_pMeshCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation)))
 		return E_FAIL;
 
 	if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
@@ -190,6 +192,206 @@ HRESULT CPlayer::Render(_uint iPassIndex)
 	return NOERROR;
 }
 
+HRESULT CPlayer::State_Machine(_double TimeDelta)
+{
+	HRESULT hr = 0;
+
+	switch (m_eCurState)
+	{
+	case IDLE:
+		hr = State_Idle(TimeDelta);
+		break;
+	case RUN:
+		hr = State_Run(TimeDelta);
+		break;
+	}
+
+	if (FAILED(hr))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::State_Idle(_double TimeDelta)
+{
+	if (m_pManagement->KeyPressing(KEY_W))
+	{
+		if (m_pManagement->KeyPressing(KEY_A))
+		{
+			m_pTransformCom->Move_FL(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_FL;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		if (m_pManagement->KeyPressing(KEY_D))
+		{
+			m_pTransformCom->Move_FR(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_FR;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		m_pTransformCom->Move_Forward(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_F;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	if (m_pManagement->KeyPressing(KEY_S))
+	{
+		if (m_pManagement->KeyPressing(KEY_A))
+		{
+			m_pTransformCom->Move_BL(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_BL;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		if (m_pManagement->KeyPressing(KEY_D))
+		{
+			m_pTransformCom->Move_BR(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_BR;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		m_pTransformCom->Move_Backward(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_B;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	if (m_pManagement->KeyPressing(KEY_A))
+	{
+		m_pTransformCom->Move_Left(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_L;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	if (m_pManagement->KeyPressing(KEY_D))
+	{
+		m_pTransformCom->Move_Right(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_R;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	m_iAnimation = PLAYER_IDLE;
+	m_eCurState = IDLE;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::State_Run(_double TimeDelta)
+{
+	if (m_pManagement->KeyPressing(KEY_W))
+	{
+		if (m_pManagement->KeyPressing(KEY_A))
+		{
+			m_pTransformCom->Move_FL(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_FL;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		if (m_pManagement->KeyPressing(KEY_D))
+		{
+			m_pTransformCom->Move_FR(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_FR;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		m_pTransformCom->Move_Forward(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_F;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	if (m_pManagement->KeyPressing(KEY_S))
+	{
+		if (m_pManagement->KeyPressing(KEY_A))
+		{
+			m_pTransformCom->Move_BL(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_BL;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		if (m_pManagement->KeyPressing(KEY_D))
+		{
+			m_pTransformCom->Move_BR(m_pNavigationCom, TimeDelta);
+			m_iAnimation = PLAYER_RUN_BR;
+			m_eCurState = RUN;
+
+			return NOERROR;
+		}
+
+		m_pTransformCom->Move_Backward(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_B;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	if (m_pManagement->KeyPressing(KEY_A))
+	{
+		m_pTransformCom->Move_Left(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_L;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	if (m_pManagement->KeyPressing(KEY_D))
+	{
+		m_pTransformCom->Move_Right(m_pNavigationCom, TimeDelta);
+		m_iAnimation = PLAYER_RUN_R;
+		m_eCurState = RUN;
+
+		return NOERROR;
+	}
+
+	m_iAnimation = PLAYER_IDLE;
+	m_eCurState = IDLE;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Post_Update(_double TimeDelta)
+{
+	// 플레이어 네비게이션 위에 태움
+	//SetUp_OnNavigation();
+
+	// 마우스 가로축 회전 판별
+	_long MouseMove = 0;
+	if (MouseMove = m_pManagement->Get_DIMMove(CInput_Device::DIM_X))
+		m_pTransformCom->Rotation_Axis(&_vec3(0.f, 1.f, 0.f), MouseMove * (TimeDelta * 0.2f));
+
+	// 서브젝트에게 정보 갱신함
+	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+
+	// 스프링암 관련
+	Update_CameraPosition(TimeDelta);
+
+	return NOERROR;
+}
+
 HRESULT CPlayer::Update_CameraPosition(_double TimeDelta)
 {
 	if (m_pSpringArmCom == nullptr || m_pTransformCom == nullptr)
@@ -231,6 +433,18 @@ HRESULT CPlayer::Update_CameraPosition(_double TimeDelta)
 
 	m_pSpringArmCom->Set_State(CSpringArm::POSITION, m_vSpringArm);
 	m_pSpringArmCom->Set_State(CSpringArm::TARGET, vTarget);
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::SetUp_OnNavigation()
+{
+	_float fHeight = m_pNavigationCom->SetUp_Height(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+	_vec3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	vPosition.y = fHeight;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
 
 	return NOERROR;
 }

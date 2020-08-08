@@ -158,7 +158,7 @@ HRESULT CScene_Stage::Ready_Layer_Camera()
 		return E_FAIL;
 
 	// Play Camera
-	pManagement->Play_Camera(SCENE_STAGE, L"Camera_Player");
+	pManagement->Play_Camera(SCENE_STAGE, L"Camera_Free");
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

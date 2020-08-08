@@ -57,7 +57,7 @@ _int CCamera_Player::Update_GameObject(_double TimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 
-	_vec3 vInterpolationPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION) * (1.f - (TimeDelta * 10.f)) + vCameraPosition * (TimeDelta * 10.f);
+	_vec3 vInterpolationPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION) * (1.f - _float(TimeDelta * 10.f)) + vCameraPosition * _float(TimeDelta * 10.f);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vInterpolationPosition);
 
 	return CCamera::Update_GameObject(TimeDelta);
