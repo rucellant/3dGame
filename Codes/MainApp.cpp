@@ -52,6 +52,8 @@ HRESULT CMainApp::Render_MainApp()
 	m_pRenderer->Render_Game();
 	m_pManagement->Render_Current_Scene();
 
+	m_pManagement->Render_FPS(L"Timer_60");
+
 	m_pGraphic_Device->EndScene();
 	m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);
 

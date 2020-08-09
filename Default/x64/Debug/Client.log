@@ -1,2 +1,16 @@
-﻿  Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
+﻿  SK_Slot.cpp
+  Player.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Weapon.cpp
+  Shield.cpp
+  Scene_Stage.cpp
+  Observer_Player.cpp
+  MainApp.cpp
+  Loading.cpp
+c:\users\zooz2\desktop\portfolio\client\codes\loading.cpp(372): warning C4244: '인수': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  IOManager.cpp
+  Camera_Player.cpp
+  코드를 생성하고 있습니다...
+  Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

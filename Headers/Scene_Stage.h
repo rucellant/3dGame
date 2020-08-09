@@ -24,6 +24,7 @@ private:
 	HRESULT Ready_Layer_Camera();
 	HRESULT Ready_Layer_Player();
 	HRESULT Ready_Layer_Monster();
+	HRESULT Ready_Layer_UI();
 public:
 	static CScene_Stage* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();

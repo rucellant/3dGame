@@ -64,15 +64,6 @@ _int CScene_Logo::LateUpdate_Scene(_double TimeDelta)
 
 HRESULT CScene_Logo::Render_Scene()
 {
-	CManagement* pMangement = CManagement::GetInstance();
-	if (pMangement == nullptr)
-		return E_FAIL;
-	Safe_AddRef(pMangement);
-
-	pMangement->Render_FPS(L"Timer_60");
-
-	Safe_Release(pMangement);
-
 	return NOERROR;
 }
 

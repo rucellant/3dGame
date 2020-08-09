@@ -43,9 +43,13 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 
 	m_pSubject->AddData(CSubject_Player::TYPE_MATRIX, m_pTransformCom->Get_WorldMatrixPointer());
 	m_pSubject->AddData(CSubject_Player::TYPE_INFO, &m_tPlayerInfo);
+	m_pSubject->AddData(CSubject_Player::TYPE_RIGHTHAND, &m_matHandWorld[0]);
+	m_pSubject->AddData(CSubject_Player::TYPE_LEFTHAND, &m_matHandWorld[1]);
 
 	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
+	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
 
 	m_vSpringArm = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _vec3(1.1f, 3.f, -6.f);
 
@@ -63,8 +67,20 @@ _int CPlayer::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
-	if (FAILED(State_Machine(TimeDelta)))
-		return -1;
+	//if (m_pManagement->KeyUp(KEY_UP))
+	//	m_TmpDuration += 0.01;
+	//if (m_pManagement->KeyUp(KEY_DOWN))
+	//	m_TmpDuration -= 0.01;
+	//if (m_pManagement->KeyUp(KEY_RIGHT))
+	//	m_TmpPeriod += 0.001;
+	//if (m_pManagement->KeyUp(KEY_LEFT))
+	//	m_TmpPeriod -= 0.001;
+
+	if (m_bIsControl)
+	{
+		if (FAILED(State_Machine(TimeDelta)))
+			return -1;
+	}
 
 	if (FAILED(Post_Update(TimeDelta)))
 		return -1;
@@ -88,7 +104,7 @@ HRESULT CPlayer::Render_GameObject()
 	if (m_pShaderCom == nullptr || m_pMeshCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation)))
+	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
 		return E_FAIL;
 
 	if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
@@ -99,6 +115,42 @@ HRESULT CPlayer::Render_GameObject()
 
 	if (FAILED(Render(0)))
 		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration, _double Period)
+{
+	m_eCurState = SK;
+
+	switch (eID)
+	{
+	case CSK_Slot::SK_TORNADO:
+		m_Period = Period;
+		m_Duration = Duration;
+		m_iAnimation = PLAYER_TORNADO;
+		break;
+	case CSK_Slot::SK_SHOULDER:
+		m_Period = Period;
+		m_Duration = Duration;
+		m_iAnimation = PLAYER_SHOULDER;
+		break;
+	case CSK_Slot::SK_EARTHQUAKE:
+		m_Period = Period;
+		m_Duration = Duration;
+		m_iAnimation = PLAYER_EARTHQUAKE;
+		break;
+	case CSK_Slot::SK_BUFFATT:
+		m_Period = Period;
+		m_Duration = Duration;
+		m_iAnimation = PLAYER_BUFFMOTION;
+		break;
+	case CSK_Slot::SK_BUFFDEF:
+		m_Period = Period;
+		m_Duration = Duration;
+		m_iAnimation = PLAYER_BUFFMOTION;
+		break;
+	}
 
 	return NOERROR;
 }
@@ -204,6 +256,12 @@ HRESULT CPlayer::State_Machine(_double TimeDelta)
 	case RUN:
 		hr = State_Run(TimeDelta);
 		break;
+	case ATT:
+		hr = State_Att(TimeDelta);
+		break;
+	case SK:
+		hr = State_SK(TimeDelta);
+		break;
 	}
 
 	if (FAILED(hr))
@@ -214,6 +272,18 @@ HRESULT CPlayer::State_Machine(_double TimeDelta)
 
 HRESULT CPlayer::State_Idle(_double TimeDelta)
 {
+	if (m_pManagement->KeyUp(KEY_LBUTTON))
+	{
+		m_iAnimation = PLAYER_ATT01;
+		m_eCurState = ATT;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		return NOERROR;
+	}
+
 	if (m_pManagement->KeyPressing(KEY_W))
 	{
 		if (m_pManagement->KeyPressing(KEY_A))
@@ -221,6 +291,10 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_pTransformCom->Move_FL(m_pNavigationCom, TimeDelta);
 			m_iAnimation = PLAYER_RUN_FL;
 			m_eCurState = RUN;
+
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
 
 			return NOERROR;
 		}
@@ -231,12 +305,20 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_FR;
 			m_eCurState = RUN;
 
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
 			return NOERROR;
 		}
 
 		m_pTransformCom->Move_Forward(m_pNavigationCom, TimeDelta);
 		m_iAnimation = PLAYER_RUN_F;
 		m_eCurState = RUN;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
 
 		return NOERROR;
 	}
@@ -249,6 +331,10 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BL;
 			m_eCurState = RUN;
 
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
 			return NOERROR;
 		}
 
@@ -258,12 +344,20 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BR;
 			m_eCurState = RUN;
 
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
 			return NOERROR;
 		}
 
 		m_pTransformCom->Move_Backward(m_pNavigationCom, TimeDelta);
 		m_iAnimation = PLAYER_RUN_B;
 		m_eCurState = RUN;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
 
 		return NOERROR;
 	}
@@ -274,6 +368,10 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_L;
 		m_eCurState = RUN;
 
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
 		return NOERROR;
 	}
 
@@ -283,17 +381,33 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_R;
 		m_eCurState = RUN;
 
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
 		return NOERROR;
 	}
 
 	m_iAnimation = PLAYER_IDLE;
 	m_eCurState = IDLE;
+
+	m_fNewSpeed = DEFAULT_ANIM_SPEED;
+	m_Duration = DEFAULT_ANIM_DURATION;
+	m_Period = DEFAULT_ANIM_PERIOD;
 
 	return NOERROR;
 }
 
 HRESULT CPlayer::State_Run(_double TimeDelta)
 {
+	if (m_pManagement->KeyUp(KEY_LBUTTON))
+	{
+		m_iAnimation = PLAYER_ATT01;
+		m_eCurState = ATT;
+
+		return NOERROR;
+	}
+
 	if (m_pManagement->KeyPressing(KEY_W))
 	{
 		if (m_pManagement->KeyPressing(KEY_A))
@@ -301,6 +415,10 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_pTransformCom->Move_FL(m_pNavigationCom, TimeDelta);
 			m_iAnimation = PLAYER_RUN_FL;
 			m_eCurState = RUN;
+
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
 
 			return NOERROR;
 		}
@@ -311,12 +429,20 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_FR;
 			m_eCurState = RUN;
 
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
 			return NOERROR;
 		}
 
 		m_pTransformCom->Move_Forward(m_pNavigationCom, TimeDelta);
 		m_iAnimation = PLAYER_RUN_F;
 		m_eCurState = RUN;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
 
 		return NOERROR;
 	}
@@ -329,6 +455,10 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BL;
 			m_eCurState = RUN;
 
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
 			return NOERROR;
 		}
 
@@ -338,12 +468,20 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BR;
 			m_eCurState = RUN;
 
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
 			return NOERROR;
 		}
 
 		m_pTransformCom->Move_Backward(m_pNavigationCom, TimeDelta);
 		m_iAnimation = PLAYER_RUN_B;
 		m_eCurState = RUN;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
 
 		return NOERROR;
 	}
@@ -354,6 +492,10 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_L;
 		m_eCurState = RUN;
 
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
 		return NOERROR;
 	}
 
@@ -363,28 +505,100 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_R;
 		m_eCurState = RUN;
 
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
 		return NOERROR;
 	}
 
 	m_iAnimation = PLAYER_IDLE;
 	m_eCurState = IDLE;
 
+	m_fNewSpeed = DEFAULT_ANIM_SPEED;
+	m_Duration = DEFAULT_ANIM_DURATION;
+	m_Period = DEFAULT_ANIM_PERIOD;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::State_Att(_double TimeDelta)
+{
+	if (m_pManagement->KeyUp(KEY_LBUTTON))
+	{
+		if (m_iAnimation == PLAYER_ATT01 && !m_pMeshCom->is_Finished())
+			m_iNextAnimation = PLAYER_ATT02;
+
+		if (m_iAnimation == PLAYER_ATT02 && !m_pMeshCom->is_Finished())
+			m_iNextAnimation = PLAYER_ATT03;
+	}
+
+	if (m_pMeshCom->is_Finished() && m_iNextAnimation != -1)
+	{
+		if (m_iNextAnimation == PLAYER_ATT02)
+		{
+			m_iAnimation = PLAYER_ATT02;
+			m_iNextAnimation = -1;
+		}
+
+		if (m_iNextAnimation == PLAYER_ATT03)
+		{
+			m_iAnimation = PLAYER_ATT03;
+			m_iNextAnimation = -1;
+		}
+
+		return NOERROR;
+	}
+
+	if (m_pMeshCom->is_Finished() && m_iNextAnimation == -1)
+	{
+		m_iAnimation = PLAYER_IDLE;
+		m_eCurState = IDLE;
+		m_iNextAnimation = -1;
+
+		m_fNewSpeed = m_TmpNewSpeed;
+		m_Duration = 0.07;
+		m_Period = 0.097;
+
+		return NOERROR;
+	}
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::State_SK(_double TimeDelta)
+{
+	if (m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = PLAYER_IDLE;
+		m_eCurState = IDLE;
+	}
 	return NOERROR;
 }
 
 HRESULT CPlayer::Post_Update(_double TimeDelta)
 {
-	// 플레이어 네비게이션 위에 태움
-	//SetUp_OnNavigation();
-
 	// 마우스 가로축 회전 판별
-	_long MouseMove = 0;
-	if (MouseMove = m_pManagement->Get_DIMMove(CInput_Device::DIM_X))
-		m_pTransformCom->Rotation_Axis(&_vec3(0.f, 1.f, 0.f), MouseMove * (TimeDelta * 0.2f));
+	if (m_bIsControl && (m_eCurState != ATT))
+	{
+		_long MouseMove = 0;
+		if (MouseMove = m_pManagement->Get_DIMMove(CInput_Device::DIM_X))
+			m_pTransformCom->Rotation_Axis(&_vec3(0.f, 1.f, 0.f), MouseMove * (TimeDelta * 0.2f));
+	}
+
+	// 오른손 월드 행렬
+	D3DXFRAME_DERIVED* pFrame_RightHand = m_pMeshCom->Get_FrameDerived("BN_Weapon_R");
+	m_matHandWorld[0] = pFrame_RightHand->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
+	// 왼손 월드 행렬
+	D3DXFRAME_DERIVED* pFrame_LeftHand = m_pMeshCom->Get_FrameDerived("BN_Weapon_L");
+	m_matHandWorld[1] = pFrame_LeftHand->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
 
 	// 서브젝트에게 정보 갱신함
 	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
+	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
 
 	// 스프링암 관련
 	Update_CameraPosition(TimeDelta);
@@ -405,22 +619,25 @@ HRESULT CPlayer::Update_CameraPosition(_double TimeDelta)
 
 	vSpringArm.y = m_vSpringArm.y;
 
-	_long MouseMove = 0;
-	if (MouseMove = m_pManagement->Get_DIMMove(CInput_Device::DIM_Y))
+	if (m_eCurState != ATT)
 	{
-		if (MouseMove < 0)
+		_long MouseMove = 0;
+		if (MouseMove = m_pManagement->Get_DIMMove(CInput_Device::DIM_Y))
 		{
-			vSpringArm.y += _float(MouseMove * (TimeDelta * 0.4f));
+			if (MouseMove < 0)
+			{
+				vSpringArm.y += _float(MouseMove * (TimeDelta * 0.4f));
 
-			if (vSpringArm.y <= 1.f)
-				vSpringArm.y = 1.f;
-		}
-		else
-		{
-			vSpringArm.y += _float(MouseMove * (TimeDelta * 0.4f));
+				if (vSpringArm.y <= 1.f)
+					vSpringArm.y = 1.f;
+			}
+			else
+			{
+				vSpringArm.y += _float(MouseMove * (TimeDelta * 0.4f));
 
-			if (vSpringArm.y >= 6.f)
-				vSpringArm.y = 6.f;
+				if (vSpringArm.y >= 6.f)
+					vSpringArm.y = 6.f;
+			}
 		}
 	}
 

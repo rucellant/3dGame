@@ -25,6 +25,12 @@ void * CObserver_Player::GetData(_int iMsg)
 	case CSubject_Player::TYPE_INFO:
 		pData = &m_tInfo;
 		break;
+	case CSubject_Player::TYPE_RIGHTHAND:
+		pData = &m_matRightHandWorld;
+		break;
+	case CSubject_Player::TYPE_LEFTHAND:
+		pData = &m_matLeftHandWorld;
+		break;
 	}
 
 	return pData;
@@ -44,6 +50,12 @@ HRESULT CObserver_Player::Update(_int iMsg)
 		break;
 	case CSubject_Player::TYPE_INFO:
 		m_tInfo = *(CPlayer::PLAYERINFO*)pData;
+		break;
+	case CSubject_Player::TYPE_RIGHTHAND:
+		m_matRightHandWorld = *(_matrix*)pData;
+		break;
+	case CSubject_Player::TYPE_LEFTHAND:
+		m_matLeftHandWorld = *(_matrix*)pData;
 		break;
 	}
 

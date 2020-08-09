@@ -75,6 +75,9 @@ HRESULT CLoading::Ready_Stage()
 	if (FAILED(Ready_Navigation_Stage()))
 		return E_FAIL;
 
+	if (FAILED(Ready_UI_Stage()))
+		return E_FAIL;
+
 	m_iComplete = 1;
 
 	return NOERROR;
@@ -250,6 +253,56 @@ HRESULT CLoading::Ready_Static_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Arrow", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Arrow/", L"Arrow.X", &matLocal))))
 		return E_FAIL;
 
+	// For. Component_Shader_Weapon
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Weapon", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Weapon.fx"))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Weapon0
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon0", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_00.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Texture_Weapon0
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon0", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_00.tga"))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Weapon1
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon1", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_01.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Texture_Weapon1
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon1", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_01.tga"))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Weapon2
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon2", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_02.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Texture_Weapon2
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon2", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_02.tga"))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Weapon3
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon3", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_03.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Texture_Weapon3
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon3", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_03.tga"))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Shield
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Shield", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Shield/", L"Shield.X", &matLocal))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -259,6 +312,23 @@ HRESULT CLoading::Ready_Navigation_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../Bin/Resources/Data/Stage_Navigation.dat"))))
 		return E_FAIL;
 
+
+	return NOERROR;
+}
+
+HRESULT CLoading::Ready_UI_Stage()
+{
+	// For. Component_Shader_UI
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_UI", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_UI.fx"))))
+		return E_FAIL;
+
+	// for. Component_Texture_SK
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_SK", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SK_Slot/SK_%d.png", 5))))
+		return E_FAIL;
+
+	// For. Component_Texture_SK_Base
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_SK_Base", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SK_Slot/SK_Base.png"))))
+		return E_FAIL;
 
 	return NOERROR;
 }

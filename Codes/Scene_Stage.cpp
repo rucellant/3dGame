@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
 #include "Player.h"
+#include "Shield.h"
+#include "Weapon.h"
 #include "Terrain.h"
 #include "Loading.h"
+#include "SK_Slot.h"
 #include "IOManager.h"
 #include "Management.h"
 #include "Scene_Boss.h"
@@ -37,6 +40,9 @@ HRESULT CScene_Stage::Ready_Scene()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Monster()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_UI()))
 		return E_FAIL;
 
 	CIOManager::GetInstance()->Clear();
@@ -187,6 +193,20 @@ HRESULT CScene_Stage::Ready_Layer_Player()
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Player", L"GameObject_Player", &vecLoad[0])))
 		return E_FAIL;
 
+	// For. GameObject_Weapon
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Weapon", CWeapon::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Player", L"GameObject_Weapon")))
+		return E_FAIL;
+
+	// For. GameObject_Shield
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Shield", CShield::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Player", L"GameObject_Shield")))
+		return E_FAIL;
+
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);
 
@@ -255,6 +275,31 @@ HRESULT CScene_Stage::Ready_Layer_Monster()
 				return E_FAIL;
 		}
 	}
+
+	Safe_Release(pManagement);
+	Safe_Release(pGraphic_Device);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_UI()
+{
+	CManagement* pManagement = CManagement::GetInstance();
+	if (pManagement == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pManagement);
+
+	LPDIRECT3DDEVICE9 pGraphic_Device = pManagement->Get_Graphic_Device();
+	if (pGraphic_Device == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pGraphic_Device);
+
+	// For. GameObject_SK_Slot
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_SK_Slot", CSK_Slot::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_UI", L"GameObject_SK_Slot")))
+		return E_FAIL;
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

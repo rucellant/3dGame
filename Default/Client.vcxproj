@@ -190,9 +190,13 @@
     <ClInclude Include="..\Headers\Scene_Boss.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="..\Headers\Scene_Stage.h" />
+    <ClInclude Include="..\Headers\Shield.h" />
+    <ClInclude Include="..\Headers\SK_Slot.h" />
     <ClInclude Include="..\Headers\Subject_Player.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\Player.h" />
+    <ClInclude Include="..\Headers\UI.h" />
+    <ClInclude Include="..\Headers\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -216,9 +220,13 @@
     <ClCompile Include="..\Codes\Scene_Boss.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="..\Codes\Scene_Stage.cpp" />
+    <ClCompile Include="..\Codes\Shield.cpp" />
+    <ClCompile Include="..\Codes\SK_Slot.cpp" />
     <ClCompile Include="..\Codes\Subject_Player.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
+    <ClCompile Include="..\Codes\UI.cpp" />
+    <ClCompile Include="..\Codes\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -247,6 +255,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Player.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Weapon.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

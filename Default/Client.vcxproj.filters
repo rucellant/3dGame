@@ -110,6 +110,18 @@
     <Filter Include="03. GameObject\Static\Player">
       <UniqueIdentifier>{029a1f75-3a5c-4c0a-8c79-9c0a9fd40134}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Player\Weapon">
+      <UniqueIdentifier>{55d3cbfa-3c9d-454a-8f3d-288472180918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Player\Shield">
+      <UniqueIdentifier>{f87ada87-34df-4f9c-b4a4-a28c9a11898b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\UI">
+      <UniqueIdentifier>{7c15e13d-b4e8-40eb-92e5-ce6b5321b2bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\UI\SK_Slot">
+      <UniqueIdentifier>{acab6f4b-1364-42dd-a973-e26cce467ca5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -190,6 +202,18 @@
     <ClInclude Include="..\Headers\Player.h">
       <Filter>03. GameObject\Static\Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Weapon.h">
+      <Filter>03. GameObject\Static\Player\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Shield.h">
+      <Filter>03. GameObject\Static\Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\UI.h">
+      <Filter>03. GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\SK_Slot.h">
+      <Filter>03. GameObject\UI\SK_Slot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -258,6 +282,18 @@
     <ClCompile Include="..\Codes\Player.cpp">
       <Filter>03. GameObject\Static\Player</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Weapon.cpp">
+      <Filter>03. GameObject\Static\Player\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Shield.cpp">
+      <Filter>03. GameObject\Static\Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI.cpp">
+      <Filter>03. GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\SK_Slot.cpp">
+      <Filter>03. GameObject\UI\SK_Slot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -297,6 +333,12 @@
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Player.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Weapon.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

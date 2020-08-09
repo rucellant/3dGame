@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SK_Slot.h"
 #include "GameObject.h"
 #include "Client_Defines.h"
 
@@ -10,7 +11,7 @@
 #define PLAYER_TORNADO		14			// 휠윈드 같은 스킬
 #define PLAYER_SHOULDER		22			// 어깨빵 -> 공중에 몬스터 띄움
 #define PLAYER_EARTHQUAKE	17			// 지진 -> 화면 쉐이킹 + 몬스터 자빠뜨림
-#define PLAYER_BUFFMOTION	23			// 버프모션 -> 버프 스킬 쓸 때 사용할 모션
+#define PLAYER_BUFFMOTION	23			// 버프모션 -> 버프 스킬 쓸 때 사용할 모션 버프는 공버프랑 방버프 두개 주자
 #define PLAYER_RUN_F		31			// 이동 모션
 #define PLAYER_RUN_L		29			// 이동 모션
 #define PLAYER_RUN_R		28			// 이동 모션
@@ -24,6 +25,9 @@
 #define PLAYER_DOWN_LOOP	46			// 반복 다운 모션
 #define PLAYER_GETUP		45			// 다운->아이들 변경 모션
 
+#define DEFAULT_ANIM_SPEED		1.f
+#define DEFAULT_ANIM_DURATION	0.2
+#define DEFAULT_ANIM_PERIOD		0.09
 
 BEGIN(Engine)
 class CShader;
@@ -52,6 +56,7 @@ public:
 	{
 		_int iCurHp; _int iMaxHp;
 		_int iMinDmg; _int iMaxDMg;
+		_int iDefaultDef; _int iCurDef;
 		_int iGold;
 		_int iCurExp; _int iMaxExp;
 		_int iCurLv; _int iMaxLv;
@@ -68,6 +73,8 @@ public:
 	virtual _int Update_GameObject(_double TimeDelta);
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
+public:
+	HRESULT SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration = DEFAULT_ANIM_DURATION, _double Period = DEFAULT_ANIM_PERIOD);
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
@@ -79,16 +86,30 @@ private:
 private: // 정보들
 	OBJDESC				m_tObjDesc;
 	PLAYERINFO			m_tPlayerInfo;
+private: // 제어상태
+	_bool				m_bIsControl = true;
 private: // 상태
 	STATE				m_eCurState = IDLE;
 private: // Animation 
 	_uint				m_iAnimation = PLAYER_IDLE;
+	_uint				m_iNextAnimation = -1;
+
+	_float				m_fNewSpeed = DEFAULT_ANIM_SPEED;
+	_double				m_Duration = DEFAULT_ANIM_DURATION;
+	_double				m_Period = DEFAULT_ANIM_PERIOD;
+
+	_float				m_TmpNewSpeed = DEFAULT_ANIM_SPEED;
+	_double				m_TmpDuration = DEFAULT_ANIM_DURATION;
+	_double				m_TmpPeriod = DEFAULT_ANIM_PERIOD;
 private: // 옵저버패턴
 	CSubject_Player*	m_pSubject = nullptr;
 private: // Camera
 	_vec3				m_vSpringArm;
-private:
+private: // 손의 행ㄹ려
+	_matrix				m_matHandWorld[2];
+private: // 타이머
 	_double				m_TimeDelta = 0.0;
+	_double				m_TimeAttAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
@@ -97,6 +118,8 @@ private:
 	HRESULT State_Machine(_double TimeDelta);
 	HRESULT State_Idle(_double TimeDelta);
 	HRESULT State_Run(_double TimeDelta);
+	HRESULT State_Att(_double TimeDelta);
+	HRESULT State_SK(_double TimeDelta);
 private:
 	HRESULT Post_Update(_double TimeDelta);
 private:

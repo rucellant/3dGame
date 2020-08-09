@@ -23,6 +23,8 @@ public:
 private:
 	_matrix m_matWorld;
 	CPlayer::PLAYERINFO m_tInfo;
+	_matrix m_matRightHandWorld;
+	_matrix m_matLeftHandWorld;
 public:
 	static CObserver_Player* Create();
 	virtual void Free();
