@@ -37,7 +37,32 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 		else
 			m_mapMonsterDesc[eType].push_back(*(CMonster::OBJDESC*)pArg);
 	}
+
+	if (eType == TYPE_INTERACT)
+	{
+		if (m_mapMonsterDesc.empty())
+		{
+			vector<CCrystal::OBJDESC> vecElement;
+			vecElement.push_back(*(CCrystal::OBJDESC*)pArg);
+
+			m_mapInteract.insert({ eType,vecElement });
+		}
+		else
+			m_mapInteract[eType].push_back(*(CCrystal::OBJDESC*)pArg);
+	}
 	
+	if (eType == TYPE_ICICLE)
+	{
+		if (m_mapMonsterDesc.empty())
+		{
+			vector<CIcicle::OBJDESC> vecElement;
+			vecElement.push_back(*(CIcicle::OBJDESC*)pArg);
+
+			m_mapIcicle.insert({ eType,vecElement });
+		}
+		else
+			m_mapIcicle[eType].push_back(*(CIcicle::OBJDESC*)pArg);
+	}
 
 	return NOERROR;
 }
@@ -53,6 +78,12 @@ void * CIOManager::Load(OBJECT_TYPE eType)
 	if (eType == TYPE_MONSTER)
 		return &m_mapMonsterDesc[eType];
 
+	if (eType == TYPE_INTERACT)
+		return &m_mapInteract[eType];
+
+	if (eType == TYPE_ICICLE)
+		return &m_mapIcicle[eType];
+
 	return nullptr;
 }
 
@@ -67,6 +98,16 @@ HRESULT CIOManager::Clear()
 		Pair.second.clear();
 
 	m_mapMonsterDesc.clear();
+
+	for (auto& Pair : m_mapInteract)
+		Pair.second.clear();
+
+	m_mapInteract.clear();
+
+	for (auto& Pair : m_mapIcicle)
+		Pair.second.clear();
+
+	m_mapIcicle.clear();
 
 	return NOERROR;
 }

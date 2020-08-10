@@ -67,14 +67,14 @@ _int CPlayer::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
-	//if (m_pManagement->KeyUp(KEY_UP))
-	//	m_TmpDuration += 0.01;
-	//if (m_pManagement->KeyUp(KEY_DOWN))
-	//	m_TmpDuration -= 0.01;
-	//if (m_pManagement->KeyUp(KEY_RIGHT))
-	//	m_TmpPeriod += 0.001;
-	//if (m_pManagement->KeyUp(KEY_LEFT))
-	//	m_TmpPeriod -= 0.001;
+	if (m_pManagement->KeyUp(KEY_UP))
+		m_TmpDuration += 0.01;
+	if (m_pManagement->KeyUp(KEY_DOWN))
+		m_TmpDuration -= 0.01;
+	if (m_pManagement->KeyUp(KEY_RIGHT))
+		m_TmpPeriod += 0.001;
+	if (m_pManagement->KeyUp(KEY_LEFT))
+		m_TmpPeriod -= 0.001;
 
 	if (m_bIsControl)
 	{
@@ -277,7 +277,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_ATT01;
 		m_eCurState = ATT;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -292,7 +291,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_FL;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -305,7 +303,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_FR;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -316,7 +313,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_F;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -331,7 +327,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BL;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -344,7 +339,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BR;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -355,7 +349,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_B;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -368,7 +361,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_L;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -381,7 +373,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_R;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -391,7 +382,6 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 	m_iAnimation = PLAYER_IDLE;
 	m_eCurState = IDLE;
 
-	m_fNewSpeed = DEFAULT_ANIM_SPEED;
 	m_Duration = DEFAULT_ANIM_DURATION;
 	m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -416,7 +406,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_FL;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -429,7 +418,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_FR;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -440,7 +428,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_F;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -455,7 +442,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BL;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -468,7 +454,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 			m_iAnimation = PLAYER_RUN_BR;
 			m_eCurState = RUN;
 
-			m_fNewSpeed = DEFAULT_ANIM_SPEED;
 			m_Duration = DEFAULT_ANIM_DURATION;
 			m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -479,7 +464,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_B;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -492,7 +476,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_L;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -505,7 +488,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_iAnimation = PLAYER_RUN_R;
 		m_eCurState = RUN;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -515,7 +497,6 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 	m_iAnimation = PLAYER_IDLE;
 	m_eCurState = IDLE;
 
-	m_fNewSpeed = DEFAULT_ANIM_SPEED;
 	m_Duration = DEFAULT_ANIM_DURATION;
 	m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -545,6 +526,9 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 		{
 			m_iAnimation = PLAYER_ATT03;
 			m_iNextAnimation = -1;
+
+			m_Duration = 0.101;
+			m_Period = 0.147;
 		}
 
 		return NOERROR;
@@ -556,7 +540,6 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 		m_eCurState = IDLE;
 		m_iNextAnimation = -1;
 
-		m_fNewSpeed = m_TmpNewSpeed;
 		m_Duration = 0.07;
 		m_Period = 0.097;
 
@@ -618,6 +601,7 @@ HRESULT CPlayer::Update_CameraPosition(_double TimeDelta)
 	vSpringArm += vAxisLook * -10.f;
 
 	vSpringArm.y = m_vSpringArm.y;
+	//vSpringArm.y = m_vSpringArm.y + m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
 
 	if (m_eCurState != ATT)
 	{
@@ -648,8 +632,14 @@ HRESULT CPlayer::Update_CameraPosition(_double TimeDelta)
 	_vec3 vTarget = vSpringArm;
 	vTarget.y = 3.f;
 
-	m_pSpringArmCom->Set_State(CSpringArm::POSITION, m_vSpringArm);
-	m_pSpringArmCom->Set_State(CSpringArm::TARGET, vTarget);
+	_vec3 asd = m_vSpringArm + _vec3(0.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION).y, 0.f);
+	_vec3 asd2 = vTarget + _vec3(0.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION).y, 0.f);
+
+	m_pSpringArmCom->Set_State(CSpringArm::POSITION, asd);
+	m_pSpringArmCom->Set_State(CSpringArm::TARGET, asd2);
+
+	/*m_pSpringArmCom->Set_State(CSpringArm::POSITION, m_vSpringArm);
+	m_pSpringArmCom->Set_State(CSpringArm::TARGET, vTarget);*/
 
 	return NOERROR;
 }

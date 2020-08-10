@@ -44,15 +44,6 @@ HRESULT CSK_Slot::Ready_GameObject_Clone(void * pArg)
 
 _int CSK_Slot::Update_GameObject(_double TimeDelta)
 {
-	if (m_pManagement->KeyUp(KEY_UP))
-		m_TmpDuration += 0.01;
-	if (m_pManagement->KeyUp(KEY_DOWN))
-		m_TmpDuration -= 0.01;
-	if (m_pManagement->KeyUp(KEY_RIGHT))
-		m_TmpPeriod += 0.001;
-	if (m_pManagement->KeyUp(KEY_LEFT))
-		m_TmpPeriod -= 0.001;
-
 	if (m_pManagement->KeyUp(KEY_1))
 	{
 		if (FAILED(SetUp_PlayerSK(SK_TORNADO)))

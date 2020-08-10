@@ -78,6 +78,9 @@ HRESULT CLoading::Ready_Stage()
 	if (FAILED(Ready_UI_Stage()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Interact_Stage()))
+		return E_FAIL;
+
 	m_iComplete = 1;
 
 	return NOERROR;
@@ -247,6 +250,10 @@ HRESULT CLoading::Ready_Static_Stage()
 {
 	_matrix matLocal;
 
+	// For. Component_Shader_Mesh_Static
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Mesh_Static", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Mesh_Static.fx"))))
+		return E_FAIL;
+
 	// For. Component_Mesh_Arrow
 	D3DXMatrixScaling(&matLocal, 4.f, 4.f, 1.f);
 
@@ -329,6 +336,95 @@ HRESULT CLoading::Ready_UI_Stage()
 	// For. Component_Texture_SK_Base
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_SK_Base", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SK_Slot/SK_Base.png"))))
 		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CLoading::Ready_Interact_Stage()
+{
+	_matrix matLocal, matScale, matRotY;
+
+	// For. Component_Mesh_Crystal
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Crystal", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Cristal_1/", L"Cristal_1.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Icicle
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Icicle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Ice_Missile_2/", L"Ice_Missile_2.X", &matLocal))))
+		return E_FAIL;
+
+	// Read File Crystal
+	{
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Interact_Crystal.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CCrystal::OBJDESC tCrystalDesc;
+			tCrystalDesc.fFrustumRadius = fFrustumRadius;
+			tCrystalDesc.matWorld = matWorld;
+			lstrcpy(tCrystalDesc.szFileName, szFileName);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_INTERACT, &tCrystalDesc);
+		}
+
+		CloseHandle(hFile);
+	}
+
+	// Read File Icicle
+	{
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Interact_Icicle.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CIcicle::OBJDESC tIcicleDesc;
+			tIcicleDesc.fFrustumRadius = fFrustumRadius;
+			tIcicleDesc.matWorld = matWorld;
+			lstrcpy(tIcicleDesc.szFileName, szFileName);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_ICICLE, &tIcicleDesc);
+		}
+
+		CloseHandle(hFile);
+	}
 
 	return NOERROR;
 }

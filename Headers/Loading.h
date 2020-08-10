@@ -42,6 +42,7 @@ private: // Stage
 	HRESULT Ready_Static_Stage();
 	HRESULT Ready_Navigation_Stage();
 	HRESULT Ready_UI_Stage();
+	HRESULT Ready_Interact_Stage();
 
 private: // Boss
 	HRESULT Ready_Boss();

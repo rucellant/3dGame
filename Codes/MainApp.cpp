@@ -136,6 +136,18 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Frustum", CFrustum::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For. Component_Collider_AABB
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Collider_AABB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_AABB))))
+		return E_FAIL;
+
+	// For. Component_Collider_OBB
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Collider_OBB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_OBB))))
+		return E_FAIL;
+
+	// For. Component_Collider_Sphere
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
+
 	// For. Component_SpringArm
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_SpringArm", CSpringArm::Create(m_pGraphic_Device))))
 		return E_FAIL;
