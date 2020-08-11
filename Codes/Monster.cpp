@@ -39,6 +39,11 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
+HRESULT CMonster::Knockdown(_vec3 vPosition)
+{
+	return NOERROR;
+}
+
 HRESULT CMonster::Add_Component(void * pArg)
 {
 	return NOERROR;
@@ -61,11 +66,5 @@ CGameObject * CMonster::Clone_GameObject(void * pArg)
 
 void CMonster::Free()
 {
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pFrustumCom);
-	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pMeshCom);
-
 	CGameObject::Free();
 }

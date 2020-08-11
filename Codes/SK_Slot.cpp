@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\SK_Slot.h"
-#include "Management.h"
 #include "Player.h"
+#include "Management.h"
+#include "Observer_Player.h"
 
 
 USING(Client)
@@ -35,7 +36,15 @@ HRESULT CSK_Slot::Ready_GameObject_Clone(void * pArg)
 		m_SK[i].fY = g_iWinCY * 0.8f + 50.f;
 		m_SK[i].TimeAcc = 0.0;
 		m_SK[i].TimeWait = 5.0;
+		m_SK[i].bUsable = true;
 	}
+
+	m_pObserver = CObserver_Player::Create();
+	if (m_pObserver == nullptr)
+		return E_FAIL;
+
+	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
+		return E_FAIL;
 
 	m_bIsAlive = true;
 
@@ -44,6 +53,18 @@ HRESULT CSK_Slot::Ready_GameObject_Clone(void * pArg)
 
 _int CSK_Slot::Update_GameObject(_double TimeDelta)
 {
+	/*if (m_pManagement->KeyUp(KEY_UP))
+	m_TmpDuration += 0.01;
+	if (m_pManagement->KeyUp(KEY_DOWN))
+	m_TmpDuration -= 0.01;
+	if (m_pManagement->KeyUp(KEY_RIGHT))
+	m_TmpPeriod += 0.001;
+	if (m_pManagement->KeyUp(KEY_LEFT))
+	m_TmpPeriod -= 0.001;*/
+
+	if (FAILED(Cool_Time(TimeDelta)))
+		return E_FAIL;
+
 	if (m_pManagement->KeyUp(KEY_1))
 	{
 		if (FAILED(SetUp_PlayerSK(SK_TORNADO)))
@@ -61,12 +82,12 @@ _int CSK_Slot::Update_GameObject(_double TimeDelta)
 	}
 	else if (m_pManagement->KeyUp(KEY_4))
 	{
-		if (FAILED(SetUp_PlayerSK(SK_BUFFATT)))
+		if (FAILED(SetUp_PlayerSK(SK_SWORDWAVE)))
 			return -1;
 	}
 	else if (m_pManagement->KeyUp(KEY_5))
 	{
-		if (FAILED(SetUp_PlayerSK(SK_BUFFDEF)))
+		if (FAILED(SetUp_PlayerSK(SK_BUFF)))
 			return -1;
 	}
 
@@ -93,7 +114,14 @@ HRESULT CSK_Slot::Render_GameObject()
 		if (FAILED(SetUp_ConstantTable((SK_ID)i)))
 			return E_FAIL;
 
-		if (FAILED(Render(0)))
+		_uint iPassIndex = 0;
+
+		if (!m_SK[i].bUsable)
+			iPassIndex = 1;
+		else
+			iPassIndex = 0;
+
+		if (FAILED(Render(iPassIndex)))
 			return E_FAIL;
 	}
 
@@ -151,6 +179,11 @@ HRESULT CSK_Slot::SetUp_ConstantTable(SK_ID eID)
 	m_pShaderCom->Set_Texture("g_SrcTexture", m_pBaseTextureCom->Get_Texture(0));
 	m_pShaderCom->Set_Texture("g_DstTexture", m_pSKTextureCom->Get_Texture(_uint(eID)));
 
+	if (!m_SK[eID].bUsable)
+	{
+		_float fRatio = 1.f - _float(m_SK[eID].TimeAcc / m_SK[eID].TimeWait);
+		m_pShaderCom->Set_Value("g_fRatio", &fRatio, sizeof(_float));
+	}	
 
 	return NOERROR;
 }
@@ -168,31 +201,61 @@ HRESULT CSK_Slot::Render(_uint iPassIndex)
 	return NOERROR;
 }
 
+HRESULT CSK_Slot::Cool_Time(_double TimeDelta)
+{
+	for (_uint i = 0; i < SK_END; i++)
+	{
+		if (!m_SK[i].bUsable)
+			m_SK[i].TimeAcc += TimeDelta;
+
+		if (m_SK[i].TimeWait <= m_SK[i].TimeAcc)
+		{
+			m_SK[i].TimeAcc = 0.0;
+			m_SK[i].bUsable = true;
+		}
+	}
+
+	return NOERROR;
+}
+
 HRESULT CSK_Slot::SetUp_PlayerSK(SK_ID eID)
 {
 	if (eID >= SK_END)
 		return E_FAIL;
+
+	if (*(CPlayer::STATE*)m_pObserver->GetData(CSubject_Player::TYPE_STATE) == CPlayer::SK)
+		return NOERROR;
+
+	if (!m_SK[eID].bUsable)
+		return NOERROR;
+
+	HRESULT hr = 0;
 
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(SCENE_STAGE, L"Layer_Player");
 
 	switch (eID)
 	{
 	case SK_TORNADO:
-		pPlayer->SetUp_PlayerSK(SK_TORNADO, 0.13, 0.12);
+		hr = pPlayer->SetUp_PlayerSK(SK_TORNADO, 0.13, 0.12);
 		break;
 	case SK_SHOULDER:
-		pPlayer->SetUp_PlayerSK(SK_SHOULDER, 0.28, 0.286);
+		hr = pPlayer->SetUp_PlayerSK(SK_SHOULDER, 0.28, 0.286);
 		break;
 	case SK_EARTHQUAKE:
-		pPlayer->SetUp_PlayerSK(SK_EARTHQUAKE, 0.2, 0.2);
+		hr = pPlayer->SetUp_PlayerSK(SK_EARTHQUAKE, 0.2, 0.2);
 		break;
-	case SK_BUFFATT:
-		pPlayer->SetUp_PlayerSK(SK_BUFFATT, 0.2, 0.171);
+	case SK_SWORDWAVE:
+		hr = pPlayer->SetUp_PlayerSK(SK_SWORDWAVE, 0.2, 0.181);
 		break;
-	case SK_BUFFDEF:
-		pPlayer->SetUp_PlayerSK(SK_BUFFDEF, 0.2, 0.171);
+	case SK_BUFF:
+		hr = pPlayer->SetUp_PlayerSK(SK_BUFF, 0.2, 0.171);
 		break;
 	}
+
+	if (FAILED(hr))
+		return E_FAIL;
+
+	m_SK[eID].bUsable = false;
 
 	return NOERROR;
 }

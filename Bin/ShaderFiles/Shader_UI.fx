@@ -1,5 +1,7 @@
 matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
+float g_fRatio;
+
 texture g_SrcTexture;
 
 sampler	SrcSampler = sampler_state
@@ -65,7 +67,7 @@ struct PS_OUT
 	vector  vColor : COLOR0;
 };
 
-PS_OUT PS_SK_SLOT(PS_IN In)
+PS_OUT PS_SK_SLOT_USABLE(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
@@ -78,15 +80,41 @@ PS_OUT PS_SK_SLOT(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_SK_SLOT_UNUSABLE(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector vBase = tex2D(SrcSampler, In.vTexUV);
+
+	vector vSK = tex2D(DstSampler, In.vTexUV);
+
+	if (In.vTexUV.y <= g_fRatio)
+		vSK *= 0.3f;
+
+	Out.vColor = vBase + vSK;
+
+	return Out;
+}
+
 technique Default_Technique
 {
-	pass Background_Rendering
+	pass Slot_Usable_Rendering
 	{
 		AlphaBlendEnable = true;
 		SrcBlend = SrcAlpha;
 		DestBlend = InvSrcAlpha;
 
 		VertexShader = compile vs_3_0 VS_MAIN();
-		PixelShader = compile ps_3_0 PS_SK_SLOT();
+		PixelShader = compile ps_3_0 PS_SK_SLOT_USABLE();
+	}
+
+	pass Slot_Unusable_Rendering
+	{
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_SK_SLOT_UNUSABLE();
 	}
 }

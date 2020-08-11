@@ -3,11 +3,17 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+#define DEFAULT_ANIM_SPEED		1.f
+#define DEFAULT_ANIM_DURATION	0.2
+#define DEFAULT_ANIM_PERIOD		0.09
+
 BEGIN(Engine)
 class CShader;
 class CFrustum;
 class CRenderer;
+class CCollider;
 class CTransform;
+class CNavigation;
 class CMesh_Dynamic;
 END
 
@@ -15,6 +21,10 @@ BEGIN(Client)
 
 class CMonster abstract : public CGameObject
 {
+public:
+	enum MONSTER_TYPE { TYPE_SKELETON, TYPE_SOLDIER, TYPE_END };
+public:
+	enum STATE { IDLE, RUN, ATT, HIT, DOWN, GROGGY, DEAD, STATE_END };
 public:
 	typedef struct tagObjDesc
 	{
@@ -29,8 +39,15 @@ public:
 		_int iMinDmg; _int iMaxDmg;
 
 		_int iGold;
-		_int iExp;
 	}MONSTERINFO;
+public: // Set
+	void SetIsActive(_bool bIsActive) {
+		m_bIsAlive = bIsActive; }
+public: // Get
+	_bool GetIsActive() { 
+		return m_bIsAlive; }
+	MONSTER_TYPE GetType() {
+		return m_eType; }
 protected:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CMonster(const CMonster& rhs);
@@ -41,21 +58,36 @@ public:
 	virtual _int Update_GameObject(_double TimeDelta);
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
+public:
+	virtual HRESULT Knockdown(_vec3 vPosition);
 protected:
-	CShader*			m_pShaderCom = nullptr;
-	CFrustum*			m_pFrustumCom = nullptr;
-	CRenderer*			m_pRendererCom = nullptr;
-	CTransform*			m_pTransformCom = nullptr;
-	CMesh_Dynamic*		m_pMeshCom = nullptr;
+	_bool				m_bActive = false;
 protected:
 	OBJDESC				m_tObjDesc;
 	MONSTERINFO			m_tMonsterInfo;
+	STATE				m_eCurState = STATE_END;
+	MONSTER_TYPE		m_eType = TYPE_END;
+protected:
+	_uint				m_iAnimation = 0;
+
+	_float				m_fNewSpeed = DEFAULT_ANIM_SPEED;
+	_double				m_Duration = DEFAULT_ANIM_DURATION;
+	_double				m_Period = DEFAULT_ANIM_PERIOD;
 protected:
 	_double				m_TimeDelta = 0.0;
 protected:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);
+protected:
+	virtual HRESULT State_Machine(_double TimeDelta) PURE;
+	virtual HRESULT State_Idle(_double TimeDelta) PURE;
+	virtual HRESULT State_Run(_double TimeDelta) PURE;
+	virtual HRESULT State_Att(_double TimeDelta) PURE;
+	virtual HRESULT State_Hit(_double TimeDelta) PURE;
+	virtual HRESULT State_Down(_double TimeDelta) PURE;
+	virtual HRESULT State_Groggy(_double TimeDelta) PURE;
+	virtual HRESULT State_Dead(_double TimeDelta) PURE;
 public:
 	virtual CGameObject* Clone_GameObject(void* pArg);
 	virtual void Free();

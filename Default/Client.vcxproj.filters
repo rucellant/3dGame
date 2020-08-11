@@ -137,6 +137,15 @@
     <Filter Include="03. GameObject\Stage\Static">
       <UniqueIdentifier>{dec4dfe0-7638-41bf-9a5b-cc7beace0074}</UniqueIdentifier>
     </Filter>
+    <Filter Include="09. Manager\ColliderManager">
+      <UniqueIdentifier>{8c2252ea-ef10-4373-9e86-98d97667b581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Monster\Skeleton">
+      <UniqueIdentifier>{28289554-ff75-43cf-b81b-7f62646678cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Monster\Soldier">
+      <UniqueIdentifier>{dcf1393b-0602-4763-9dc1-5fa79ea11f35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -238,6 +247,15 @@
     <ClInclude Include="..\Headers\GameObject_Static.h">
       <Filter>03. GameObject\Stage\Static</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\ColliderManager.h">
+      <Filter>09. Manager\ColliderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Skeleton.h">
+      <Filter>03. GameObject\Stage\Monster\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Soldier.h">
+      <Filter>03. GameObject\Stage\Monster\Soldier</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -326,6 +344,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\GameObject_Static.cpp">
       <Filter>03. GameObject\Stage\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\ColliderManager.cpp">
+      <Filter>09. Manager\ColliderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Skeleton.cpp">
+      <Filter>03. GameObject\Stage\Monster\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Soldier.cpp">
+      <Filter>03. GameObject\Stage\Monster\Soldier</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

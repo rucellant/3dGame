@@ -12,6 +12,7 @@
 #define PLAYER_SHOULDER		22			// 어깨빵 -> 공중에 몬스터 띄움
 #define PLAYER_EARTHQUAKE	17			// 지진 -> 화면 쉐이킹 + 몬스터 자빠뜨림
 #define PLAYER_BUFFMOTION	23			// 버프모션 -> 버프 스킬 쓸 때 사용할 모션 버프는 공버프랑 방버프 두개 주자
+#define PLAYER_SWORDWAVE	8			// 칼 일직선으로 바닥에 내리 꽂음. 일직선으로 나가는 충격파 발생시키기
 #define PLAYER_RUN_F		31			// 이동 모션
 #define PLAYER_RUN_L		29			// 이동 모션
 #define PLAYER_RUN_R		28			// 이동 모션
@@ -33,6 +34,7 @@ BEGIN(Engine)
 class CShader;
 class CFrustum;
 class CRenderer;
+class CCollider;
 class CTransform;
 class CSpringArm;
 class CNavigation;
@@ -58,8 +60,6 @@ public:
 		_int iMinDmg; _int iMaxDMg;
 		_int iDefaultDef; _int iCurDef;
 		_int iGold;
-		_int iCurExp; _int iMaxExp;
-		_int iCurLv; _int iMaxLv;
 	}PLAYERINFO;
 public:
 	enum STATE { IDLE, RUN, ATT, SK, DOWN, GROGGY, STATE_END };
@@ -79,6 +79,8 @@ private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
+	CCollider*			m_pDmgColliderCom = nullptr;
+	CCollider*			m_pBottomColliderCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
 	CSpringArm*			m_pSpringArmCom = nullptr;
 	CNavigation*		m_pNavigationCom = nullptr;
@@ -110,6 +112,7 @@ private: // 손의 행ㄹ려
 private: // 타이머
 	_double				m_TimeDelta = 0.0;
 	_double				m_TimeAttAcc = 0.0;
+	_double				m_TimeTornadoAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
@@ -125,6 +128,7 @@ private:
 private:
 	HRESULT Update_CameraPosition(_double TimeDelta);
 	HRESULT SetUp_OnNavigation();
+	HRESULT Update_Collider();
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

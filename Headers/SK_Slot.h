@@ -4,10 +4,12 @@
 
 BEGIN(Client)
 
+class CObserver_Player;
+
 class CSK_Slot final : public CUI
 {
 public:
-	enum SK_ID { SK_TORNADO, SK_SHOULDER, SK_EARTHQUAKE, SK_BUFFATT, SK_BUFFDEF, SK_END };
+	enum SK_ID { SK_TORNADO, SK_SHOULDER, SK_EARTHQUAKE, SK_SWORDWAVE, SK_BUFF, SK_END };
 public: 
 	typedef struct tagSlotDesc
 	{
@@ -15,6 +17,7 @@ public:
 		_float fSizeX, fSizeY;
 		_double TimeAcc;
 		_double TimeWait;
+		_bool bUsable;
 	}SLOTDESC;
 private:
 	explicit CSK_Slot(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -34,6 +37,8 @@ private:
 	CTransform*			m_pTransformCom = nullptr;
 	CVIBuffer_VRect*	m_pVIBufferCom = nullptr;
 private:
+	CObserver_Player*	m_pObserver = nullptr;
+private:
 	SLOTDESC			m_SK[SK_END];
 private:
 	_float				m_TmpNewSpeed = 1.f;
@@ -44,6 +49,7 @@ private:
 	HRESULT SetUp_ConstantTable(SK_ID eID);
 	HRESULT Render(_uint iPassIndex);
 private:
+	HRESULT Cool_Time(_double TimeDelta);
 	HRESULT SetUp_PlayerSK(SK_ID eID);
 public:
 	static CSK_Slot* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

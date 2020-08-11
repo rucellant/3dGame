@@ -110,52 +110,22 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 {
 	_matrix matLocal;
 
-	// For. Component_Mesh_Hanuman
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
+	// For. Component_Mesh_Skeleton
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Hanuman", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/HanumanBoss/", L"Hanuman.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Skeleton", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Skeleton_00/", L"Skeleton_00.X", &matLocal))))
 		return E_FAIL;
 
-	// For. Component_Mesh_Knole_Warrior
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
+	// For. Component_Mesh_Soldier
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Knole_Warrior", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Monster/Knole_Warrior/", L"Knole_Warrior.X", &matLocal))))
-		return E_FAIL;
-
-	// For. Component_Mesh_Knole_Commander
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Knole_Commander", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Monster/Knole_Commander/", L"Knole_Commander.X", &matLocal))))
-		return E_FAIL;
-
-	// For. Component_Mesh_Babegazi_Axe
-	D3DXMatrixScaling(&matLocal, 0.7f, 0.7f, 0.7f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Babegazi_Axe", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Monster/Babegazi_Axe/", L"Babegazi_Axe.X", &matLocal))))
-		return E_FAIL;
-
-	// For. Component_Mesh_Babegazi_Bow
-	D3DXMatrixScaling(&matLocal, 0.6f, 0.6f, 0.6f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Babegazi_Bow", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Monster/Babegazi_Bow/", L"Babegazi_Bow.X", &matLocal))))
-		return E_FAIL;
-
-	// For. Component_Mesh_Babegazi_Warrior
-	D3DXMatrixScaling(&matLocal, 0.7f, 0.7f, 0.7f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Babegazi_Warrior", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Monster/Babegazi_Warrior/", L"Babegazi_Warrior.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Soldier", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Soldier_00/", L"Soldier_00.X", &matLocal))))
 		return E_FAIL;
 
 	// For. Component_Mesh_Ruisa
 	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Ruisa", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/NPC/Ruisa/", L"Ruisa.X", &matLocal))))
-		return E_FAIL;
-
-	// For. Component_Mesh_WitchBlade
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_WitchBlade", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Player_WitchBlade/", L"WitchBlade.X", &matLocal))))
 		return E_FAIL;
 
 	// For. Component_Mesh_Lups

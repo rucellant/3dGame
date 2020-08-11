@@ -2,6 +2,7 @@
 #include "..\Headers\Player.h"
 #include "Management.h"
 #include "Subject_Player.h"
+#include "ColliderManager.h"
 
 USING(Client)
 
@@ -45,11 +46,13 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pSubject->AddData(CSubject_Player::TYPE_INFO, &m_tPlayerInfo);
 	m_pSubject->AddData(CSubject_Player::TYPE_RIGHTHAND, &m_matHandWorld[0]);
 	m_pSubject->AddData(CSubject_Player::TYPE_LEFTHAND, &m_matHandWorld[1]);
+	m_pSubject->AddData(CSubject_Player::TYPE_STATE, &m_eCurState);
 
 	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
 	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
 	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
+	m_pSubject->Notify(CSubject_Player::TYPE_STATE);
 
 	m_vSpringArm = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _vec3(1.1f, 3.f, -6.f);
 
@@ -57,6 +60,8 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pSpringArmCom->Set_State(CSpringArm::TARGET, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 	m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+	SetUp_OnNavigation();
 
 	m_bIsAlive = true;
 
@@ -67,14 +72,22 @@ _int CPlayer::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
-	if (m_pManagement->KeyUp(KEY_UP))
+	/*if (m_pManagement->KeyUp(KEY_UP))
 		m_TmpDuration += 0.01;
 	if (m_pManagement->KeyUp(KEY_DOWN))
 		m_TmpDuration -= 0.01;
 	if (m_pManagement->KeyUp(KEY_RIGHT))
 		m_TmpPeriod += 0.001;
 	if (m_pManagement->KeyUp(KEY_LEFT))
-		m_TmpPeriod -= 0.001;
+		m_TmpPeriod -= 0.001;*/
+
+	/*if (m_pManagement->KeyUp(KEY_UP))
+	{
+		m_iAnimation++;
+
+		if (m_iAnimation > 52)
+			m_iAnimation = 0;
+	}*/
 
 	if (m_bIsControl)
 	{
@@ -116,6 +129,9 @@ HRESULT CPlayer::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
+	m_pDmgColliderCom->Render_Collider();
+	m_pBottomColliderCom->Render_Collider();
+
 	return NOERROR;
 }
 
@@ -140,12 +156,12 @@ HRESULT CPlayer::SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration, _double P
 		m_Duration = Duration;
 		m_iAnimation = PLAYER_EARTHQUAKE;
 		break;
-	case CSK_Slot::SK_BUFFATT:
+	case CSK_Slot::SK_SWORDWAVE:
 		m_Period = Period;
 		m_Duration = Duration;
-		m_iAnimation = PLAYER_BUFFMOTION;
+		m_iAnimation = PLAYER_SWORDWAVE;
 		break;
-	case CSK_Slot::SK_BUFFDEF:
+	case CSK_Slot::SK_BUFF:
 		m_Period = Period;
 		m_Duration = Duration;
 		m_iAnimation = PLAYER_BUFFMOTION;
@@ -185,6 +201,26 @@ HRESULT CPlayer::Add_Component(void * pArg)
 
 	// For. Com_Mesh
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Lups", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+		return E_FAIL;
+
+	// For. Com_DmgBox
+	CCollider::COLLIDER_DESC tDmgDesc;
+	tDmgDesc.fRadius = 5.f;
+	tDmgDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tDmgDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
+	tDmgDesc.vLocalScale = _vec3(0.f, 0.f, 0.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_DmgBox", (CComponent**)&m_pDmgColliderCom, &tDmgDesc)))
+		return E_FAIL;
+
+	// For. Com_BottomBox
+	CCollider::COLLIDER_DESC tBottomDesc;
+	tBottomDesc.fRadius = 0.f;
+	tBottomDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tBottomDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
+	tBottomDesc.vLocalScale = _vec3(5.f, 0.5f, 5.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_BottomBox", (CComponent**)&m_pBottomColliderCom, &tBottomDesc)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -551,16 +587,34 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 
 HRESULT CPlayer::State_SK(_double TimeDelta)
 {
+	// 1번 스킬 휘두르는 시각은 애니메이션 시작하고 0.55초 지난 후 부터 휘두름
+	if (m_iAnimation == PLAYER_TORNADO)
+	{
+		if (m_TimeTornadoAcc < 0.55)
+			m_TimeTornadoAcc += TimeDelta;
+		else
+		{
+			//여기서 충돌처리요구
+			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_DetectBox", CColliderManager::TYPE_SPHERE)))
+				return E_FAIL;
+		}
+	}
+	
 	if (m_pMeshCom->is_Finished())
 	{
 		m_iAnimation = PLAYER_IDLE;
 		m_eCurState = IDLE;
+
+		m_TimeTornadoAcc = 0.0;
 	}
 	return NOERROR;
 }
 
 HRESULT CPlayer::Post_Update(_double TimeDelta)
 {
+	//콜라이더 업데이트
+	Update_Collider();
+
 	// 마우스 가로축 회전 판별
 	if (m_bIsControl && (m_eCurState != ATT))
 	{
@@ -582,6 +636,7 @@ HRESULT CPlayer::Post_Update(_double TimeDelta)
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
 	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
 	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
+	m_pSubject->Notify(CSubject_Player::TYPE_STATE);
 
 	// 스프링암 관련
 	Update_CameraPosition(TimeDelta);
@@ -632,11 +687,11 @@ HRESULT CPlayer::Update_CameraPosition(_double TimeDelta)
 	_vec3 vTarget = vSpringArm;
 	vTarget.y = 3.f;
 
-	_vec3 asd = m_vSpringArm + _vec3(0.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION).y, 0.f);
-	_vec3 asd2 = vTarget + _vec3(0.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION).y, 0.f);
+	_vec3 ResultPosition = m_vSpringArm + _vec3(0.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION).y, 0.f);
+	_vec3 ResultTarget = vTarget + _vec3(0.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION).y, 0.f);
 
-	m_pSpringArmCom->Set_State(CSpringArm::POSITION, asd);
-	m_pSpringArmCom->Set_State(CSpringArm::TARGET, asd2);
+	m_pSpringArmCom->Set_State(CSpringArm::POSITION, ResultPosition);
+	m_pSpringArmCom->Set_State(CSpringArm::TARGET, ResultTarget);
 
 	/*m_pSpringArmCom->Set_State(CSpringArm::POSITION, m_vSpringArm);
 	m_pSpringArmCom->Set_State(CSpringArm::TARGET, vTarget);*/
@@ -652,6 +707,14 @@ HRESULT CPlayer::SetUp_OnNavigation()
 	vPosition.y = fHeight;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Update_Collider()
+{
+	m_pDmgColliderCom->Update_Collider();
+	m_pBottomColliderCom->Update_Collider();
 
 	return NOERROR;
 }
@@ -687,6 +750,8 @@ void CPlayer::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pDmgColliderCom);
+	Safe_Release(m_pBottomColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pSpringArmCom);
 	Safe_Release(m_pNavigationCom);

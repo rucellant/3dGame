@@ -8,7 +8,7 @@ class CSubject_Player final : public CSubject
 {
 	DECLARE_SINGLETON(CSubject_Player)
 public:
-	enum DATA_TYPE { TYPE_MATRIX, TYPE_INFO, TYPE_RIGHTHAND, TYPE_LEFTHAND, TYPE_END };
+	enum DATA_TYPE { TYPE_MATRIX, TYPE_INFO, TYPE_RIGHTHAND, TYPE_LEFTHAND, TYPE_STATE, TYPE_END };
 private:
 	explicit CSubject_Player();
 	virtual ~CSubject_Player() = default;

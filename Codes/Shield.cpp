@@ -35,6 +35,8 @@ HRESULT CShield::Ready_GameObject_Clone(void * pArg)
 	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
 		return E_FAIL;
 
+	Update_Collider();
+
 	m_bIsAlive = true;
 
 	return NOERROR;
@@ -42,13 +44,9 @@ HRESULT CShield::Ready_GameObject_Clone(void * pArg)
 
 _int CShield::Update_GameObject(_double TimeDelta)
 {
-	_matrix matWorld = *(_matrix*)m_pObserver->GetData(CSubject_Player::TYPE_LEFTHAND);
+	Update_Matrix();
 
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, *(_vec3*)&matWorld.m[0]);
-	m_pTransformCom->Set_State(CTransform::STATE_UP, *(_vec3*)&matWorld.m[1]);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, *(_vec3*)&matWorld.m[2]);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&matWorld.m[3]);
-	m_pTransformCom->Set_Scale(_vec3(0.4f, 0.4f, 0.4f));
+	Update_Collider();
 
 	return _int();
 }
@@ -75,6 +73,8 @@ HRESULT CShield::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
+	m_pColliderCom->Render_Collider();
+
 	return NOERROR;
 }
 
@@ -98,6 +98,16 @@ HRESULT CShield::Add_Component(void * pArg)
 
 	// For. Com_Mesh
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Shield", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+		return E_FAIL;
+
+	// For. Com_Collider
+	CCollider::COLLIDER_DESC tDesc;
+	tDesc.fRadius = 0.f;
+	tDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
+	tDesc.vLocalScale = _vec3(1.f, 1.f, 1.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom, &tDesc)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -145,6 +155,26 @@ HRESULT CShield::Render(_uint iPassIndex)
 	return NOERROR;
 }
 
+HRESULT CShield::Update_Matrix()
+{
+	_matrix matWorld = *(_matrix*)m_pObserver->GetData(CSubject_Player::TYPE_LEFTHAND);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, *(_vec3*)&matWorld.m[0]);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, *(_vec3*)&matWorld.m[1]);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, *(_vec3*)&matWorld.m[2]);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&matWorld.m[3]);
+	m_pTransformCom->Set_Scale(_vec3(0.4f, 0.4f, 0.4f));
+
+	return NOERROR;
+}
+
+HRESULT CShield::Update_Collider()
+{
+	m_pColliderCom->Update_Collider();
+
+	return NOERROR;
+}
+
 CShield * CShield::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CShield* pInstance = new CShield(pGraphic_Device);
@@ -176,6 +206,7 @@ void CShield::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pMeshCom);
 

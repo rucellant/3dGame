@@ -4,20 +4,17 @@
 #include "Icicle.h"
 #include "Shield.h"
 #include "Weapon.h"
+#include "Soldier.h"
 #include "Terrain.h"
 #include "Crystal.h"
 #include "Loading.h"
 #include "SK_Slot.h"
+#include "Skeleton.h"
 #include "IOManager.h"
 #include "Management.h"
 #include "Scene_Boss.h"
 #include "Camera_Free.h"
-#include "Babegazi_Axe.h"
-#include "Babegazi_Bow.h"
-#include "Knole_Warrior.h"
 #include "Camera_Player.h"
-#include "Knole_Commander.h"
-#include "Babegazi_Warrior.h"
 
 USING(Client)
 
@@ -230,53 +227,26 @@ HRESULT CScene_Stage::Ready_Layer_Monster()
 		return E_FAIL;
 	Safe_AddRef(pGraphic_Device);
 
-	// For. GameObject_Babegazi_Axe
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Babegazi_Axe", CBabegazi_Axe::Create(pGraphic_Device))))
+	// For. GameObject_Skeleton
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Skeleton", CSkeleton::Create(pGraphic_Device))))
 		return E_FAIL;
 
-	// For. GameObject_Babegazi_Bow
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Babegazi_Bow", CBabegazi_Bow::Create(pGraphic_Device))))
-		return E_FAIL;
-
-	// For. GameObject_Babegazi_Warrior
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Babegazi_Warrior", CBabegazi_Warrior::Create(pGraphic_Device))))
-		return E_FAIL;
-
-	// For. GameObject_Knole_Commander
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Knole_Commander", CKnole_Commander::Create(pGraphic_Device))))
-		return E_FAIL;
-
-	// For. GameObject_Knole_Warrior
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Knole_Warrior", CKnole_Warrior::Create(pGraphic_Device))))
+	// For. GameObject_Soldier
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Soldier", CSoldier::Create(pGraphic_Device))))
 		return E_FAIL;
 
 	vector<CMonster::OBJDESC> vecLoad = *(vector<CMonster::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_MONSTER);
 
 	for (auto& element : vecLoad)
 	{
-		if (!lstrcmp(element.szFileName, L"Babegazi_Axe.X"))
+		if (!lstrcmp(element.szFileName, L"Skeleton_00.X"))
 		{
-			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Babegazi_Axe", &element)))
+			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Skeleton", &element)))
 				return E_FAIL;
 		}
-		if (!lstrcmp(element.szFileName, L"Babegazi_Bow.X"))
+		if (!lstrcmp(element.szFileName, L"Soldier_00.X"))
 		{
-			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Babegazi_Bow", &element)))
-				return E_FAIL;
-		}
-		if (!lstrcmp(element.szFileName, L"Babegazi_Warrior.X"))
-		{
-			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Babegazi_Warrior", &element)))
-				return E_FAIL;
-		}
-		if (!lstrcmp(element.szFileName, L"Knole_Commander.X"))
-		{
-			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Knole_Commander", &element)))
-				return E_FAIL;
-		}
-		if (!lstrcmp(element.szFileName, L"Knole_Warrior.X"))
-		{
-			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Knole_Warrior", &element)))
+			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Soldier", &element)))
 				return E_FAIL;
 		}
 	}

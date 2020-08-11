@@ -179,5 +179,11 @@ CGameObject * CBabegazi_Warrior::Clone_GameObject(void * pArg)
 
 void CBabegazi_Warrior::Free()
 {
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pFrustumCom);
+	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pMeshCom);
+
 	CMonster::Free();
 }

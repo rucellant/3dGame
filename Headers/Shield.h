@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CShader;
 class CFrustum;
 class CRenderer;
+class CCollider;
 class CTransform;
 class CMesh_Static;
 END
@@ -30,6 +31,7 @@ private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
+	CCollider*			m_pColliderCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
 	CMesh_Static*		m_pMeshCom = nullptr;
 private:
@@ -38,6 +40,9 @@ private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);
+private:
+	HRESULT Update_Matrix();
+	HRESULT Update_Collider();
 public:
 	static CShield* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

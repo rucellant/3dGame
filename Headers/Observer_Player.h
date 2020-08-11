@@ -25,6 +25,7 @@ private:
 	CPlayer::PLAYERINFO m_tInfo;
 	_matrix m_matRightHandWorld;
 	_matrix m_matLeftHandWorld;
+	CPlayer::STATE m_eCurState;
 public:
 	static CObserver_Player* Create();
 	virtual void Free();
