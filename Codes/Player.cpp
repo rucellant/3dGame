@@ -129,8 +129,9 @@ HRESULT CPlayer::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
-	m_pDmgColliderCom->Render_Collider();
-	m_pBottomColliderCom->Render_Collider();
+	//m_pHitColliderCom->Render_Collider();
+	//m_pDmgColliderCom->Render_Collider();
+	//m_pBottomColliderCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -201,6 +202,16 @@ HRESULT CPlayer::Add_Component(void * pArg)
 
 	// For. Com_Mesh
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Lups", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+		return E_FAIL;
+
+	// For. Com_HitBox
+	CCollider::COLLIDER_DESC tHitDesc;
+	tHitDesc.fRadius = 0.f;
+	tHitDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tHitDesc.vLocalPosition = _vec3(0.f, 2.f, 0.f);
+	tHitDesc.vLocalScale = _vec3(1.f, 1.f, 1.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_HitBox", (CComponent**)&m_pHitColliderCom, &tHitDesc)))
 		return E_FAIL;
 
 	// For. Com_DmgBox
@@ -316,6 +327,10 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
+		//여기서 충돌처리요구
+		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+			return E_FAIL;
+
 		return NOERROR;
 	}
 
@@ -430,6 +445,13 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 	{
 		m_iAnimation = PLAYER_ATT01;
 		m_eCurState = ATT;
+
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		//여기서 충돌처리요구
+		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+			return E_FAIL;
 
 		return NOERROR;
 	}
@@ -556,6 +578,10 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 		{
 			m_iAnimation = PLAYER_ATT02;
 			m_iNextAnimation = -1;
+
+			//여기서 충돌처리요구
+			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+				return E_FAIL;
 		}
 
 		if (m_iNextAnimation == PLAYER_ATT03)
@@ -565,6 +591,10 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 
 			m_Duration = 0.101;
 			m_Period = 0.147;
+
+			//여기서 충돌처리요구
+			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+				return E_FAIL;
 		}
 
 		return NOERROR;
@@ -595,9 +625,23 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		else
 		{
 			//여기서 충돌처리요구
-			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_DetectBox", CColliderManager::TYPE_SPHERE)))
+			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION))))
 				return E_FAIL;
 		}
+	}
+
+	if (m_iAnimation == PLAYER_SHOULDER)
+	{
+		//여기서 충돌처리요구
+		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+			return E_FAIL;
+	}
+
+	if (m_iAnimation == PLAYER_EARTHQUAKE)
+	{
+		//여기서 충돌처리요구
+		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION))))
+			return E_FAIL;
 	}
 	
 	if (m_pMeshCom->is_Finished())
@@ -713,6 +757,7 @@ HRESULT CPlayer::SetUp_OnNavigation()
 
 HRESULT CPlayer::Update_Collider()
 {
+	m_pHitColliderCom->Update_Collider();
 	m_pDmgColliderCom->Update_Collider();
 	m_pBottomColliderCom->Update_Collider();
 
@@ -750,6 +795,7 @@ void CPlayer::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pHitColliderCom);
 	Safe_Release(m_pDmgColliderCom);
 	Safe_Release(m_pBottomColliderCom);
 	Safe_Release(m_pTransformCom);

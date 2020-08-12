@@ -289,7 +289,6 @@ HRESULT CLoading::Ready_Navigation_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../Bin/Resources/Data/Stage_Navigation.dat"))))
 		return E_FAIL;
 
-
 	return NOERROR;
 }
 

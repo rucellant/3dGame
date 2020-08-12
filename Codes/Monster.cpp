@@ -39,7 +39,12 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CMonster::Knockdown(_vec3 vPosition)
+HRESULT CMonster::Follow_Player(_vec3 vPosition)
+{
+	return NOERROR;
+}
+
+HRESULT CMonster::Set_Idle()
 {
 	return NOERROR;
 }

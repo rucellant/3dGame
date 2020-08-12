@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Shield.h"
 #include "Management.h"
+#include "ColliderManager.h"
 
 
 USING(Client)
@@ -44,6 +45,12 @@ HRESULT CShield::Ready_GameObject_Clone(void * pArg)
 
 _int CShield::Update_GameObject(_double TimeDelta)
 {
+	if (*(CPlayer::STATE*)m_pObserver->GetData(CSubject_Player::TYPE_STATE) == CPlayer::SK)
+	{
+		//여기서 충돌처리요구
+		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_SHILED, m_pColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_BottomBox", CColliderManager::TYPE_OBB, nullptr)))
+			return E_FAIL;
+	}
 	Update_Matrix();
 
 	Update_Collider();

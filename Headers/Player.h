@@ -79,6 +79,7 @@ private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
+	CCollider*			m_pHitColliderCom = nullptr;
 	CCollider*			m_pDmgColliderCom = nullptr;
 	CCollider*			m_pBottomColliderCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;

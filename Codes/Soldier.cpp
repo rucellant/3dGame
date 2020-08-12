@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\Soldier.h"
 #include "Management.h"
+#include "ColliderManager.h"
+#include "Observer_Player.h"
 
 USING(Client)
 
@@ -40,9 +42,16 @@ HRESULT CSoldier::Ready_GameObject_Clone(void * pArg)
 
 	m_bActive = false;
 
-	m_bIsAlive = true;
-
 	m_eType = TYPE_SOLDIER;
+
+	m_pObserver = CObserver_Player::Create();
+	if (m_pObserver == nullptr)
+		return E_FAIL;
+
+	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
+		return E_FAIL;
+
+	m_bIsAlive = true;
 
 	return NOERROR;
 }
@@ -95,6 +104,21 @@ HRESULT CSoldier::Render_GameObject()
 	m_pAttRangeColliderCom->Render_Collider();
 
 	return NOERROR;
+}
+
+HRESULT CSoldier::Knockdown(_vec3 vPosition)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CSoldier::GetHit(_vec3 vPosition)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CSoldier::Follow_Player(_vec3 vPosition)
+{
+	return E_NOTIMPL;
 }
 
 HRESULT CSoldier::Add_Component(void * pArg)

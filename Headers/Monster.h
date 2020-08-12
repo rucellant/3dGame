@@ -19,6 +19,8 @@ END
 
 BEGIN(Client)
 
+class CObserver_Player;
+
 class CMonster abstract : public CGameObject
 {
 public:
@@ -48,6 +50,8 @@ public: // Get
 		return m_bIsAlive; }
 	MONSTER_TYPE GetType() {
 		return m_eType; }
+	STATE GetState() { 
+		return m_eCurState; }
 protected:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CMonster(const CMonster& rhs);
@@ -59,7 +63,12 @@ public:
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
 public:
-	virtual HRESULT Knockdown(_vec3 vPosition);
+	virtual HRESULT Knockdown(_vec3 vPosition = _vec3(0.f,0.f,0.f)) PURE;
+	virtual HRESULT GetHit(_vec3 vPosition) PURE;
+	virtual HRESULT Follow_Player(_vec3 vPosition);
+	virtual HRESULT Set_Idle();
+protected:
+	CObserver_Player*	m_pObserver = nullptr;
 protected:
 	_bool				m_bActive = false;
 protected:
@@ -73,6 +82,10 @@ protected:
 	_float				m_fNewSpeed = DEFAULT_ANIM_SPEED;
 	_double				m_Duration = DEFAULT_ANIM_DURATION;
 	_double				m_Period = DEFAULT_ANIM_PERIOD;
+
+	_float				m_TmpNewSpeed = DEFAULT_ANIM_SPEED;
+	_double				m_TmpDuration = DEFAULT_ANIM_DURATION;
+	_double				m_TmpPeriod = DEFAULT_ANIM_PERIOD;
 protected:
 	_double				m_TimeDelta = 0.0;
 protected:

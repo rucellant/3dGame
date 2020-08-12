@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "..\Headers\Skeleton.h"
+#include "Player.h"
 #include "Management.h"
+#include "ColliderManager.h"
+#include "Observer_Player.h"
 
 USING(Client)
 
@@ -32,15 +35,30 @@ HRESULT CSkeleton::Ready_GameObject_Clone(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, *(_vec3*)&m_tObjDesc.matWorld.m[2]);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&m_tObjDesc.matWorld.m[3]);
 
+	CTransform::STATEDESC tStateDesc;
+	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
+	tStateDesc.fSpeedPerSec = 10.f;
+
+	m_pTransformCom->Set_StateDesc(tStateDesc);
+
 	m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 	SetUp_OnNavigation();
 
-	m_iAnimation = SKELETON_ATT;
+	m_iAnimation = SKELETON_IDLE;
+
+	m_eCurState = IDLE;
 
 	m_eType = TYPE_SKELETON;
 
 	m_bActive = true;
+
+	m_pObserver = CObserver_Player::Create();
+	if (m_pObserver == nullptr)
+		return E_FAIL;
+
+	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
+		return E_FAIL;
 
 	m_bIsAlive = true;
 
@@ -50,6 +68,15 @@ HRESULT CSkeleton::Ready_GameObject_Clone(void * pArg)
 _int CSkeleton::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
+
+	/*if (m_pManagement->KeyUp(KEY_UP))
+		m_TmpDuration += 0.01;
+	if (m_pManagement->KeyUp(KEY_DOWN))
+		m_TmpDuration -= 0.01;
+	if (m_pManagement->KeyUp(KEY_RIGHT))
+		m_TmpPeriod += 0.001;
+	if (m_pManagement->KeyUp(KEY_LEFT))
+		m_TmpPeriod -= 0.001;*/
 
 	if (m_bActive)
 	{
@@ -90,15 +117,132 @@ HRESULT CSkeleton::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
-	m_pDmgColliderCom->Render_Collider();
-	m_pDetectColliderCom->Render_Collider();
-	m_pAttRangeColliderCom->Render_Collider();
+	//m_pHitColliderCom->Render_Collider();
+	//m_pDmgColliderCom->Render_Collider();
+	//m_pDetectColliderCom->Render_Collider();
+	//m_pAttRangeColliderCom->Render_Collider();
 
 	return NOERROR;
 }
 
 HRESULT CSkeleton::Knockdown(_vec3 vPosition)
 {
+	m_iAnimation = SKELETON_DOWN_START;
+
+	m_eCurState = DOWN;
+	
+	m_fNewSpeed = m_TmpNewSpeed;
+	m_Duration = m_TmpDuration;
+	m_Period = m_TmpPeriod;
+
+	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+	
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScaleRight = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+	_float fScaleUp = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+	_float fScaleLook = m_pTransformCom->Get_Scale(CTransform::STATE_LOOK);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+	
+	//m_pTransformCom->Move_Backward(m_pNavigationCom, 1.0);
+	/*m_TimeDelta*/
+	return NOERROR;
+}
+
+HRESULT CSkeleton::GetHit(_vec3 vPosition)
+{
+	if (m_iAnimation == SKELETON_DMG)
+		m_pMeshCom->SetUp_AnimationSet(SKELETON_IDLE, m_fNewSpeed, m_Duration, m_Period);
+
+	m_iAnimation = SKELETON_DMG;
+
+	m_eCurState = HIT;
+
+	m_fNewSpeed = m_TmpNewSpeed;
+	m_Duration = m_TmpDuration;
+	m_Period = m_TmpPeriod;
+
+	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScaleRight = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+	_float fScaleUp = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+	_float fScaleLook = m_pTransformCom->Get_Scale(CTransform::STATE_LOOK);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+
+	return NOERROR;
+}
+
+HRESULT CSkeleton::Follow_Player(_vec3 vPosition)
+{
+	m_iAnimation = SKELETON_RUN_F;
+	m_eCurState = RUN;
+
+	m_fNewSpeed = m_TmpNewSpeed;
+	m_Duration = m_TmpDuration;
+	m_Period = m_TmpPeriod;
+
+	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScaleRight = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+	_float fScaleUp = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+	_float fScaleLook = m_pTransformCom->Get_Scale(CTransform::STATE_LOOK);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+
+	return NOERROR;
+}
+
+HRESULT CSkeleton::Set_Idle()
+{
+	m_iAnimation = SKELETON_IDLE;
+	m_eCurState = IDLE;
+
+	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 
 	return NOERROR;
 }
@@ -129,6 +273,16 @@ HRESULT CSkeleton::Add_Component(void * pArg)
 
 	// For. Com_Mesh
 	if (CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_Skeleton", L"Com_Mesh", (CComponent**)&m_pMeshCom))
+		return E_FAIL;
+
+	// For. Com_HitBox
+	CCollider::COLLIDER_DESC tHitDesc;
+	tHitDesc.fRadius = 0.f;
+	tHitDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tHitDesc.vLocalPosition = _vec3(0.f, 2.f, 0.f);
+	tHitDesc.vLocalScale = _vec3(1.f, 1.f, 1.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_HitBox", (CComponent**)&m_pHitColliderCom, &tHitDesc)))
 		return E_FAIL;
 
 	// For. Com_DmgBox
@@ -253,12 +407,53 @@ HRESULT CSkeleton::State_Machine(_double TimeDelta)
 
 HRESULT CSkeleton::State_Idle(_double TimeDelta)
 {
-	return E_NOTIMPL;
+	//여기서 충돌처리요구
+	if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_MONSTER, m_pDetectColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_eType, this, &m_eCurState)))
+		return E_FAIL;
+	else
+		return NOERROR;
+
+	m_iAnimation = SKELETON_IDLE;
+	m_eCurState = IDLE;
+
+	m_Duration = DEFAULT_ANIM_DURATION;
+	m_Period = DEFAULT_ANIM_PERIOD;
+
+	return NOERROR;
 }
 
 HRESULT CSkeleton::State_Run(_double TimeDelta)
 {
-	return E_NOTIMPL;
+	//여기서 충돌처리요구
+	if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_MONSTER, m_pDetectColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_eType, this, &m_eCurState)))
+		return E_FAIL;
+
+	_vec3 vPosition = *(_vec3*)(*(_matrix*)m_pObserver->GetData(CSubject_Player::TYPE_MATRIX)).m[3];
+
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	_float fScaleRight = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+	_float fScaleUp = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+	_float fScaleLook = m_pTransformCom->Get_Scale(CTransform::STATE_LOOK);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+
+	m_pTransformCom->Move_Forward(m_pNavigationCom, TimeDelta);
+
+	return NOERROR;
 }
 
 HRESULT CSkeleton::State_Att(_double TimeDelta)
@@ -268,12 +463,61 @@ HRESULT CSkeleton::State_Att(_double TimeDelta)
 
 HRESULT CSkeleton::State_Hit(_double TimeDelta)
 {
-	return E_NOTIMPL;
+	if (m_iAnimation == SKELETON_DMG && m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = SKELETON_IDLE;
+		m_eCurState = IDLE;
+
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+	}
+
+	return NOERROR;
 }
 
 HRESULT CSkeleton::State_Down(_double TimeDelta)
 {
-	return E_NOTIMPL;
+	if (m_iAnimation == SKELETON_DOWN_START && !m_pMeshCom->is_Finished())
+	{
+		m_pTransformCom->Move_Backward(m_pNavigationCom, m_TimeDelta);
+
+		return NOERROR;
+	}
+
+	if (m_iAnimation == SKELETON_DOWN_START && m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = SKELETON_DOWN_LOOP;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		return NOERROR;
+	}
+
+	if (m_iAnimation == SKELETON_DOWN_LOOP)
+	{
+		if(m_TimeDownAcc <= 1.5)
+			m_TimeDownAcc += TimeDelta;
+		else
+		{
+			m_TimeDownAcc = 0.0;
+			m_iAnimation = SKELETON_GETUP;
+
+			return NOERROR;
+		}
+	}
+
+	if (m_iAnimation == SKELETON_GETUP && m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = SKELETON_IDLE;
+		m_eCurState = IDLE;
+
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+	}
+
+	return NOERROR;
 }
 
 HRESULT CSkeleton::State_Groggy(_double TimeDelta)
@@ -288,6 +532,7 @@ HRESULT CSkeleton::State_Dead(_double TimeDelta)
 
 HRESULT CSkeleton::Update_Collider()
 {
+	m_pHitColliderCom->Update_Collider();
 	m_pDmgColliderCom->Update_Collider();
 	m_pDetectColliderCom->Update_Collider();
 	m_pAttRangeColliderCom->Update_Collider();
@@ -338,6 +583,7 @@ void CSkeleton::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pHitColliderCom);
 	Safe_Release(m_pDmgColliderCom);
 	Safe_Release(m_pDetectColliderCom);
 	Safe_Release(m_pAttRangeColliderCom);
