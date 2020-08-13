@@ -121,6 +121,11 @@ HRESULT CSoldier::Follow_Player(_vec3 vPosition)
 	return E_NOTIMPL;
 }
 
+HRESULT CSoldier::Attack_Target(_vec3 vPosition)
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CSoldier::Add_Component(void * pArg)
 {
 	m_tObjDesc = *(OBJDESC*)pArg;

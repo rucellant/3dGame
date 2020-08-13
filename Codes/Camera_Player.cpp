@@ -29,6 +29,8 @@ HRESULT CCamera_Player::Ready_GameObject_Clone(void * pArg)
 
 	CAMERADESC tCameraDesc = *(CAMERADESC*)pArg;
 
+	CCamera::Update_GameObject(0.0);
+
 	if (FAILED(m_pManagement->Push_Camera(tCameraDesc.iSceneID, L"Camera_Player", this)))
 		return E_FAIL;
 

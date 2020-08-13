@@ -49,6 +49,18 @@ HRESULT CMonster::Set_Idle()
 	return NOERROR;
 }
 
+HRESULT CMonster::Attack_Target(_vec3 vPosition)
+{
+	return NOERROR;
+}
+
+_int CMonster::GetDmg()
+{
+	int iRet = rand() % m_tMonsterInfo.iMaxDmg + m_tMonsterInfo.iMinDmg;
+
+	return iRet;
+}
+
 HRESULT CMonster::Add_Component(void * pArg)
 {
 	return NOERROR;

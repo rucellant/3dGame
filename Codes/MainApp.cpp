@@ -4,6 +4,8 @@
 #include "Scene_Boss.h"
 #include "Scene_Logo.h"
 #include "Scene_Stage.h"
+#include "CollisionMgr.h"
+#include "ColliderManager.h"
 
 
 USING(Client)
@@ -200,6 +202,8 @@ void CMainApp::Free()
 	Safe_Release(m_pGraphic_Device);
 
 	CIOManager::GetInstance()->DestroyInstance();
+	CColliderManager::GetInstance()->DestroyInstance();
+	CCollisionMgr::GetInstance()->DestroyInstance();
 
 	CManagement::Release_Engine();
 }

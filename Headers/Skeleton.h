@@ -34,6 +34,7 @@ public:
 	virtual HRESULT GetHit(_vec3 vPosition);
 	virtual HRESULT Follow_Player(_vec3 vPosition);
 	virtual HRESULT Set_Idle();
+	virtual HRESULT Attack_Target(_vec3 vPosition);
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;

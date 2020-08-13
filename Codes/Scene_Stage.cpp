@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
+#include "HpBar.h"
+#include "MpBar.h"
 #include "Player.h"
 #include "Icicle.h"
 #include "Shield.h"
@@ -14,7 +16,9 @@
 #include "Management.h"
 #include "Scene_Boss.h"
 #include "Camera_Free.h"
+#include "CollisionMgr.h"
 #include "Camera_Player.h"
+#include "HpBar_Monster.h"
 
 USING(Client)
 
@@ -54,6 +58,7 @@ HRESULT CScene_Stage::Ready_Scene()
 
 _int CScene_Stage::Update_Scene(_double TimeDelta)
 {
+	
 	return _int();
 }
 
@@ -191,6 +196,19 @@ HRESULT CScene_Stage::Ready_Layer_Player()
 		return E_FAIL;
 
 	vector<CPlayer::OBJDESC> vecLoad = *(vector<CPlayer::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_PLAYER);
+	CPlayer::PLAYERINFO tPlayerInfo;
+	tPlayerInfo.iCurHp = 1000;
+	tPlayerInfo.iMaxHp = 1000;
+	tPlayerInfo.iCurMp = 100;
+	tPlayerInfo.iMaxMp = 100;
+	tPlayerInfo.iCurDef = 100;
+	tPlayerInfo.iDefaultDef = 100;
+	tPlayerInfo.iGold = 0;
+	tPlayerInfo.iMaxDmg = 200;
+	tPlayerInfo.iMinDmg = 150;
+	vecLoad[0].tPlayerInfo = tPlayerInfo;
+
+	//vecLoad[0].tPlayerInfo
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Player", L"GameObject_Player", &vecLoad[0])))
 		return E_FAIL;
@@ -275,6 +293,36 @@ HRESULT CScene_Stage::Ready_Layer_UI()
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_UI", L"GameObject_SK_Slot")))
 		return E_FAIL;
+
+	// For. GameObject_HpBar
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_HpBar", CHpBar::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_UI", L"GameObject_HpBar")))
+		return E_FAIL;
+
+	// For. GameObject_MpBar
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_MpBar", CMpBar::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_UI", L"GameObject_MpBar")))
+		return E_FAIL;
+
+	// For. GameObject_HpBar_Monster
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_HpBar_Monster", CHpBar_Monster::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	list<CGameObject*>* pMonsterLayer = pManagement->Get_Layer(g_eScene, L"Layer_Monster");
+
+	for (auto& pMonster : *pMonsterLayer)
+	{
+		if (((CMonster*)pMonster)->GetType() == CMonster::TYPE_SKELETON || ((CMonster*)pMonster)->GetType() == CMonster::TYPE_SOLDIER)
+		{
+			if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_UI", L"GameObject_HpBar_Monster", pMonster)))
+				return E_FAIL;
+		}
+		
+	}
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

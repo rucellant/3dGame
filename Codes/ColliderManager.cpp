@@ -180,6 +180,8 @@ HRESULT CColliderManager::Collision_Monster_Player(_uint iSceneID, TYPE eCaller,
 			return E_FAIL;
 
 		CCollider* pDstCollider = (CCollider*)pPlayer->Get_Component(pColliderTag);
+		if (pDstCollider == nullptr)
+			return E_FAIL;
 
 		_bool bResult = false;
 
@@ -204,7 +206,7 @@ HRESULT CColliderManager::Collision_Monster_Player(_uint iSceneID, TYPE eCaller,
 			// 스켈레톤이나 솔져의 경우
 			if (CMonster::TYPE_SKELETON == *(CMonster::MONSTER_TYPE*)pArgOne || CMonster::TYPE_SOLDIER == *(CMonster::MONSTER_TYPE*)pArgOne)
 			{
-				if (*(CMonster::STATE*)pArgThree == CMonster::RUN)
+				if (*(CMonster::STATE*)pArgThree == CMonster::IDLE)
 				{
 					_vec3 vPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
 
@@ -223,6 +225,20 @@ HRESULT CColliderManager::Collision_Monster_Player(_uint iSceneID, TYPE eCaller,
 
 					((CMonster*)pArgTwo)->Follow_Player(vPosition);
 				}
+
+				return NOERROR;
+			}
+
+			if (CMonster::TYPE_SKELETON == *(CMonster::MONSTER_TYPE*)pArgOne || CMonster::TYPE_SOLDIER == *(CMonster::MONSTER_TYPE*)pArgOne)
+			{
+				if (*(CMonster::STATE*)pArgThree == CMonster::RUN)
+				{
+					_vec3 vPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
+
+					((CMonster*)pArgTwo)->Attack_Target(vPosition);
+				}
+
+				return NOERROR;
 			}
 		}
 	}

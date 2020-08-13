@@ -1,6 +1,6 @@
 matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
-float g_fRatio;
+float g_fRatio, g_fTimeDelta;
 
 texture g_SrcTexture;
 
@@ -96,6 +96,63 @@ PS_OUT PS_SK_SLOT_UNUSABLE(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_BASEBAR(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector vSrc = tex2D(SrcSampler, In.vTexUV);
+
+	Out.vColor = vSrc;
+
+	return Out;
+}
+
+PS_OUT PS_HPBAR(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector vSrc = tex2D(SrcSampler, In.vTexUV);
+
+	float2 vShadeTexUV = In.vTexUV; 
+
+	vShadeTexUV.x = vShadeTexUV.x - g_fTimeDelta * 0.1f;
+
+	vector vShade = tex2D(DstSampler, vShadeTexUV);
+
+	if (In.vTexUV.x > g_fRatio)
+	{
+		vSrc.a = 0.f;
+		vShade.a = 0.f;
+	}	
+
+	Out.vColor = vSrc + vShade;
+
+	return Out;
+}
+
+PS_OUT PS_MPBAR(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector vSrc = tex2D(SrcSampler, In.vTexUV);
+
+	float2 vShadeTexUV = In.vTexUV;
+
+	vShadeTexUV.x = vShadeTexUV.x + g_fTimeDelta * 0.1f;
+
+	vector vShade = tex2D(DstSampler, vShadeTexUV);
+
+	if (In.vTexUV.x > g_fRatio)
+	{
+		vSrc.a = 0.f;
+		vShade.a = 0.f;
+	}
+
+	Out.vColor = vSrc + vShade;
+
+	return Out;
+}
+
 technique Default_Technique
 {
 	pass Slot_Usable_Rendering
@@ -116,5 +173,35 @@ technique Default_Technique
 
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_SK_SLOT_UNUSABLE();
+	}
+
+	pass BaseBar_Rendering
+	{
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_BASEBAR();
+	}
+
+	pass HpBar_Rendering
+	{
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_HPBAR();
+	}
+
+	pass MpBar_Rendering
+	{
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_MPBAR();
 	}
 }

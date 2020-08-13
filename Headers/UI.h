@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CShader;
+class CFrustum;
 class CTexture;
 class CRenderer;
 class CTransform;

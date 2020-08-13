@@ -182,7 +182,7 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 
 		_ulong dwBytes = 0;
 
-		while (1)
+	/*	while (1)
 		{
 			_tchar szFileName[MAX_STR];
 			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
@@ -208,7 +208,29 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 			lstrcpy(tMonsterDesc.szFileName, szFileName);
 
 			CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);
-		}
+		}*/
+
+		_tchar szFileName[MAX_STR];
+		ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+		_tchar szFilePath[MAX_STR];
+		ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+		_tchar szComponentTag[MAX_STR];
+		ReadFile(hFile, szComponentTag, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+		_float fFrustumRadius;
+		ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+		_matrix matWorld;
+		ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+		CMonster::OBJDESC tMonsterDesc;
+		tMonsterDesc.fFrustumRadius = fFrustumRadius;
+		tMonsterDesc.matWorld = matWorld;
+		lstrcpy(tMonsterDesc.szFileName, szFileName);
+
+		CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);
 
 		CloseHandle(hFile);
 	}
@@ -304,6 +326,14 @@ HRESULT CLoading::Ready_UI_Stage()
 
 	// For. Component_Texture_SK_Base
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_SK_Base", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SK_Slot/SK_Base.png"))))
+		return E_FAIL;
+
+	// For. Component_Texture_HpBar
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_HpBar", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/HpBar/HpBar_%d.png", 3))))
+		return E_FAIL;
+
+	// For. Component_Texture_MpBar
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_MpBar", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/MpBar/MpBar_%d.png", 3))))
 		return E_FAIL;
 
 	return NOERROR;

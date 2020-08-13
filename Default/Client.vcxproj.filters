@@ -137,14 +137,26 @@
     <Filter Include="03. GameObject\Stage\Static">
       <UniqueIdentifier>{dec4dfe0-7638-41bf-9a5b-cc7beace0074}</UniqueIdentifier>
     </Filter>
-    <Filter Include="09. Manager\ColliderManager">
-      <UniqueIdentifier>{8c2252ea-ef10-4373-9e86-98d97667b581}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. GameObject\Stage\Monster\Skeleton">
       <UniqueIdentifier>{28289554-ff75-43cf-b81b-7f62646678cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. GameObject\Stage\Monster\Soldier">
       <UniqueIdentifier>{dcf1393b-0602-4763-9dc1-5fa79ea11f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Manager\ColliderManager - 폐기">
+      <UniqueIdentifier>{8c2252ea-ef10-4373-9e86-98d97667b581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Manager\CollisionManager">
+      <UniqueIdentifier>{2439e714-bada-43d9-b59d-a2bbd649c4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\UI\HpBar">
+      <UniqueIdentifier>{c1a0e1bb-9539-4081-9a26-bd2a140261ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\UI\MpBar">
+      <UniqueIdentifier>{4e1293e6-4e2e-4d49-8d02-274f70e648da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\UI\HpBar_Monster">
+      <UniqueIdentifier>{30eef162-4d0b-4cd5-b0d2-867fcbb663dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -248,13 +260,25 @@
       <Filter>03. GameObject\Stage\Static</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\ColliderManager.h">
-      <Filter>09. Manager\ColliderManager</Filter>
+      <Filter>09. Manager\ColliderManager - 폐기</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Skeleton.h">
       <Filter>03. GameObject\Stage\Monster\Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Soldier.h">
       <Filter>03. GameObject\Stage\Monster\Soldier</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\CollisionMgr.h">
+      <Filter>09. Manager\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HpBar.h">
+      <Filter>03. GameObject\UI\HpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\MpBar.h">
+      <Filter>03. GameObject\UI\MpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HpBar_Monster.h">
+      <Filter>03. GameObject\UI\HpBar_Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -346,13 +370,25 @@
       <Filter>03. GameObject\Stage\Static</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\ColliderManager.cpp">
-      <Filter>09. Manager\ColliderManager</Filter>
+      <Filter>09. Manager\ColliderManager - 폐기</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Skeleton.cpp">
       <Filter>03. GameObject\Stage\Monster\Skeleton</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Soldier.cpp">
       <Filter>03. GameObject\Stage\Monster\Soldier</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\CollisionMgr.cpp">
+      <Filter>09. Manager\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HpBar.cpp">
+      <Filter>03. GameObject\UI\HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\MpBar.cpp">
+      <Filter>03. GameObject\UI\MpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HpBar_Monster.cpp">
+      <Filter>03. GameObject\UI\HpBar_Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

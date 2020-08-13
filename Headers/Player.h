@@ -48,25 +48,30 @@ class CSubject_Player;
 class CPlayer final : public CGameObject
 {
 public:
+	typedef struct tagPlayerInfo
+	{
+		_int iCurHp; _int iMaxHp;
+		_int iCurMp; _int iMaxMp;
+		_int iMinDmg; _int iMaxDmg;
+		_int iDefaultDef; _int iCurDef;
+		_int iGold;
+	}PLAYERINFO;
+public:
 	typedef struct tagObjDesc
 	{
 		_float fFrustumRadius;
 		_matrix matWorld;
+		PLAYERINFO tPlayerInfo;
 	}OBJDESC;
-public:
-	typedef struct tagPlayerInfo
-	{
-		_int iCurHp; _int iMaxHp;
-		_int iMinDmg; _int iMaxDMg;
-		_int iDefaultDef; _int iCurDef;
-		_int iGold;
-	}PLAYERINFO;
 public:
 	enum STATE { IDLE, RUN, ATT, SK, DOWN, GROGGY, STATE_END };
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
 	virtual ~CPlayer() = default;
+public: // Get
+	_bool GetIsControl() { 
+		return m_bIsControl; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
@@ -75,6 +80,7 @@ public:
 	virtual HRESULT Render_GameObject();
 public:
 	HRESULT SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration = DEFAULT_ANIM_DURATION, _double Period = DEFAULT_ANIM_PERIOD);
+	HRESULT GetHit(_int iMonsterDmg);
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;

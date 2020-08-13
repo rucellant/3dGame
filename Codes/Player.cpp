@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\Player.h"
 #include "Management.h"
+#include "CollisionMgr.h"
 #include "Subject_Player.h"
-#include "ColliderManager.h"
 
 USING(Client)
 
@@ -47,6 +47,8 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pSubject->AddData(CSubject_Player::TYPE_RIGHTHAND, &m_matHandWorld[0]);
 	m_pSubject->AddData(CSubject_Player::TYPE_LEFTHAND, &m_matHandWorld[1]);
 	m_pSubject->AddData(CSubject_Player::TYPE_STATE, &m_eCurState);
+
+	m_tPlayerInfo = m_tObjDesc.tPlayerInfo;
 
 	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
@@ -168,6 +170,16 @@ HRESULT CPlayer::SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration, _double P
 		m_iAnimation = PLAYER_BUFFMOTION;
 		break;
 	}
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::GetHit(_int iMonsterDmg)
+{
+	if (m_tPlayerInfo.iCurHp - iMonsterDmg <= 0)
+		m_tPlayerInfo.iCurHp = 1;
+	else
+		m_tPlayerInfo.iCurHp -= iMonsterDmg;
 
 	return NOERROR;
 }
@@ -328,7 +340,7 @@ HRESULT CPlayer::State_Idle(_double TimeDelta)
 		m_Period = DEFAULT_ANIM_PERIOD;
 
 		//여기서 충돌처리요구
-		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+		if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Att_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 			return E_FAIL;
 
 		return NOERROR;
@@ -450,7 +462,7 @@ HRESULT CPlayer::State_Run(_double TimeDelta)
 		m_Period = DEFAULT_ANIM_PERIOD;
 
 		//여기서 충돌처리요구
-		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+		if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Att_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 			return E_FAIL;
 
 		return NOERROR;
@@ -580,7 +592,7 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 			m_iNextAnimation = -1;
 
 			//여기서 충돌처리요구
-			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Att_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 				return E_FAIL;
 		}
 
@@ -593,7 +605,7 @@ HRESULT CPlayer::State_Att(_double TimeDelta)
 			m_Period = 0.147;
 
 			//여기서 충돌처리요구
-			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Att_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 				return E_FAIL;
 		}
 
@@ -625,7 +637,7 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		else
 		{
 			//여기서 충돌처리요구
-			if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION))))
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Tornado_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 				return E_FAIL;
 		}
 	}
@@ -633,14 +645,14 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 	if (m_iAnimation == PLAYER_SHOULDER)
 	{
 		//여기서 충돌처리요구
-		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION), &m_pTransformCom->Get_State(CTransform::STATE_LOOK))))
+		if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Shoulder_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 			return E_FAIL;
 	}
 
 	if (m_iAnimation == PLAYER_EARTHQUAKE)
 	{
 		//여기서 충돌처리요구
-		if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_PLAYER, m_pDmgColliderCom, CColliderManager::TYPE_MONSTER, L"Layer_Monster", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_iAnimation, &m_pTransformCom->Get_State(CTransform::STATE_POSITION))))
+		if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Earthquake_Monster(g_eScene, L"Layer_Player", L"Com_Collider", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 			return E_FAIL;
 	}
 	

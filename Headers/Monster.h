@@ -28,13 +28,6 @@ public:
 public:
 	enum STATE { IDLE, RUN, ATT, HIT, DOWN, GROGGY, DEAD, STATE_END };
 public:
-	typedef struct tagObjDesc
-	{
-		_tchar szFileName[MAX_STR];
-		_float fFrustumRadius;
-		_matrix matWorld;
-	}OBJDESC;
-public:
 	typedef struct tagMonsterInfo
 	{
 		_int iCurHp; _int iMaxHp;
@@ -42,6 +35,13 @@ public:
 
 		_int iGold;
 	}MONSTERINFO;
+public:
+	typedef struct tagObjDesc
+	{
+		_tchar szFileName[MAX_STR];
+		_float fFrustumRadius;
+		_matrix matWorld;
+	}OBJDESC;
 public: // Set
 	void SetIsActive(_bool bIsActive) {
 		m_bIsAlive = bIsActive; }
@@ -67,6 +67,8 @@ public:
 	virtual HRESULT GetHit(_vec3 vPosition) PURE;
 	virtual HRESULT Follow_Player(_vec3 vPosition);
 	virtual HRESULT Set_Idle();
+	virtual HRESULT Attack_Target(_vec3 vPosition);
+	_int GetDmg();
 protected:
 	CObserver_Player*	m_pObserver = nullptr;
 protected:

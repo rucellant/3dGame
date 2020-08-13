@@ -188,8 +188,11 @@
     <ClInclude Include="..\Headers\Client_Defines.h" />
     <ClInclude Include="..\Headers\Client_Macro.h" />
     <ClInclude Include="..\Headers\ColliderManager.h" />
+    <ClInclude Include="..\Headers\CollisionMgr.h" />
     <ClInclude Include="..\Headers\Crystal.h" />
     <ClInclude Include="..\Headers\GameObject_Static.h" />
+    <ClInclude Include="..\Headers\HpBar.h" />
+    <ClInclude Include="..\Headers\HpBar_Monster.h" />
     <ClInclude Include="..\Headers\Icicle.h" />
     <ClInclude Include="..\Headers\IOManager.h" />
     <ClInclude Include="..\Headers\Knole_Commander.h">
@@ -205,6 +208,7 @@
     <ClInclude Include="..\Headers\Loading_Icon.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\Monster.h" />
+    <ClInclude Include="..\Headers\MpBar.h" />
     <ClInclude Include="..\Headers\Observer_Player.h" />
     <ClInclude Include="..\Headers\Scene_Boss.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
@@ -239,8 +243,11 @@
     <ClCompile Include="..\Codes\Camera_Free.cpp" />
     <ClCompile Include="..\Codes\Camera_Player.cpp" />
     <ClCompile Include="..\Codes\ColliderManager.cpp" />
+    <ClCompile Include="..\Codes\CollisionMgr.cpp" />
     <ClCompile Include="..\Codes\Crystal.cpp" />
     <ClCompile Include="..\Codes\GameObject_Static.cpp" />
+    <ClCompile Include="..\Codes\HpBar.cpp" />
+    <ClCompile Include="..\Codes\HpBar_Monster.cpp" />
     <ClCompile Include="..\Codes\Icicle.cpp" />
     <ClCompile Include="..\Codes\IOManager.cpp" />
     <ClCompile Include="..\Codes\Knole_Commander.cpp">
@@ -256,6 +263,7 @@
     <ClCompile Include="..\Codes\Loading_Icon.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
+    <ClCompile Include="..\Codes\MpBar.cpp" />
     <ClCompile Include="..\Codes\Observer_Player.cpp" />
     <ClCompile Include="..\Codes\Scene_Boss.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />

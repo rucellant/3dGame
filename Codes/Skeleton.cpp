@@ -2,7 +2,7 @@
 #include "..\Headers\Skeleton.h"
 #include "Player.h"
 #include "Management.h"
-#include "ColliderManager.h"
+#include "CollisionMgr.h"
 #include "Observer_Player.h"
 
 USING(Client)
@@ -60,6 +60,12 @@ HRESULT CSkeleton::Ready_GameObject_Clone(void * pArg)
 	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
 		return E_FAIL;
 
+	m_tMonsterInfo.iCurHp = 1000;
+	m_tMonsterInfo.iMaxHp = 1000;
+	m_tMonsterInfo.iMaxDmg = 50;
+	m_tMonsterInfo.iMinDmg = 100;
+	m_tMonsterInfo.iGold = 100;
+
 	m_bIsAlive = true;
 
 	return NOERROR;
@@ -69,14 +75,14 @@ _int CSkeleton::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
-	/*if (m_pManagement->KeyUp(KEY_UP))
+	if (m_pManagement->KeyUp(KEY_UP))
 		m_TmpDuration += 0.01;
 	if (m_pManagement->KeyUp(KEY_DOWN))
 		m_TmpDuration -= 0.01;
 	if (m_pManagement->KeyUp(KEY_RIGHT))
 		m_TmpPeriod += 0.001;
 	if (m_pManagement->KeyUp(KEY_LEFT))
-		m_TmpPeriod -= 0.001;*/
+		m_TmpPeriod -= 0.001;
 
 	if (m_bActive)
 	{
@@ -131,9 +137,9 @@ HRESULT CSkeleton::Knockdown(_vec3 vPosition)
 
 	m_eCurState = DOWN;
 	
-	m_fNewSpeed = m_TmpNewSpeed;
-	m_Duration = m_TmpDuration;
-	m_Period = m_TmpPeriod;
+	m_fNewSpeed = 1.f;
+	m_Duration = 0.2;
+	m_Period = 0.2;
 
 	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 	
@@ -158,8 +164,6 @@ HRESULT CSkeleton::Knockdown(_vec3 vPosition)
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
 	
-	//m_pTransformCom->Move_Backward(m_pNavigationCom, 1.0);
-	/*m_TimeDelta*/
 	return NOERROR;
 }
 
@@ -172,9 +176,9 @@ HRESULT CSkeleton::GetHit(_vec3 vPosition)
 
 	m_eCurState = HIT;
 
-	m_fNewSpeed = m_TmpNewSpeed;
-	m_Duration = m_TmpDuration;
-	m_Period = m_TmpPeriod;
+	m_fNewSpeed = 1.f;
+	m_Duration = 0.2;
+	m_Period = 0.09;
 
 	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 
@@ -207,9 +211,9 @@ HRESULT CSkeleton::Follow_Player(_vec3 vPosition)
 	m_iAnimation = SKELETON_RUN_F;
 	m_eCurState = RUN;
 
-	m_fNewSpeed = m_TmpNewSpeed;
-	m_Duration = m_TmpDuration;
-	m_Period = m_TmpPeriod;
+	m_fNewSpeed = 1.f;
+	m_Duration = 0.2;
+	m_Period = 0.09;
 
 	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 
@@ -243,6 +247,41 @@ HRESULT CSkeleton::Set_Idle()
 	m_eCurState = IDLE;
 
 	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+	return NOERROR;
+}
+
+HRESULT CSkeleton::Attack_Target(_vec3 vPosition)
+{
+	m_iAnimation = SKELETON_ATT;
+	m_eCurState = ATT;
+
+	m_fNewSpeed = 1.f;
+	m_Duration = 0.2;
+	m_Period = 0.09;
+
+	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScaleRight = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+	_float fScaleUp = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+	_float fScaleLook = m_pTransformCom->Get_Scale(CTransform::STATE_LOOK);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
 
 	return NOERROR;
 }
@@ -408,9 +447,10 @@ HRESULT CSkeleton::State_Machine(_double TimeDelta)
 HRESULT CSkeleton::State_Idle(_double TimeDelta)
 {
 	//여기서 충돌처리요구
-	if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_MONSTER, m_pDetectColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_eType, this, &m_eCurState)))
+	_bool bIsTrue = false;
+	if (FAILED(CCollisionMgr::GetInstance()->Collision_Monster_Detect_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", CCollider::WAY_BOXSPHERE, &bIsTrue)))
 		return E_FAIL;
-	else
+	if (bIsTrue)
 		return NOERROR;
 
 	m_iAnimation = SKELETON_IDLE;
@@ -424,9 +464,29 @@ HRESULT CSkeleton::State_Idle(_double TimeDelta)
 
 HRESULT CSkeleton::State_Run(_double TimeDelta)
 {
-	//여기서 충돌처리요구
-	if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_MONSTER, m_pDetectColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_eType, this, &m_eCurState)))
+	//STATE eState = RUN; // AttRange
+	//if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_MONSTER, m_pAttRangeColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_eType, this, &eState)))
+	//	return E_FAIL;
+	//if (m_eCurState != RUN)
+	//	return NOERROR;
+
+	//eState = IDLE; // Detect
+	//if (FAILED(CColliderManager::GetInstance()->Collision_Check(g_eScene, CColliderManager::TYPE_MONSTER, m_pDetectColliderCom, CColliderManager::TYPE_PLAYER, L"Layer_Player", L"Com_HitBox", CColliderManager::TYPE_BOXSPHERE, &m_eType, this, &eState)))
+	//	return E_FAIL;
+	//if (m_eCurState != RUN)
+	//	return NOERROR;
+
+	_bool bIsTrue = false;
+
+	if (FAILED(CCollisionMgr::GetInstance()->Collision_Monster_Attack_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", &bIsTrue)))
 		return E_FAIL;
+	if (bIsTrue)
+		return NOERROR;
+
+	if (FAILED(CCollisionMgr::GetInstance()->Collision_Monster_Detect_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", CCollider::WAY_BOXSPHERE, &bIsTrue)))
+		return E_FAIL;
+	if (!bIsTrue)
+		return NOERROR;
 
 	_vec3 vPosition = *(_vec3*)(*(_matrix*)m_pObserver->GetData(CSubject_Player::TYPE_MATRIX)).m[3];
 
@@ -458,7 +518,16 @@ HRESULT CSkeleton::State_Run(_double TimeDelta)
 
 HRESULT CSkeleton::State_Att(_double TimeDelta)
 {
-	return E_NOTIMPL;
+	if (m_pMeshCom->is_Finished())
+	{
+		m_eCurState = IDLE;
+		m_iAnimation = SKELETON_IDLE;
+
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+	}
+
+	return NOERROR;
 }
 
 HRESULT CSkeleton::State_Hit(_double TimeDelta)
@@ -513,8 +582,10 @@ HRESULT CSkeleton::State_Down(_double TimeDelta)
 		m_iAnimation = SKELETON_IDLE;
 		m_eCurState = IDLE;
 
-		m_Duration = DEFAULT_ANIM_DURATION;
-		m_Period = DEFAULT_ANIM_PERIOD;
+		m_Duration = 0.08;
+		m_Period = 0.575;
+
+		m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 	}
 
 	return NOERROR;
