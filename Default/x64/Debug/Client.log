@@ -1,3 +1,5 @@
-﻿  Camera_Player.cpp
+﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\zooz2\Desktop\Portfolio\Client\Bin\Shader_Effect.cso
   Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

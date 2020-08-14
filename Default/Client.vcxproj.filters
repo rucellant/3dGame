@@ -158,6 +158,12 @@
     <Filter Include="03. GameObject\UI\HpBar_Monster">
       <UniqueIdentifier>{30eef162-4d0b-4cd5-b0d2-867fcbb663dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Stage\Static\Gate">
+      <UniqueIdentifier>{6f8e4350-acd7-4ac4-874a-593a5dc6d3b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Interact\Portal">
+      <UniqueIdentifier>{2bcf212a-3ae7-4ce5-a84f-dd19efb221f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -280,6 +286,12 @@
     <ClInclude Include="..\Headers\HpBar_Monster.h">
       <Filter>03. GameObject\UI\HpBar_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Gate.h">
+      <Filter>03. GameObject\Stage\Static\Gate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Portal.h">
+      <Filter>03. GameObject\Stage\Interact\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -390,6 +402,12 @@
     <ClCompile Include="..\Codes\HpBar_Monster.cpp">
       <Filter>03. GameObject\UI\HpBar_Monster</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Gate.cpp">
+      <Filter>03. GameObject\Stage\Static\Gate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Portal.cpp">
+      <Filter>03. GameObject\Stage\Interact\Portal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -438,6 +456,9 @@
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh_Static.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

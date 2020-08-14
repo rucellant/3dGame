@@ -75,14 +75,14 @@ _int CSkeleton::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
-	if (m_pManagement->KeyUp(KEY_UP))
+	/*if (m_pManagement->KeyUp(KEY_UP))
 		m_TmpDuration += 0.01;
 	if (m_pManagement->KeyUp(KEY_DOWN))
 		m_TmpDuration -= 0.01;
 	if (m_pManagement->KeyUp(KEY_RIGHT))
 		m_TmpPeriod += 0.001;
 	if (m_pManagement->KeyUp(KEY_LEFT))
-		m_TmpPeriod -= 0.001;
+		m_TmpPeriod -= 0.001;*/
 
 	if (m_bActive)
 	{
@@ -131,7 +131,7 @@ HRESULT CSkeleton::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CSkeleton::Knockdown(_vec3 vPosition)
+HRESULT CSkeleton::Knockdown(_vec3 vPosition, _int iPlayerDmg)
 {
 	m_iAnimation = SKELETON_DOWN_START;
 
@@ -164,10 +164,12 @@ HRESULT CSkeleton::Knockdown(_vec3 vPosition)
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
 	
+	m_tMonsterInfo.iCurHp -= iPlayerDmg;
+
 	return NOERROR;
 }
 
-HRESULT CSkeleton::GetHit(_vec3 vPosition)
+HRESULT CSkeleton::GetHit(_vec3 vPosition, _int iPlayerDmg)
 {
 	if (m_iAnimation == SKELETON_DMG)
 		m_pMeshCom->SetUp_AnimationSet(SKELETON_IDLE, m_fNewSpeed, m_Duration, m_Period);
@@ -202,6 +204,15 @@ HRESULT CSkeleton::GetHit(_vec3 vPosition)
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+
+	m_tMonsterInfo.iCurHp -= iPlayerDmg;
+
+	if (m_tMonsterInfo.iCurHp <= 0)
+	{
+		m_eCurState = DEAD;
+		m_iAnimation = SKELETON_DEAD;
+		m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+	}
 
 	return NOERROR;
 }
@@ -555,6 +566,15 @@ HRESULT CSkeleton::State_Down(_double TimeDelta)
 
 	if (m_iAnimation == SKELETON_DOWN_START && m_pMeshCom->is_Finished())
 	{
+		if (m_tMonsterInfo.iCurHp <= 0)
+		{
+			m_eCurState = DEAD;
+			m_iAnimation = SKELETON_DOWN_LOOP;
+			m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+			return NOERROR;
+		}
+
 		m_iAnimation = SKELETON_DOWN_LOOP;
 
 		m_fNewSpeed = DEFAULT_ANIM_SPEED;
@@ -598,7 +618,17 @@ HRESULT CSkeleton::State_Groggy(_double TimeDelta)
 
 HRESULT CSkeleton::State_Dead(_double TimeDelta)
 {
-	return E_NOTIMPL;
+	if (m_iAnimation == SKELETON_DEAD_LOOP || m_iAnimation == SKELETON_DOWN_LOOP)
+	{
+		m_TimeDeadAcc += TimeDelta;
+		if (m_TimeDeadAcc >= 2.0)
+			m_pManagement->Push_GameObject(g_eScene, L"Layer_Monster", this);
+	}
+
+	if (m_iAnimation == SKELETON_DEAD && m_pMeshCom->is_Finished())
+		m_iAnimation = SKELETON_DEAD_LOOP;
+
+	return NOERROR;
 }
 
 HRESULT CSkeleton::Update_Collider()

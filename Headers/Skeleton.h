@@ -30,8 +30,8 @@ public:
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
 public:
-	virtual HRESULT Knockdown(_vec3 vPosition = _vec3(0.f, 0.f, 0.f));
-	virtual HRESULT GetHit(_vec3 vPosition);
+	virtual HRESULT Knockdown(_vec3 vPosition = _vec3(0.f, 0.f, 0.f), _int iPlayerDmg = 0);
+	virtual HRESULT GetHit(_vec3 vPosition, _int iPlayerDmg);
 	virtual HRESULT Follow_Player(_vec3 vPosition);
 	virtual HRESULT Set_Idle();
 	virtual HRESULT Attack_Target(_vec3 vPosition);
@@ -49,6 +49,7 @@ private:
 
 private: // ≈∏¿Ã∏”
 	_double				m_TimeDownAcc = 0.0;
+	_double				m_TimeDeadAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();

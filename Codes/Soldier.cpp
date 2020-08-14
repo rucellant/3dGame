@@ -106,12 +106,12 @@ HRESULT CSoldier::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CSoldier::Knockdown(_vec3 vPosition)
+HRESULT CSoldier::Knockdown(_vec3 vPosition, _int iPlayerDmg)
 {
 	return E_NOTIMPL;
 }
 
-HRESULT CSoldier::GetHit(_vec3 vPosition)
+HRESULT CSoldier::GetHit(_vec3 vPosition, _int iPlayerDmg)
 {
 	return E_NOTIMPL;
 }

@@ -6,6 +6,7 @@
 BEGIN(Client)
 
 class CMonster;
+class CObserver_Player;
 
 class CCollisionMgr final : public CBase
 {
@@ -27,7 +28,9 @@ public:
 	HRESULT Collision_Monster_Attack_Player(_uint iSceneID, CMonster* pMonster,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pIsTrue);
 private:
-	CManagement*	m_pManagement = nullptr;
+	CManagement*		m_pManagement = nullptr;
+private:
+	CObserver_Player*	m_pObserver = nullptr;
 public:
 	virtual void Free();
 };

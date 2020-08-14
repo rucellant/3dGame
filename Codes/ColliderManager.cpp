@@ -96,8 +96,8 @@ HRESULT CColliderManager::Collision_Player_Monster(_uint iSceneID, TYPE eCaller,
 					_vec3 vLook = *(_vec3*)pArgThree;
 					D3DXVec3Normalize(&vLook, &vLook);
 
-					if (0.4f <= D3DXVec3Dot(&vDir, &vLook) && 1.1f >= D3DXVec3Dot(&vDir, &vLook))
-						((CMonster*)pGameObject)->GetHit(*(_vec3*)pArgTwo);
+					if (0.4f <= D3DXVec3Dot(&vDir, &vLook) && 1.1f >= D3DXVec3Dot(&vDir, &vLook));
+						//((CMonster*)pGameObject)->GetHit(*(_vec3*)pArgTwo);
 				}
 
 				if (*(_uint*)pArgOne == PLAYER_SHOULDER)

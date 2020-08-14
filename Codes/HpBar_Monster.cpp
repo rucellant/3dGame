@@ -42,7 +42,10 @@ HRESULT CHpBar_Monster::Ready_GameObject_Clone(void * pArg)
 
 _int CHpBar_Monster::Update_GameObject(_double TimeDelta)
 {
-	m_TimeDelta = TimeDelta;
+	m_TimeAcc += TimeDelta;
+
+	if (m_TimeAcc >= 10.0)
+		m_TimeAcc = 0.0;
 
 	SetUp_OnTarget();
 
@@ -54,7 +57,7 @@ _int CHpBar_Monster::LateUpdate_GameObject(_double TimeDelta)
 	if (m_pRendererCom == nullptr)
 		return -1;
 
-	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, 2.f))
+	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, 2.f) && m_pTargetMonster->GetIsActive())
 	{
 		Set_Billboard();
 		Compute_ViewZ(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
@@ -70,11 +73,15 @@ HRESULT CHpBar_Monster::Render_GameObject()
 	if (m_pShaderCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable()))
-		return E_FAIL;
+	for (_uint i = 0; i < 2; i++)
+	{
+		if (FAILED(SetUp_ConstantTable(i)))
+			return E_FAIL;
 
-	if (FAILED(Render(2)))
-		return E_FAIL;
+		if (FAILED(Render(i + 2)))
+			return E_FAIL;
+	}
+	
 
 	return NOERROR;
 }
@@ -108,24 +115,56 @@ HRESULT CHpBar_Monster::Add_Component(void * pArg)
 	return NOERROR;
 }
 
-HRESULT CHpBar_Monster::SetUp_ConstantTable()
+HRESULT CHpBar_Monster::SetUp_ConstantTable(_uint iIndex)
 {
 	if (m_pTransformCom == nullptr || m_pShaderCom == nullptr)
 		return E_FAIL;
 
-	_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+	if (iIndex == 0)
+	{
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
 
-	if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
-		return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
-		return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
+			return E_FAIL;
+	}		
+	else
+	{
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+
+		*(_vec3*)&matWVP.m[0] = 0.81f * *(_vec3*)&matWVP.m[0];
+		*(_vec3*)&matWVP.m[1] = 0.5f * *(_vec3*)&matWVP.m[1];
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
+
+		m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(1));
+		m_pShaderCom->Set_Texture("g_DstTexture", m_pTextureCom->Get_Texture(2));
+
+		_float fTimeDelta = _float(m_TimeAcc);
+		m_pShaderCom->Set_Value("g_fTimeDelta", &fTimeDelta, sizeof(_float));
+
+		CMonster::MONSTERINFO tInfo = m_pTargetMonster->GetMonsterInfo();
+
+		_float fRatio = tInfo.iCurHp / _float(tInfo.iMaxHp);
+		m_pShaderCom->Set_Value("g_fRatio", &fRatio, sizeof(_float));
+	}
+
+	
 
 	return NOERROR;
 }

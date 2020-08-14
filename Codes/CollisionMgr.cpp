@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Shield.h"
 #include "Monster.h"
+#include "Observer_Player.h"
 
 USING(Client)
 
@@ -12,6 +13,8 @@ IMPLEMENT_SINGLETON(CCollisionMgr)
 CCollisionMgr::CCollisionMgr()
 	: m_pManagement(CManagement::GetInstance())
 {
+	m_pObserver = CObserver_Player::Create();
+	CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver);
 }
 
 
@@ -62,6 +65,9 @@ HRESULT CCollisionMgr::Collision_Player_Att_Monster(_uint iSceneID, const _tchar
 				continue;
 			else // 충돌한 경우
 			{
+				if (((CMonster*)pMonster)->GetMonsterInfo().iCurHp <= 0)
+					continue;
+
 				//1. 몬스터로 향하는 벡터를 구함
 				_vec3 vPlayerPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
 				_vec3 vMonsterPosition = ((CTransform*)pMonster->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
@@ -74,8 +80,11 @@ HRESULT CCollisionMgr::Collision_Player_Att_Monster(_uint iSceneID, const _tchar
 				_vec3 vPlayerLook = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_LOOK);
 				D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 
+				CPlayer::PLAYERINFO tInfo = *(CPlayer::PLAYERINFO*)m_pObserver->GetData(CSubject_Player::TYPE_INFO);
+				_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
+
 				if (0.4f <= D3DXVec3Dot(&vDir, &vPlayerLook) && 1.1f >= D3DXVec3Dot(&vDir, &vPlayerLook))
-					((CMonster*)pMonster)->GetHit(vPlayerPosition);
+					((CMonster*)pMonster)->GetHit(vPlayerPosition, iPlayerDmg);
 			}
 		}
 	}
@@ -130,9 +139,15 @@ HRESULT CCollisionMgr::Collision_Player_Tornado_Monster(_uint iSceneID, const _t
 			continue;
 		else // 충돌한 경우
 		{
+			if (((CMonster*)pMonster)->GetMonsterInfo().iCurHp <= 0 || ((CMonster*)pMonster)->GetState() == CMonster::DOWN)
+				continue;
+
 			_vec3 vPlayerPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
 
-			((CMonster*)pMonster)->Knockdown(vPlayerPosition);
+			CPlayer::PLAYERINFO tInfo = *(CPlayer::PLAYERINFO*)m_pObserver->GetData(CSubject_Player::TYPE_INFO);
+			_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
+
+			((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg * 3);
 		}
 	}
 
@@ -186,6 +201,9 @@ HRESULT CCollisionMgr::Collision_Player_Shoulder_Monster(_uint iSceneID, const _
 			continue;
 		else // 충돌한 경우
 		{
+			if (((CMonster*)pMonster)->GetMonsterInfo().iCurHp <= 0 || ((CMonster*)pMonster)->GetState() == CMonster::DOWN)
+				continue;
+
 			//1. 몬스터로 향하는 벡터를 구함
 			_vec3 vPlayerPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
 			_vec3 vMonsterPosition = ((CTransform*)pMonster->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
@@ -198,8 +216,11 @@ HRESULT CCollisionMgr::Collision_Player_Shoulder_Monster(_uint iSceneID, const _
 			_vec3 vPlayerLook = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_LOOK);
 			D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 
+			CPlayer::PLAYERINFO tInfo = *(CPlayer::PLAYERINFO*)m_pObserver->GetData(CSubject_Player::TYPE_INFO);
+			_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
+
 			if (0.4f <= D3DXVec3Dot(&vDir, &vPlayerLook) && 1.1f >= D3DXVec3Dot(&vDir, &vPlayerLook))
-				((CMonster*)pMonster)->Knockdown(vPlayerPosition);
+				((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg * 2);
 		}
 	}
 
@@ -259,9 +280,15 @@ HRESULT CCollisionMgr::Collision_Player_Earthquake_Monster(_uint iSceneID, const
 			continue;
 		else // 충돌한 경우
 		{
+			if (((CMonster*)pMonster)->GetMonsterInfo().iCurHp <= 0 || ((CMonster*)pMonster)->GetState() == CMonster::DOWN)
+				continue;
+
 			_vec3 vPlayerPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
 
-			((CMonster*)pMonster)->Knockdown(vPlayerPosition);
+			CPlayer::PLAYERINFO tInfo = *(CPlayer::PLAYERINFO*)m_pObserver->GetData(CSubject_Player::TYPE_INFO);
+			_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
+
+			((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg);
 		}
 	}
 

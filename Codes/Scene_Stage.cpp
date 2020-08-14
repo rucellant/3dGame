@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
+#include "Gate.h"
 #include "HpBar.h"
 #include "MpBar.h"
+#include "Portal.h"
 #include "Player.h"
 #include "Icicle.h"
 #include "Shield.h"
@@ -49,6 +51,9 @@ HRESULT CScene_Stage::Ready_Scene()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Interact()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Static()))
 		return E_FAIL;
 
 	CIOManager::GetInstance()->Clear();
@@ -371,6 +376,38 @@ HRESULT CScene_Stage::Ready_Layer_Interact()
 				return E_FAIL;
 		}
 	}
+
+	// For. GameObject_Portal
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Portal", CPortal::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Interact", L"GameObject_Portal")))
+		return E_FAIL;
+
+	Safe_Release(pManagement);
+	Safe_Release(pGraphic_Device);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_Static()
+{
+	CManagement* pManagement = CManagement::GetInstance();
+	if (pManagement == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pManagement);
+
+	LPDIRECT3DDEVICE9 pGraphic_Device = pManagement->Get_Graphic_Device();
+	if (pGraphic_Device == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pGraphic_Device);
+
+	// For. GameObject_Gate
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Gate", CGate::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Static", L"GameObject_Gate")))
+		return E_FAIL;
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

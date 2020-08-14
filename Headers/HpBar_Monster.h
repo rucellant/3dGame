@@ -29,7 +29,7 @@ private:
 	CMonster*			m_pTargetMonster = nullptr;
 private:
 	HRESULT Add_Component(void* pArg);
-	HRESULT SetUp_ConstantTable();
+	HRESULT SetUp_ConstantTable(_uint iIndex);
 	HRESULT Render(_uint iPassIndex);
 	HRESULT SetUp_OnTarget();
 	HRESULT Set_Billboard();

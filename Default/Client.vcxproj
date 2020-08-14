@@ -187,10 +187,14 @@
     <ClInclude Include="..\Headers\Camera_Player.h" />
     <ClInclude Include="..\Headers\Client_Defines.h" />
     <ClInclude Include="..\Headers\Client_Macro.h" />
-    <ClInclude Include="..\Headers\ColliderManager.h" />
+    <ClInclude Include="..\Headers\ColliderManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Headers\CollisionMgr.h" />
     <ClInclude Include="..\Headers\Crystal.h" />
     <ClInclude Include="..\Headers\GameObject_Static.h" />
+    <ClInclude Include="..\Headers\Gate.h" />
     <ClInclude Include="..\Headers\HpBar.h" />
     <ClInclude Include="..\Headers\HpBar_Monster.h" />
     <ClInclude Include="..\Headers\Icicle.h" />
@@ -210,6 +214,7 @@
     <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\MpBar.h" />
     <ClInclude Include="..\Headers\Observer_Player.h" />
+    <ClInclude Include="..\Headers\Portal.h" />
     <ClInclude Include="..\Headers\Scene_Boss.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="..\Headers\Scene_Stage.h" />
@@ -242,10 +247,14 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Free.cpp" />
     <ClCompile Include="..\Codes\Camera_Player.cpp" />
-    <ClCompile Include="..\Codes\ColliderManager.cpp" />
+    <ClCompile Include="..\Codes\ColliderManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Codes\CollisionMgr.cpp" />
     <ClCompile Include="..\Codes\Crystal.cpp" />
     <ClCompile Include="..\Codes\GameObject_Static.cpp" />
+    <ClCompile Include="..\Codes\Gate.cpp" />
     <ClCompile Include="..\Codes\HpBar.cpp" />
     <ClCompile Include="..\Codes\HpBar_Monster.cpp" />
     <ClCompile Include="..\Codes\Icicle.cpp" />
@@ -265,6 +274,7 @@
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\MpBar.cpp" />
     <ClCompile Include="..\Codes\Observer_Player.cpp" />
+    <ClCompile Include="..\Codes\Portal.cpp" />
     <ClCompile Include="..\Codes\Scene_Boss.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="..\Codes\Scene_Stage.cpp" />
@@ -301,6 +311,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh_Static.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx" />

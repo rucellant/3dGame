@@ -302,6 +302,17 @@ HRESULT CLoading::Ready_Static_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Shield", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Shield/", L"Shield.X", &matLocal))))
 		return E_FAIL;
 
+	// For. Component_Mesh_Gate
+	_matrix matScale, matRotZ, matRotX;
+	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.5f);
+	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(90.f));
+	D3DXMatrixRotationX(&matRotX, D3DXToRadian(-35.f));
+
+	matLocal = matScale * matRotX * matRotZ;
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Gate", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Gate/", L"Gate_A.X", &matLocal))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -341,6 +352,10 @@ HRESULT CLoading::Ready_UI_Stage()
 
 HRESULT CLoading::Ready_Interact_Stage()
 {
+	// For. Component_Shader_Effect
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Effect", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Effect.fx"))))
+		return E_FAIL;
+
 	_matrix matLocal, matScale, matRotY;
 
 	// For. Component_Mesh_Crystal
@@ -353,6 +368,10 @@ HRESULT CLoading::Ready_Interact_Stage()
 	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Icicle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Ice_Missile_2/", L"Ice_Missile_2.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Texture_Portal
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Portal", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Portal/Portal_%d.tga", 2))))
 		return E_FAIL;
 
 	// Read File Crystal

@@ -52,6 +52,8 @@ public: // Get
 		return m_eType; }
 	STATE GetState() { 
 		return m_eCurState; }
+	MONSTERINFO GetMonsterInfo() {
+		return m_tMonsterInfo; }
 protected:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CMonster(const CMonster& rhs);
@@ -63,8 +65,8 @@ public:
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
 public:
-	virtual HRESULT Knockdown(_vec3 vPosition = _vec3(0.f,0.f,0.f)) PURE;
-	virtual HRESULT GetHit(_vec3 vPosition) PURE;
+	virtual HRESULT Knockdown(_vec3 vPosition = _vec3(0.f, 0.f, 0.f), _int iPlayerDmg = 0) PURE;
+	virtual HRESULT GetHit(_vec3 vPosition, _int iPlayerDmg) PURE;
 	virtual HRESULT Follow_Player(_vec3 vPosition);
 	virtual HRESULT Set_Idle();
 	virtual HRESULT Attack_Target(_vec3 vPosition);
