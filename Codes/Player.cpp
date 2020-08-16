@@ -74,6 +74,10 @@ _int CPlayer::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
 
+	m_TimeExp += TimeDelta;
+	if (m_TimeExp >= 1.0)
+		m_TimeExp = 0.0;
+
 	/*if (m_pManagement->KeyUp(KEY_UP))
 		m_TmpDuration += 0.01;
 	if (m_pManagement->KeyUp(KEY_DOWN))
@@ -263,6 +267,10 @@ HRESULT CPlayer::SetUp_ConstantTable()
 	if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+		return E_FAIL;
+
+	_float fTimeExp = _float(m_TimeExp);
+	if (FAILED(m_pShaderCom->Set_Value("g_fTimeExp", &fTimeExp, sizeof(_float))))
 		return E_FAIL;
 
 	return NOERROR;

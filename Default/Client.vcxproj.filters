@@ -164,6 +164,12 @@
     <Filter Include="03. GameObject\Stage\Interact\Portal">
       <UniqueIdentifier>{2bcf212a-3ae7-4ce5-a84f-dd19efb221f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Stage\Trigger">
+      <UniqueIdentifier>{2ab3f9ab-6279-4273-8482-5c4ca49a2997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Trigger\Door_Trigger">
+      <UniqueIdentifier>{74a36844-036f-4a64-9a8a-2d9b70b12ec9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -292,6 +298,9 @@
     <ClInclude Include="..\Headers\Portal.h">
       <Filter>03. GameObject\Stage\Interact\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Door_Trigger.h">
+      <Filter>03. GameObject\Stage\Trigger\Door_Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -407,6 +416,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Portal.cpp">
       <Filter>03. GameObject\Stage\Interact\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Door_Trigger.cpp">
+      <Filter>03. GameObject\Stage\Trigger\Door_Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

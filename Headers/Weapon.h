@@ -39,6 +39,9 @@ private:
 private:
 	CObserver_Player*	m_pObserver = nullptr;
 private:
+	vector<_matrix>		m_vecSwordStart;
+	vector<_matrix>		m_vecSwordEnd;
+private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);

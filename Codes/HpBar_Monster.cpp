@@ -61,7 +61,7 @@ _int CHpBar_Monster::LateUpdate_GameObject(_double TimeDelta)
 	{
 		Set_Billboard();
 		Compute_ViewZ(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_ALPHA, this);
 	}
 		
 

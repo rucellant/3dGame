@@ -5,6 +5,7 @@
 
 BEGIN(Client)
 
+class CCrystal;
 class CMonster;
 class CObserver_Player;
 
@@ -26,6 +27,8 @@ public:
 	HRESULT Collision_Monster_Detect_Player(_uint iSceneID, CMonster* pMonster,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, CCollider::COLLISIONWAY eWay, _bool* pIsTrue);
 	HRESULT Collision_Monster_Attack_Player(_uint iSceneID, CMonster* pMonster,
+		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pIsTrue);
+	HRESULT Collision_Crystal_Player(_uint iSceneID, CCrystal* pCrystal,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pIsTrue);
 private:
 	CManagement*		m_pManagement = nullptr;

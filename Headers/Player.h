@@ -120,6 +120,7 @@ private: // ≈∏¿Ã∏”
 	_double				m_TimeDelta = 0.0;
 	_double				m_TimeAttAcc = 0.0;
 	_double				m_TimeTornadoAcc = 0.0;
+	_double				m_TimeExp = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();

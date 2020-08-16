@@ -1,5 +1,7 @@
 matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
+float g_fTimeDelta;
+
 texture g_DiffuseTexture;
 
 sampler	DiffuseSampler = sampler_state
@@ -99,11 +101,39 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_CRYSTAL(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = tex2D(DiffuseSampler, In.vTexUV);
+
+	Out.vColor *= g_fTimeDelta;
+
+	vector vTangentNormal = tex2D(NormalSampler, In.vTexUV);
+	vTangentNormal = normalize(vTangentNormal * 2 - 1);
+	float3x3 TBN = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+	TBN = transpose(TBN);
+
+	float3 vNormal = mul(TBN, vTangentNormal.xyz);
+
+	Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
+
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+
+	return Out;
+}
+
 technique Default_Technique
 {
 	pass Default_Rendering
 	{
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_MAIN();
+	}
+
+	pass Crystal_Rendering
+	{
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_CRYSTAL();
 	}
 }

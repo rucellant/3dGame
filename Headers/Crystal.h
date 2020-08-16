@@ -27,6 +27,12 @@ private:
 	explicit CCrystal(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CCrystal(const CCrystal& rhs);
 	virtual ~CCrystal() = default;
+public: // Get
+	_uint GetHitCount() {
+		return m_iHitCount; }
+public: // Set
+	void AddHitCount() {
+		m_iHitCount++; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
@@ -42,6 +48,11 @@ private:
 	CMesh_Static*		m_pMeshCom = nullptr;
 private:
 	OBJDESC				m_tObjDesc;
+private:
+	_uint				m_iHitCount = 0;
+	_bool				m_bIsHit = false;
+private:
+	_double				m_TimeShader = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();

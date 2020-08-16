@@ -193,6 +193,7 @@
     </ClInclude>
     <ClInclude Include="..\Headers\CollisionMgr.h" />
     <ClInclude Include="..\Headers\Crystal.h" />
+    <ClInclude Include="..\Headers\Door_Trigger.h" />
     <ClInclude Include="..\Headers\GameObject_Static.h" />
     <ClInclude Include="..\Headers\Gate.h" />
     <ClInclude Include="..\Headers\HpBar.h" />
@@ -253,6 +254,7 @@
     </ClCompile>
     <ClCompile Include="..\Codes\CollisionMgr.cpp" />
     <ClCompile Include="..\Codes\Crystal.cpp" />
+    <ClCompile Include="..\Codes\Door_Trigger.cpp" />
     <ClCompile Include="..\Codes\GameObject_Static.cpp" />
     <ClCompile Include="..\Codes\Gate.cpp" />
     <ClCompile Include="..\Codes\HpBar.cpp" />

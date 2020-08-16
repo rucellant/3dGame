@@ -18,6 +18,7 @@
 #include "Management.h"
 #include "Scene_Boss.h"
 #include "Camera_Free.h"
+#include "Door_Trigger.h"
 #include "CollisionMgr.h"
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
@@ -48,6 +49,9 @@ HRESULT CScene_Stage::Ready_Scene()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_UI()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Trigger()))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Interact()))
@@ -407,6 +411,31 @@ HRESULT CScene_Stage::Ready_Layer_Static()
 		return E_FAIL;
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Static", L"GameObject_Gate")))
+		return E_FAIL;
+
+	Safe_Release(pManagement);
+	Safe_Release(pGraphic_Device);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_Trigger()
+{
+	CManagement* pManagement = CManagement::GetInstance();
+	if (pManagement == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pManagement);
+
+	LPDIRECT3DDEVICE9 pGraphic_Device = pManagement->Get_Graphic_Device();
+	if (pGraphic_Device == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pGraphic_Device);
+
+	// For. GameObject_Door_Trigger
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Door_Trigger", CDoor_Trigger::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_Door_Trigger")))
 		return E_FAIL;
 
 	Safe_Release(pManagement);
