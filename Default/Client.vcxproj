@@ -183,6 +183,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Event.h" />
     <ClInclude Include="..\Headers\Camera_Free.h" />
     <ClInclude Include="..\Headers\Camera_Player.h" />
     <ClInclude Include="..\Headers\Client_Defines.h" />
@@ -246,6 +247,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Event.cpp" />
     <ClCompile Include="..\Codes\Camera_Free.cpp" />
     <ClCompile Include="..\Codes\Camera_Player.cpp" />
     <ClCompile Include="..\Codes\ColliderManager.cpp">

@@ -1,6 +1,8 @@
 matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
-float g_fTimeAcc;
+float g_fTimeAcc, g_fTimeFade;
+
+bool g_bPortalFade;
 
 texture g_SrcTexture;
 
@@ -94,7 +96,6 @@ PS_OUT PS_PORTAL(PS_IN In)
 
 	float2 vShadeTexUV = In.vTexUV;
 
-	//vShadeTexUV.x = 3.f * cos(2.f * g_fTimeAcc + In.vTexUV.x * 10.f);
 	vShadeTexUV.y = vShadeTexUV.y - g_fTimeAcc * 0.2f;
 
 	vector vDst = tex2D(DstSampler, vShadeTexUV);
@@ -112,6 +113,10 @@ PS_OUT PS_PORTAL(PS_IN In)
 	float fViewZ = In.vProjPos.w;
 
 	Out.vColor.a = Out.vColor.a * saturate(fOldViewZ - fViewZ) * 2.f;
+
+	if (g_bPortalFade == true)
+		Out.vColor.a = Out.vColor.a * g_fTimeFade;
+	
 
 	return Out;
 }

@@ -72,6 +72,9 @@ private:
 public: // Get
 	_bool GetIsControl() { 
 		return m_bIsControl; }
+public: // Set
+	void SetIsControl(_bool bIsControl) {
+		m_bIsControl = bIsControl; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
@@ -79,6 +82,7 @@ public:
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
 public:
+	HRESULT Knockdown(_vec3 vPosition = _vec3(0.f, 0.f, 0.f), _int iDmg = 0);
 	HRESULT SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration = DEFAULT_ANIM_DURATION, _double Period = DEFAULT_ANIM_PERIOD);
 	HRESULT GetHit(_int iMonsterDmg);
 private:
@@ -121,6 +125,7 @@ private: // ≈∏¿Ã∏”
 	_double				m_TimeAttAcc = 0.0;
 	_double				m_TimeTornadoAcc = 0.0;
 	_double				m_TimeExp = 0.0;
+	_double				m_TimeDownAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
@@ -131,6 +136,7 @@ private:
 	HRESULT State_Run(_double TimeDelta);
 	HRESULT State_Att(_double TimeDelta);
 	HRESULT State_SK(_double TimeDelta);
+	HRESULT State_Down(_double TimeDelta);
 private:
 	HRESULT Post_Update(_double TimeDelta);
 private:

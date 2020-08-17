@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\CollisionMgr.h"
+#include "Icicle.h"
 #include "Player.h"
 #include "Weapon.h"
 #include "Shield.h"
@@ -420,6 +421,65 @@ HRESULT CCollisionMgr::Collision_Crystal_Player(_uint iSceneID, CCrystal * pCrys
 		}
 	}
 
+	return NOERROR;
+}
+
+HRESULT CCollisionMgr::Collision_Icicle_Player(_uint iSceneID, CIcicle * pIcicle,
+	const _tchar * pPlayerLayerTag, const _tchar * pPlayerComponentTag, _bool* pMode)
+{
+	if (*pMode == true)
+	{
+		list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
+
+		if (pPlayerLayer == nullptr || pIcicle == nullptr)
+			return E_FAIL;
+
+		CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+		if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
+			return NOERROR;
+
+		CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
+		CCollider* pIcicleCollider = (CCollider*)pIcicle->Get_Component(L"Com_IntersectBox");
+		if (pPlayerCollider == nullptr || pIcicleCollider == nullptr)
+			return E_FAIL;
+
+		_bool bIsCollision = pPlayerCollider->Collision_OBB(pIcicleCollider);
+
+		if (!bIsCollision)
+			return NOERROR;
+		else
+			pIcicle->SetIsActive(true);
+	}
+	else
+	{
+		list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
+
+		if (pPlayerLayer == nullptr || pIcicle == nullptr)
+			return E_FAIL;
+
+		CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+		if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
+			return NOERROR;
+
+		CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
+		CCollider* pIcicleCollider = (CCollider*)pIcicle->Get_Component(L"Com_DmgBox");
+		if (pPlayerCollider == nullptr || pIcicleCollider == nullptr)
+			return E_FAIL;
+
+		_bool bIsCollision = pPlayerCollider->Collision_OBB(pIcicleCollider);
+
+		if (!bIsCollision)
+			return NOERROR;
+		else
+		{
+			CTransform* pTransform = (CTransform*)pIcicle->Get_Component(L"Com_Transform");
+			_vec3 vPosition = pTransform->Get_State(CTransform::STATE_POSITION);
+			pPlayer->Knockdown(vPosition, 200);
+		}
+	}
+	
 	return NOERROR;
 }
 

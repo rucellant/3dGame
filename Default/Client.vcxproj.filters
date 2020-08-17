@@ -170,6 +170,9 @@
     <Filter Include="03. GameObject\Stage\Trigger\Door_Trigger">
       <UniqueIdentifier>{74a36844-036f-4a64-9a8a-2d9b70b12ec9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Camera\Camera_Event">
+      <UniqueIdentifier>{40024a6b-66b1-4384-9ec3-440b3b938911}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -301,6 +304,9 @@
     <ClInclude Include="..\Headers\Door_Trigger.h">
       <Filter>03. GameObject\Stage\Trigger\Door_Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Event.h">
+      <Filter>03. GameObject\Static\Camera\Camera_Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -419,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Door_Trigger.cpp">
       <Filter>03. GameObject\Stage\Trigger\Door_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Event.cpp">
+      <Filter>03. GameObject\Static\Camera\Camera_Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

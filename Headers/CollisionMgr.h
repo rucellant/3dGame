@@ -5,6 +5,7 @@
 
 BEGIN(Client)
 
+class CIcicle;
 class CCrystal;
 class CMonster;
 class CObserver_Player;
@@ -30,6 +31,8 @@ public:
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pIsTrue);
 	HRESULT Collision_Crystal_Player(_uint iSceneID, CCrystal* pCrystal,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pIsTrue);
+	HRESULT Collision_Icicle_Player(_uint iSceneID, CIcicle* pIcicle,
+		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pMode);
 private:
 	CManagement*		m_pManagement = nullptr;
 private:

@@ -20,6 +20,7 @@
 #include "Camera_Free.h"
 #include "Door_Trigger.h"
 #include "CollisionMgr.h"
+#include "Camera_Event.h"
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
 
@@ -177,6 +178,25 @@ HRESULT CScene_Stage::Ready_Layer_Camera()
 	tCameraDesc_Player.iSceneID = SCENE_STAGE;
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Player", &tCameraDesc_Player)))
+		return E_FAIL;
+
+	// For. GameObject_Camera_Event
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Camera_Event", CCamera_Event::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	CCamera::CAMERADESC tCameraDesc_Event;
+	tCameraDesc_Event.vEye = _vec3(0.f, 0.f, -5.f);
+	tCameraDesc_Event.vAt = _vec3(0.f, 0.f, 0.f);
+	tCameraDesc_Event.vAxisY = _vec3(0.f, 1.f, 0.f);
+	tCameraDesc_Event.fRotationPerSec = D3DXToRadian(90.f);
+	tCameraDesc_Event.fSpeedPerSec = 60.f;
+	tCameraDesc_Event.fFar = 500.f;
+	tCameraDesc_Event.fNear = 0.2f;
+	tCameraDesc_Event.fFovy = D3DXToRadian(60.f);
+	tCameraDesc_Event.fAspect = g_iWinCX / _float(g_iWinCY);
+	tCameraDesc_Event.iSceneID = SCENE_STAGE;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Event", &tCameraDesc_Event)))
 		return E_FAIL;
 
 	// Play Camera
@@ -351,6 +371,13 @@ HRESULT CScene_Stage::Ready_Layer_Interact()
 		return E_FAIL;
 	Safe_AddRef(pGraphic_Device);
 
+	// For. GameObject_Portal
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Portal", CPortal::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Interact", L"GameObject_Portal")))
+		return E_FAIL;
+
 	// For. GameObject_Crystal
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Crystal", CCrystal::Create(pGraphic_Device))))
 		return E_FAIL;
@@ -380,13 +407,6 @@ HRESULT CScene_Stage::Ready_Layer_Interact()
 				return E_FAIL;
 		}
 	}
-
-	// For. GameObject_Portal
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Portal", CPortal::Create(pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Interact", L"GameObject_Portal")))
-		return E_FAIL;
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

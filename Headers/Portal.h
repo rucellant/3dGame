@@ -21,6 +21,9 @@ private:
 	explicit CPortal(const CPortal& rhs);
 	virtual ~CPortal() = default;
 public:
+	void SetFade(_bool bFade) {
+		m_bFade = bFade; }
+public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
 	virtual _int Update_GameObject(_double TimeDelta);
@@ -35,6 +38,10 @@ private:
 	CVIBuffer_VRect*	m_pVIBufferCom = nullptr;
 private:
 	_double				m_TimeAcc = 0.0;
+private:
+	_double				m_FadeTimeAcc = 0.0;
+private:
+	_bool				m_bFade = false;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();

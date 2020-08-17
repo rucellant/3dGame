@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\Portal.h"
+#include "Player.h"
 #include "Management.h"
 
 
@@ -41,6 +42,19 @@ _int CPortal::Update_GameObject(_double TimeDelta)
 
 	if (m_TimeAcc >= 10.0)
 		m_TimeAcc = 0.0;
+
+	if (m_bFade)
+	{
+		m_FadeTimeAcc += TimeDelta;
+
+		if (m_FadeTimeAcc >= 5.0)
+		{
+			m_bIsAlive = false;
+			CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+			((CNavigation*)pPlayer->Get_Component(L"Com_Navigation"))->Set_Mode(CCell::MODE_OPEN);
+		}
+	}
+		
 
 	return _int();
 }
@@ -133,6 +147,13 @@ HRESULT CPortal::SetUp_ConstantTable()
 		return E_FAIL;
 
 	if (FAILED(m_pManagement->SetRenderTarget_OnShader(m_pShaderCom, "g_DepthTexture", L"Target_Depth")))
+		return E_FAIL;
+
+	_float fFadeTimeAcc = (5.f - _float(m_FadeTimeAcc)) / 5.f;
+	if (FAILED(m_pShaderCom->Set_Value("g_fTimeFade", &fFadeTimeAcc, sizeof(_float))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_Bool("g_bPortalFade", m_bFade)))
 		return E_FAIL;
 
 	return NOERROR;

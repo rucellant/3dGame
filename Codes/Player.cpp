@@ -142,6 +142,44 @@ HRESULT CPlayer::Render_GameObject()
 	return NOERROR;
 }
 
+HRESULT CPlayer::Knockdown(_vec3 vPosition, _int iDmg)
+{
+	m_iAnimation = PLAYER_DOWN_START;
+
+	m_eCurState = DOWN;		
+		
+	m_fNewSpeed = DEFAULT_ANIM_SPEED;
+	m_Duration = DEFAULT_ANIM_DURATION;
+	m_Period = DEFAULT_ANIM_PERIOD;
+
+	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScaleRight = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+	_float fScaleUp = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+	_float fScaleLook = m_pTransformCom->Get_Scale(CTransform::STATE_LOOK);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+
+	m_tPlayerInfo.iCurHp -= iDmg;
+
+	return NOERROR;
+}
+
 HRESULT CPlayer::SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration, _double Period)
 {
 	m_eCurState = SK;
@@ -328,6 +366,9 @@ HRESULT CPlayer::State_Machine(_double TimeDelta)
 		break;
 	case SK:
 		hr = State_SK(TimeDelta);
+		break;
+	case DOWN:
+		hr = State_Down(TimeDelta);
 		break;
 	}
 
@@ -671,6 +712,53 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 
 		m_TimeTornadoAcc = 0.0;
 	}
+	return NOERROR;
+}
+
+HRESULT CPlayer::State_Down(_double TimeDelta)
+{
+	if (m_iAnimation == PLAYER_DOWN_START && !m_pMeshCom->is_Finished())
+	{
+		m_pTransformCom->Move_Backward(m_pNavigationCom, m_TimeDelta);
+
+		return NOERROR;
+	}
+
+	if (m_iAnimation == PLAYER_DOWN_START && m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = PLAYER_DOWN_LOOP;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		return NOERROR;
+	}
+
+	if (m_iAnimation == PLAYER_DOWN_LOOP)
+	{
+		if (m_TimeDownAcc <= 1.5)
+			m_TimeDownAcc += TimeDelta;
+		else
+		{
+			m_TimeDownAcc = 0.0;
+			m_iAnimation = PLAYER_GETUP;
+
+			return NOERROR;
+		}
+	}
+
+	if (m_iAnimation == PLAYER_GETUP && m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = PLAYER_IDLE;
+		m_eCurState = IDLE;
+
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+	}
+
 	return NOERROR;
 }
 

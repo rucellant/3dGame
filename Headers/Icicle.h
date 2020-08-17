@@ -27,6 +27,10 @@ private:
 	explicit CIcicle(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CIcicle(const CIcicle& rhs);
 	virtual ~CIcicle() = default;
+public: // Get
+public: // Set
+	void SetIsActive(_bool bIsActive) {
+		m_bIsActive = bIsActive; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
@@ -37,11 +41,20 @@ private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
-	CCollider*			m_pColliderCom = nullptr;
+	CCollider*			m_pDmgColliderCom = nullptr;
+	CCollider*			m_pIntersectColliderCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
 	CMesh_Static*		m_pMeshCom = nullptr;
 private:
+	_double				m_TimeAcc = 0.0;
+private:
 	OBJDESC				m_tObjDesc;
+private:
+	_bool				m_bIsActive = false;
+	_bool				m_bIsCollision = false;
+private: // ¼öÁ÷ ³«ÇÏ
+	_float				m_fVelocity = 0.f;
+	_float				m_fAccelaration = 0.7f;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
