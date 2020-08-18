@@ -394,7 +394,7 @@ HRESULT CSkeleton::Render(_uint iPassIndex)
 
 	_uint iNumMeshContainer = m_pMeshCom->Get_NumMeshContainer();
 
-	for (size_t i = 0; i < iNumMeshContainer; ++i)
+	for (_uint i = 0; i < iNumMeshContainer; i++)
 	{
 		_ulong dwNumSubset = m_pMeshCom->Get_NumSubset(_ulong(i));
 

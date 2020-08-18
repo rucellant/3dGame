@@ -173,6 +173,15 @@
     <Filter Include="03. GameObject\Static\Camera\Camera_Event">
       <UniqueIdentifier>{40024a6b-66b1-4384-9ec3-440b3b938911}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Stage\Interact\Twister">
+      <UniqueIdentifier>{5b6b47a1-a8b9-4447-89ab-3f3d85c08c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Trigger\MidBoss_Trigger">
+      <UniqueIdentifier>{59ded1b6-d79c-4d96-8b96-2ad7040c09f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Monster\Quatran">
+      <UniqueIdentifier>{b27864bd-5fb7-44f8-888a-ee87298ab90f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -307,6 +316,15 @@
     <ClInclude Include="..\Headers\Camera_Event.h">
       <Filter>03. GameObject\Static\Camera\Camera_Event</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Twister.h">
+      <Filter>03. GameObject\Stage\Interact\Twister</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\MidBoss_Trigger.h">
+      <Filter>03. GameObject\Stage\Trigger\MidBoss_Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Quatran.h">
+      <Filter>03. GameObject\Stage\Monster\Quatran</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -428,6 +446,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Event.cpp">
       <Filter>03. GameObject\Static\Camera\Camera_Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Twister.cpp">
+      <Filter>03. GameObject\Stage\Interact\Twister</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\MidBoss_Trigger.cpp">
+      <Filter>03. GameObject\Stage\Trigger\MidBoss_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Quatran.cpp">
+      <Filter>03. GameObject\Stage\Monster\Quatran</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

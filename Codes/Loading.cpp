@@ -134,6 +134,12 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Lups", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Lups_00/", L"Lups_00.X", &matLocal))))
 		return E_FAIL;
 
+	// For. Component_Mesh_Quatran
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Quatran", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Quatran_00/", L"Quatran_00.X", &matLocal))))
+		return E_FAIL;
+
 	// 플레이어 몬스터 NPC 순으로 파일 입출력 진행
 
 	// Read File Player
@@ -231,6 +237,37 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 		lstrcpy(tMonsterDesc.szFileName, szFileName);
 
 		CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);
+
+		CloseHandle(hFile);
+	}
+
+	// Read File MidBoss
+	{
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_Quatran.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
+		_tchar szFileName[MAX_STR];
+		ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+		_tchar szFilePath[MAX_STR];
+		ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+		_tchar szComponentTag[MAX_STR];
+		ReadFile(hFile, szComponentTag, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+		_float fFrustumRadius;
+		ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+		_matrix matWorld;
+		ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+		CQuatran::OBJDESC tQuatranDesc;
+		tQuatranDesc.fFrustumRadius = fFrustumRadius;
+		tQuatranDesc.matWorld = matWorld;
+
+		CIOManager::GetInstance()->Store(CIOManager::TYPE_QUATRAN, &tQuatranDesc);
 
 		CloseHandle(hFile);
 	}
@@ -374,6 +411,12 @@ HRESULT CLoading::Ready_Interact_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Portal", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Portal/Portal_%d.tga", 2))))
 		return E_FAIL;
 
+	// For. Component_Mesh_Twister
+	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Twister", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Interact/IceTwister/", L"IceTwister.X", &matLocal))))
+		return E_FAIL;
+
 	// Read File Crystal
 	{
 		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Interact_Crystal.dat", GENERIC_READ, 0, 0,
@@ -439,6 +482,56 @@ HRESULT CLoading::Ready_Interact_Stage()
 			lstrcpy(tIcicleDesc.szFileName, szFileName);
 
 			CIOManager::GetInstance()->Store(CIOManager::TYPE_ICICLE, &tIcicleDesc);
+		}
+
+		CloseHandle(hFile);
+	}
+
+	// Read File Twister
+	{
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Interact_Twister.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
+		_int iCount = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szComponentTag[MAX_STR];
+			ReadFile(hFile, szComponentTag, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (iCount == 0)
+				matWorld.m[3][0] = matWorld.m[3][0];
+
+			if (iCount == 1)
+				matWorld.m[3][0] = matWorld.m[3][0] + 10.f;
+
+			if (iCount == 2)
+				matWorld.m[3][0] = matWorld.m[3][0] - 10.f;
+
+			if (dwBytes == 0)
+				break;
+
+			CTwister::OBJDESC tTwisterDesc;
+			tTwisterDesc.fFrustumRadius = fFrustumRadius;
+			tTwisterDesc.matWorld = matWorld;
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_TWISTER, &tTwisterDesc);
+
+			iCount++;
 		}
 
 		CloseHandle(hFile);

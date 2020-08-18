@@ -8,6 +8,8 @@
 #include "Icicle.h"
 #include "Shield.h"
 #include "Weapon.h"
+#include "Quatran.h"
+#include "Twister.h"
 #include "Soldier.h"
 #include "Terrain.h"
 #include "Crystal.h"
@@ -23,6 +25,7 @@
 #include "Camera_Event.h"
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
+#include "MidBoss_Trigger.h"
 
 USING(Client)
 
@@ -298,6 +301,16 @@ HRESULT CScene_Stage::Ready_Layer_Monster()
 		}
 	}
 
+	// For. GameObject_Quatran
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Quatran", CQuatran::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	vector<CQuatran::OBJDESC> vecLoad2 = *(vector<CQuatran::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_QUATRAN);
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Quatran", &vecLoad2[0])))
+		return E_FAIL;
+	
+
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);
 
@@ -408,6 +421,18 @@ HRESULT CScene_Stage::Ready_Layer_Interact()
 		}
 	}
 
+	// For. GameObject_Twister
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Twister", CTwister::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	vector<CTwister::OBJDESC> vecLoad3 = *(vector<CTwister::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_TWISTER);
+
+	for (auto& element : vecLoad3)
+	{
+		if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Interact", L"GameObject_Twister", &element)))
+			return E_FAIL;
+	}
+
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);
 
@@ -456,6 +481,13 @@ HRESULT CScene_Stage::Ready_Layer_Trigger()
 		return E_FAIL;
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_Door_Trigger")))
+		return E_FAIL;
+
+	// For. GameObject_MidBoss_Trigger
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_MidBoss_Trigger", CMidBoss_Trigger::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_MidBoss_Trigger")))
 		return E_FAIL;
 
 	Safe_Release(pManagement);

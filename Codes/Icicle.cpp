@@ -56,6 +56,13 @@ _int CIcicle::Update_GameObject(_double TimeDelta)
 		_bool bMode = false	;
 		if (FAILED(CCollisionMgr::GetInstance()->Collision_Icicle_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", &bMode)))
 			return E_FAIL;
+
+		if (m_pTransformCom->Get_State(CTransform::STATE_POSITION).y <= 18.f)
+		{
+			// 이펙트도 만들어줌
+			m_bIsActive = false;
+			m_pManagement->Push_GameObject(g_eScene, L"Layer_Interact", this);
+		}
 	}
 
 	// 고드름이 일정 Y값 이하로 내려가거나 플레이어와 충돌했으면 죽음 상태로 전환
@@ -76,10 +83,8 @@ _int CIcicle::LateUpdate_GameObject(_double TimeDelta)
 	if (m_pRendererCom == nullptr)
 		return -1;
 
-	m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
-
-	/*if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius))
-		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);*/
+	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius))
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
 }
@@ -130,7 +135,7 @@ HRESULT CIcicle::Add_Component(void * pArg)
 	tDmgDesc.fRadius = 0.f;
 	tDmgDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
 	tDmgDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
-	tDmgDesc.vLocalScale = _vec3(3.f, 3.f, 3.f);
+	tDmgDesc.vLocalScale = _vec3(5.f, 5.f, 5.f);
 
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_DmgBox", (CComponent**)&m_pDmgColliderCom, &tDmgDesc))
 		return E_FAIL;

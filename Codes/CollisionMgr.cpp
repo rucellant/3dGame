@@ -6,6 +6,7 @@
 #include "Shield.h"
 #include "Monster.h"
 #include "Crystal.h"
+#include "Twister.h"
 #include "Observer_Player.h"
 
 USING(Client)
@@ -477,9 +478,42 @@ HRESULT CCollisionMgr::Collision_Icicle_Player(_uint iSceneID, CIcicle * pIcicle
 			CTransform* pTransform = (CTransform*)pIcicle->Get_Component(L"Com_Transform");
 			_vec3 vPosition = pTransform->Get_State(CTransform::STATE_POSITION);
 			pPlayer->Knockdown(vPosition, 200);
+			pIcicle->SetIsAlive(false);
 		}
 	}
 	
+	return NOERROR;
+}
+
+HRESULT CCollisionMgr::Collision_Twister_Player(_uint iSceneID, CTwister * pTwister,
+	const _tchar * pPlayerLayerTag, const _tchar * pPlayerComponentTag)
+{
+	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
+		return NOERROR;
+
+	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
+	CCollider* pTwisterCollider = (CCollider*)pTwister->Get_Component(L"Com_DmgBox");
+	if (pPlayerCollider == nullptr || pTwisterCollider == nullptr)
+		return E_FAIL;
+
+	_bool bIsCollision = pPlayerCollider->Collision_BoxSphere(pTwisterCollider);
+
+	if (!bIsCollision)
+		return NOERROR;
+	else
+	{
+		CPlayer::STATE eState = *(CPlayer::STATE*)m_pObserver->GetData(CSubject_Player::TYPE_STATE);
+
+		if (eState != CPlayer::IDLE && eState != CPlayer::RUN)
+			return NOERROR;
+
+		CTransform* pTransform = (CTransform*)pTwister->Get_Component(L"Com_Transform");
+		_vec3 vPosition = pTransform->Get_State(CTransform::STATE_POSITION);
+		pPlayer->Knockdown(vPosition, 200);
+	}
+
 	return NOERROR;
 }
 

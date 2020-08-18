@@ -8,6 +8,7 @@ BEGIN(Client)
 class CIcicle;
 class CCrystal;
 class CMonster;
+class CTwister;
 class CObserver_Player;
 
 class CCollisionMgr final : public CBase
@@ -33,6 +34,8 @@ public:
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pIsTrue);
 	HRESULT Collision_Icicle_Player(_uint iSceneID, CIcicle* pIcicle,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pMode);
+	HRESULT Collision_Twister_Player(_uint iSceneID, CTwister* pTwister,
+		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag);
 private:
 	CManagement*		m_pManagement = nullptr;
 private:

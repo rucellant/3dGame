@@ -33,6 +33,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_UP, *(_vec3*)&m_tObjDesc.matWorld.m[1]);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, *(_vec3*)&m_tObjDesc.matWorld.m[2]);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&m_tObjDesc.matWorld.m[3]);
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(157.f, 10.f, 118.f));
 
 	CTransform::STATEDESC tStateDesc;
 	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
@@ -148,9 +149,9 @@ HRESULT CPlayer::Knockdown(_vec3 vPosition, _int iDmg)
 
 	m_eCurState = DOWN;		
 		
-	m_fNewSpeed = DEFAULT_ANIM_SPEED;
-	m_Duration = DEFAULT_ANIM_DURATION;
-	m_Period = DEFAULT_ANIM_PERIOD;
+	m_fNewSpeed = 1.f;
+	m_Duration = 0.2;
+	m_Period = 0.2;
 
 	m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 
@@ -728,9 +729,9 @@ HRESULT CPlayer::State_Down(_double TimeDelta)
 	{
 		m_iAnimation = PLAYER_DOWN_LOOP;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
-		m_Duration = DEFAULT_ANIM_DURATION;
-		m_Period = DEFAULT_ANIM_PERIOD;
+		m_fNewSpeed = 0.5f;
+		m_Duration = 0.2;
+		m_Period = 0.09;
 
 		return NOERROR;
 	}
@@ -744,6 +745,10 @@ HRESULT CPlayer::State_Down(_double TimeDelta)
 			m_TimeDownAcc = 0.0;
 			m_iAnimation = PLAYER_GETUP;
 
+			m_fNewSpeed = 0.5f;
+			m_Duration = 0.2;
+			m_Period = 0.15;
+
 			return NOERROR;
 		}
 	}
@@ -753,8 +758,9 @@ HRESULT CPlayer::State_Down(_double TimeDelta)
 		m_iAnimation = PLAYER_IDLE;
 		m_eCurState = IDLE;
 
-		m_Duration = DEFAULT_ANIM_DURATION;
-		m_Period = DEFAULT_ANIM_PERIOD;
+		m_fNewSpeed = 1.f;
+		m_Duration = 0.2;
+		m_Period = 0.09;
 
 		m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 	}

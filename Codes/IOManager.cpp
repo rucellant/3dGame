@@ -25,6 +25,14 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 		m_mapWitchBlade.insert({ eType,vecElement });
 	}
 
+	if (eType == TYPE_QUATRAN)
+	{
+		vector<CMonster::OBJDESC> vecElement;
+		vecElement.push_back(*(CMonster::OBJDESC*)pArg);
+
+		m_mapQuatran.insert({ eType,vecElement });
+	}
+
 	if (eType == TYPE_MONSTER)
 	{
 		if (m_mapMonsterDesc.empty())
@@ -40,7 +48,7 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 
 	if (eType == TYPE_INTERACT)
 	{
-		if (m_mapMonsterDesc.empty())
+		if (m_mapInteract.empty())
 		{
 			vector<CCrystal::OBJDESC> vecElement;
 			vecElement.push_back(*(CCrystal::OBJDESC*)pArg);
@@ -53,7 +61,7 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 	
 	if (eType == TYPE_ICICLE)
 	{
-		if (m_mapMonsterDesc.empty())
+		if (m_mapIcicle.empty())
 		{
 			vector<CIcicle::OBJDESC> vecElement;
 			vecElement.push_back(*(CIcicle::OBJDESC*)pArg);
@@ -62,6 +70,19 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 		}
 		else
 			m_mapIcicle[eType].push_back(*(CIcicle::OBJDESC*)pArg);
+	}
+
+	if (eType == TYPE_TWISTER)
+	{
+		if (m_mapTwister.empty())
+		{
+			vector<CTwister::OBJDESC> vecElement;
+			vecElement.push_back(*(CTwister::OBJDESC*)pArg);
+
+			m_mapTwister.insert({ eType,vecElement });
+		}
+		else
+			m_mapTwister[eType].push_back(*(CTwister::OBJDESC*)pArg);
 	}
 
 	return NOERROR;
@@ -83,6 +104,12 @@ void * CIOManager::Load(OBJECT_TYPE eType)
 
 	if (eType == TYPE_ICICLE)
 		return &m_mapIcicle[eType];
+
+	if (eType == TYPE_TWISTER)
+		return &m_mapTwister[eType];
+
+	if (eType == TYPE_QUATRAN)
+		return &m_mapQuatran[eType];
 
 	return nullptr;
 }
@@ -108,6 +135,16 @@ HRESULT CIOManager::Clear()
 		Pair.second.clear();
 
 	m_mapIcicle.clear();
+
+	for (auto& Pair : m_mapTwister)
+		Pair.second.clear();
+
+	m_mapTwister.clear();
+
+	for (auto& Pair : m_mapQuatran)
+		Pair.second.clear();
+
+	m_mapQuatran.clear();
 
 	return NOERROR;
 }

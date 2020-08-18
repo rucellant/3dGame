@@ -39,6 +39,16 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
+HRESULT CMonster::Knockdown(_vec3 vPosition, _int iPlayerDmg)
+{
+	return NOERROR;
+}
+
+HRESULT CMonster::GetHit(_vec3 vPosition, _int iPlayerDmg)
+{
+	return NOERROR;
+}
+
 HRESULT CMonster::Follow_Player(_vec3 vPosition)
 {
 	return NOERROR;
