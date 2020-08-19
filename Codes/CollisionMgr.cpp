@@ -4,9 +4,12 @@
 #include "Player.h"
 #include "Weapon.h"
 #include "Shield.h"
+#include "Balrog.h"
 #include "Monster.h"
 #include "Crystal.h"
 #include "Twister.h"
+#include "Camera_Event.h"
+#include "MidBoss_Trigger.h"
 #include "Observer_Player.h"
 
 USING(Client)
@@ -513,6 +516,29 @@ HRESULT CCollisionMgr::Collision_Twister_Player(_uint iSceneID, CTwister * pTwis
 		_vec3 vPosition = pTransform->Get_State(CTransform::STATE_POSITION);
 		pPlayer->Knockdown(vPosition, 200);
 	}
+
+	return NOERROR;
+}
+
+HRESULT CCollisionMgr::Collision_MidBoss_Trigger_Player(_uint iSceneID, CMidBoss_Trigger * pTrigger, 
+	const _tchar * pPlayerLayerTag, const _tchar * pPlayerComponentTag)
+{
+	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
+		return NOERROR;
+
+	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
+	CCollider* pTriggerCollider = (CCollider*)pTrigger->Get_Component(L"Com_Collider");
+	if (pPlayerCollider == nullptr || pTriggerCollider == nullptr)
+		return E_FAIL;
+
+	_bool bIsCollision = pPlayerCollider->Collision_OBB(pTriggerCollider);
+
+	if (!bIsCollision)
+		return NOERROR;
+	else
+		pTrigger->SetIsActive(true);
 
 	return NOERROR;
 }

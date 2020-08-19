@@ -46,6 +46,8 @@ HRESULT CSK_Slot::Ready_GameObject_Clone(void * pArg)
 	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
 		return E_FAIL;
 
+	m_eType = TYPE_PLAYER;
+
 	m_bIsAlive = true;
 
 	return NOERROR;

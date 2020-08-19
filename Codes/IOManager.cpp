@@ -25,12 +25,12 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 		m_mapWitchBlade.insert({ eType,vecElement });
 	}
 
-	if (eType == TYPE_QUATRAN)
+	if (eType == TYPE_BALROG)
 	{
 		vector<CMonster::OBJDESC> vecElement;
 		vecElement.push_back(*(CMonster::OBJDESC*)pArg);
 
-		m_mapQuatran.insert({ eType,vecElement });
+		m_mapBalrog.insert({ eType,vecElement });
 	}
 
 	if (eType == TYPE_MONSTER)
@@ -108,8 +108,8 @@ void * CIOManager::Load(OBJECT_TYPE eType)
 	if (eType == TYPE_TWISTER)
 		return &m_mapTwister[eType];
 
-	if (eType == TYPE_QUATRAN)
-		return &m_mapQuatran[eType];
+	if (eType == TYPE_BALROG)
+		return &m_mapBalrog[eType];
 
 	return nullptr;
 }
@@ -141,10 +141,10 @@ HRESULT CIOManager::Clear()
 
 	m_mapTwister.clear();
 
-	for (auto& Pair : m_mapQuatran)
+	for (auto& Pair : m_mapBalrog)
 		Pair.second.clear();
 
-	m_mapQuatran.clear();
+	m_mapBalrog.clear();
 
 	return NOERROR;
 }

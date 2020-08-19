@@ -85,6 +85,9 @@ public:
 	HRESULT Knockdown(_vec3 vPosition = _vec3(0.f, 0.f, 0.f), _int iDmg = 0);
 	HRESULT SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration = DEFAULT_ANIM_DURATION, _double Period = DEFAULT_ANIM_PERIOD);
 	HRESULT GetHit(_int iMonsterDmg);
+public:
+	HRESULT Set_Position(_vec3 vPosition);
+	HRESULT Set_Look(_vec3 vPosition);
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;

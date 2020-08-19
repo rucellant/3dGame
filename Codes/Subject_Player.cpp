@@ -20,7 +20,6 @@ void * CSubject_Player::GetData(_int iMsg)
 		return nullptr;
 
 	return iter->second;
-	return nullptr;
 }
 
 HRESULT CSubject_Player::AddData(_int iMsg, void * pData)

@@ -18,6 +18,9 @@ private:
 	explicit CMidBoss_Trigger(const CMidBoss_Trigger& rhs);
 	virtual ~CMidBoss_Trigger() = default;
 public:
+	void SetIsActive(_bool bIsActive) {
+		m_bIsActive = bIsActive; }
+public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
 	virtual _int Update_GameObject(_double TimeDelta);
@@ -29,6 +32,8 @@ private:
 	CTransform*			m_pTransformCom = nullptr;
 private:
 	_bool				m_bIsActive = false;
+private:
+	_double				m_TimeAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 public:

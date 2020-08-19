@@ -101,6 +101,10 @@ technique Default_Technique
 {
 	pass Default_Rendering
 	{
+		AlphaTestEnable = true;
+		AlphaFunc = Greater;
+		AlphaRef = 0;
+
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_MAIN();
 	}

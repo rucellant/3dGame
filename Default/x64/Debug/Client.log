@@ -1,3 +1,13 @@
-﻿  Quatran.cpp
+﻿  Balrog.cpp
+  코드를 생성하고 있습니다...
+  건너뛰고 있습니다... (관련된 변경 내용 없음)
+  Scene_Stage.cpp
+  Observer_Balrog.cpp
+  MidBoss_Trigger.cpp
+  MainApp.cpp
+  Loading.cpp
+  IOManager.cpp
+  HpBar_Boss.cpp
+  CollisionMgr.cpp
   Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

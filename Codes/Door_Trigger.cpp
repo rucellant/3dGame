@@ -58,7 +58,10 @@ _int CDoor_Trigger::Update_GameObject(_double TimeDelta)
 			list<CGameObject*>* pUILayer = m_pManagement->Get_Layer(g_eScene, L"Layer_UI");
 
 			for (auto& pUI : *pUILayer)
-				m_pManagement->Push_GameObject(g_eScene, L"Layer_UI", pUI);
+			{
+				if (((CUI*)pUI)->GetType() == CUI::TYPE_PLAYER || ((CUI*)pUI)->GetType() == CUI::TYPE_MONSTER)
+					m_pManagement->Push_GameObject(g_eScene, L"Layer_UI", pUI);
+			}
 			// 4. 이벤트 카메라 작동 시작함
 			m_bIsActive = true;
 			m_pManagement->Play_Camera(g_eScene, L"Camera_Event");

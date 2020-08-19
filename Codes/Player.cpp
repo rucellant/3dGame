@@ -33,7 +33,8 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_UP, *(_vec3*)&m_tObjDesc.matWorld.m[1]);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, *(_vec3*)&m_tObjDesc.matWorld.m[2]);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&m_tObjDesc.matWorld.m[3]);
-	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(157.f, 10.f, 118.f));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(168.f, 55.f, -132.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(162.f, 28.f, -44.f));
 
 	CTransform::STATEDESC tStateDesc;
 	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
@@ -223,6 +224,45 @@ HRESULT CPlayer::GetHit(_int iMonsterDmg)
 		m_tPlayerInfo.iCurHp = 1;
 	else
 		m_tPlayerInfo.iCurHp -= iMonsterDmg;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Set_Position(_vec3 vPosition)
+{
+	if (m_pTransformCom == nullptr)
+		return E_FAIL;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+
+	m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Set_Look(_vec3 vPosition)
+{
+	if (m_pTransformCom == nullptr)
+		return E_FAIL;
+
+	vPosition.y = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScale = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = vPosition - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScale);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScale);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScale);
 
 	return NOERROR;
 }

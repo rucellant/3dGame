@@ -24,7 +24,7 @@ class CObserver_Player;
 class CMonster abstract : public CGameObject
 {
 public:
-	enum MONSTER_TYPE { TYPE_SKELETON, TYPE_SOLDIER, TYPE_END };
+	enum MONSTER_TYPE { TYPE_SKELETON, TYPE_SOLDIER, TYPE_BALROG, TYPE_END };
 public:
 	enum STATE { IDLE, RUN, ATT, HIT, DOWN, GROGGY, DEAD, STATE_END };
 public:

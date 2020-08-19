@@ -8,7 +8,7 @@
 #include "Icicle.h"
 #include "Shield.h"
 #include "Weapon.h"
-#include "Quatran.h"
+#include "Balrog.h"
 #include "Twister.h"
 #include "Soldier.h"
 #include "Terrain.h"
@@ -17,6 +17,7 @@
 #include "SK_Slot.h"
 #include "Skeleton.h"
 #include "IOManager.h"
+#include "HpBar_Boss.h"
 #include "Management.h"
 #include "Scene_Boss.h"
 #include "Camera_Free.h"
@@ -301,13 +302,13 @@ HRESULT CScene_Stage::Ready_Layer_Monster()
 		}
 	}
 
-	// For. GameObject_Quatran
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Quatran", CQuatran::Create(pGraphic_Device))))
+	// For. GameObject_Balrog
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Balrog", CBalrog::Create(pGraphic_Device))))
 		return E_FAIL;
 
-	vector<CQuatran::OBJDESC> vecLoad2 = *(vector<CQuatran::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_QUATRAN);
+	vector<CBalrog::OBJDESC> vecLoad2 = *(vector<CBalrog::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_BALROG);
 
-	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Quatran", &vecLoad2[0])))
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Monster", L"GameObject_Balrog", &vecLoad2[0])))
 		return E_FAIL;
 	
 
@@ -365,6 +366,25 @@ HRESULT CScene_Stage::Ready_Layer_UI()
 		}
 		
 	}
+
+	// For. GameObject_HpBar_Boss
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_HpBar_Boss", CHpBar_Boss::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	{
+		list<CGameObject*>* pMonsterLayer = pManagement->Get_Layer(g_eScene, L"Layer_Monster");
+
+		for (auto& pMonster : *pMonsterLayer)
+		{
+			if (((CMonster*)pMonster)->GetType() == CMonster::TYPE_BALROG)
+			{
+				if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_UI", L"GameObject_HpBar_Boss", pMonster)))
+					return E_FAIL;
+			}
+
+		}
+	}
+	
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

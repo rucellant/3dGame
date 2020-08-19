@@ -35,6 +35,8 @@ HRESULT CHpBar_Monster::Ready_GameObject_Clone(void * pArg)
 
 	m_pTransformCom->Set_Scale(_vec3(2.f, 0.2f, 2.f));
 
+	m_eType = TYPE_MONSTER;
+
 	m_bIsAlive = true;
 
 	return NOERROR;

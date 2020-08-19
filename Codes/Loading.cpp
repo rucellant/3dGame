@@ -134,10 +134,10 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Lups", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Lups_00/", L"Lups_00.X", &matLocal))))
 		return E_FAIL;
 
-	// For. Component_Mesh_Quatran
+	// For. Component_Mesh_Balrog
 	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Quatran", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Quatran_00/", L"Quatran_00.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Balrog", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Balrog_00/", L"Balrog_00.X", &matLocal))))
 		return E_FAIL;
 
 	// 플레이어 몬스터 NPC 순으로 파일 입출력 진행
@@ -243,7 +243,7 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 
 	// Read File MidBoss
 	{
-		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_Quatran.dat", GENERIC_READ, 0, 0,
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Dynamic_Balrog.dat", GENERIC_READ, 0, 0,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 		_ulong dwBytes = 0;
@@ -263,11 +263,11 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 		_matrix matWorld;
 		ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
 
-		CQuatran::OBJDESC tQuatranDesc;
-		tQuatranDesc.fFrustumRadius = fFrustumRadius;
-		tQuatranDesc.matWorld = matWorld;
+		CBalrog::OBJDESC tBalrogDesc;
+		tBalrogDesc.fFrustumRadius = fFrustumRadius;
+		tBalrogDesc.matWorld = matWorld;
 
-		CIOManager::GetInstance()->Store(CIOManager::TYPE_QUATRAN, &tQuatranDesc);
+		CIOManager::GetInstance()->Store(CIOManager::TYPE_BALROG, &tBalrogDesc);
 
 		CloseHandle(hFile);
 	}
@@ -382,6 +382,10 @@ HRESULT CLoading::Ready_UI_Stage()
 
 	// For. Component_Texture_MpBar
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_MpBar", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/MpBar/MpBar_%d.png", 3))))
+		return E_FAIL;
+
+	// For. Component_Texture_HpBar_Boss
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_HpBar_Boss", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/HpBar_Boss/HpBar_Boss_%d.png", 4))))
 		return E_FAIL;
 
 	return NOERROR;
