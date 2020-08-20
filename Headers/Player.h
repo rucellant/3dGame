@@ -88,6 +88,7 @@ public:
 public:
 	HRESULT Set_Position(_vec3 vPosition);
 	HRESULT Set_Look(_vec3 vPosition);
+	HRESULT Set_Navigation_Mode(_uint eMode);
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;

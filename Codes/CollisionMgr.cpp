@@ -305,22 +305,12 @@ HRESULT CCollisionMgr::Collision_Player_Earthquake_Monster(_uint iSceneID, const
 HRESULT CCollisionMgr::Collision_Monster_Detect_Player(_uint iSceneID, CMonster* pMonster,
 	const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, CCollider::COLLISIONWAY eWay, _bool* pIsTrue)
 {
-	list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
-
-	if (pPlayerLayer == nullptr || pMonster == nullptr)
+	if (pMonster == nullptr)
 		return E_FAIL;
 
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
-		return NOERROR;
-
-	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(L"Com_HitBox");
-	CCollider* pMonsterCollider = (CCollider*)pMonster->Get_Component(L"Com_DetectBox");
-	if (pPlayerCollider == nullptr || pMonsterCollider == nullptr)
-		return E_FAIL;
-
-	_bool bIsCollision = pPlayerCollider->Collision_BoxSphere(pMonsterCollider);
+	_bool bIsCollision = Is_Player_Collided(pPlayer, L"Com_HitBox", pMonster, L"Com_DetectBox", CCollider::WAY_BOXSPHERE);
 
 	if (!bIsCollision)
 	{
@@ -339,22 +329,9 @@ HRESULT CCollisionMgr::Collision_Monster_Detect_Player(_uint iSceneID, CMonster*
 
 HRESULT CCollisionMgr::Collision_Monster_Attack_Player(_uint iSceneID, CMonster * pMonster, const _tchar * pPlayerLayerTag, const _tchar * pPlayerComponentTag, _bool* pIsTrue)
 {
-	list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
-
-	if (pPlayerLayer == nullptr || pMonster == nullptr)
-		return E_FAIL;
-
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
-		return NOERROR;
-
-	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
-	CCollider* pMonsterCollider = (CCollider*)pMonster->Get_Component(L"Com_AttRangeBox");
-	if (pPlayerCollider == nullptr || pMonsterCollider == nullptr)
-		return E_FAIL;
-
-	_bool bIsCollision = pPlayerCollider->Collision_BoxSphere(pMonsterCollider);
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, L"Com_AttRangeBox", CCollider::WAY_BOXSPHERE);
 
 	if (!bIsCollision)
 		return NOERROR;
@@ -372,22 +349,9 @@ HRESULT CCollisionMgr::Collision_Monster_Attack_Player(_uint iSceneID, CMonster 
 HRESULT CCollisionMgr::Collision_Crystal_Player(_uint iSceneID, CCrystal * pCrystal, 
 	const _tchar * pPlayerLayerTag, const _tchar * pPlayerComponentTag, _bool * pIsTrue)
 {
-	list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
-
-	if (pPlayerLayer == nullptr || pCrystal == nullptr)
-		return E_FAIL;
-
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
-		return NOERROR;
-
-	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
-	CCollider* pCrystalCollider = (CCollider*)pCrystal->Get_Component(L"Com_Collider");
-	if (pPlayerCollider == nullptr || pCrystalCollider == nullptr)
-		return E_FAIL;
-
-	_bool bIsCollision = pPlayerCollider->Collision_BoxSphere(pCrystalCollider);
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pCrystal, L"Com_Collider", CCollider::WAY_BOXSPHERE);
 
 	if (!bIsCollision)
 	{
@@ -433,22 +397,9 @@ HRESULT CCollisionMgr::Collision_Icicle_Player(_uint iSceneID, CIcicle * pIcicle
 {
 	if (*pMode == true)
 	{
-		list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
-
-		if (pPlayerLayer == nullptr || pIcicle == nullptr)
-			return E_FAIL;
-
 		CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-		if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
-			return NOERROR;
-
-		CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
-		CCollider* pIcicleCollider = (CCollider*)pIcicle->Get_Component(L"Com_IntersectBox");
-		if (pPlayerCollider == nullptr || pIcicleCollider == nullptr)
-			return E_FAIL;
-
-		_bool bIsCollision = pPlayerCollider->Collision_OBB(pIcicleCollider);
+		_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pIcicle, L"Com_IntersectBox", CCollider::WAY_OBB);
 
 		if (!bIsCollision)
 			return NOERROR;
@@ -457,22 +408,12 @@ HRESULT CCollisionMgr::Collision_Icicle_Player(_uint iSceneID, CIcicle * pIcicle
 	}
 	else
 	{
-		list<CGameObject*>* pPlayerLayer = m_pManagement->Get_Layer(iSceneID, pPlayerLayerTag);
-
-		if (pPlayerLayer == nullptr || pIcicle == nullptr)
-			return E_FAIL;
-
 		CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
 		if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
 			return NOERROR;
 
-		CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
-		CCollider* pIcicleCollider = (CCollider*)pIcicle->Get_Component(L"Com_DmgBox");
-		if (pPlayerCollider == nullptr || pIcicleCollider == nullptr)
-			return E_FAIL;
-
-		_bool bIsCollision = pPlayerCollider->Collision_OBB(pIcicleCollider);
+		_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pIcicle, L"Com_DmgBox", CCollider::WAY_OBB);
 
 		if (!bIsCollision)
 			return NOERROR;
@@ -493,15 +434,7 @@ HRESULT CCollisionMgr::Collision_Twister_Player(_uint iSceneID, CTwister * pTwis
 {
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
-		return NOERROR;
-
-	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
-	CCollider* pTwisterCollider = (CCollider*)pTwister->Get_Component(L"Com_DmgBox");
-	if (pPlayerCollider == nullptr || pTwisterCollider == nullptr)
-		return E_FAIL;
-
-	_bool bIsCollision = pPlayerCollider->Collision_BoxSphere(pTwisterCollider);
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pTwister, L"Com_DmgBox", CCollider::WAY_BOXSPHERE);
 
 	if (!bIsCollision)
 		return NOERROR;
@@ -525,15 +458,7 @@ HRESULT CCollisionMgr::Collision_MidBoss_Trigger_Player(_uint iSceneID, CMidBoss
 {
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
-		return NOERROR;
-
-	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerComponentTag);
-	CCollider* pTriggerCollider = (CCollider*)pTrigger->Get_Component(L"Com_Collider");
-	if (pPlayerCollider == nullptr || pTriggerCollider == nullptr)
-		return E_FAIL;
-
-	_bool bIsCollision = pPlayerCollider->Collision_OBB(pTriggerCollider);
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pTrigger, L"Com_Collider", CCollider::WAY_OBB);
 
 	if (!bIsCollision)
 		return NOERROR;
@@ -541,6 +466,49 @@ HRESULT CCollisionMgr::Collision_MidBoss_Trigger_Player(_uint iSceneID, CMidBoss
 		pTrigger->SetIsActive(true);
 
 	return NOERROR;
+}
+
+HRESULT CCollisionMgr::Collision_Boss_Intersect_Player(_uint iSceneID, CMonster* pMonster, const _tchar* pMonsterComponentTag,
+	const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pbIsResult)
+{
+	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, pMonsterComponentTag, CCollider::WAY_BOXSPHERE);
+
+	*pbIsResult = bIsCollision;
+
+	return NOERROR;
+}
+
+_bool CCollisionMgr::Is_Player_Collided(CPlayer* pPlayer, const _tchar* pPlayerColldierTag, CGameObject* pGameObject, const _tchar* pColliderTag, CCollider::COLLISIONWAY eWay)
+{
+	if (!pPlayer->GetIsAlive() || !pPlayer->GetIsControl())
+		return NOERROR;
+
+	CCollider* pPlayerCollider = (CCollider*)pPlayer->Get_Component(pPlayerColldierTag);
+	CCollider* pObjectCollider = (CCollider*)pGameObject->Get_Component(pColliderTag);
+	if (pPlayerCollider == nullptr || pObjectCollider == nullptr)
+		return false;
+
+	_bool bIsCollision = false;
+
+	switch (eWay)
+	{
+	case CCollider::WAY_AABB:
+		bIsCollision = pPlayerCollider->Collision_AABB(pObjectCollider);
+		break;
+	case CCollider::WAY_OBB:
+		bIsCollision = pPlayerCollider->Collision_OBB(pObjectCollider);
+		break;
+	case CCollider::WAY_SPHERE:
+		bIsCollision = pPlayerCollider->Collision_Sphere(pObjectCollider);
+		break;
+	case CCollider::WAY_BOXSPHERE:
+		bIsCollision = pPlayerCollider->Collision_BoxSphere(pObjectCollider);
+		break;
+	}
+
+	return bIsCollision;
 }
 
 void CCollisionMgr::Free()

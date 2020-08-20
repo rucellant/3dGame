@@ -10,7 +10,7 @@
 #define BALROG_ATT01			28			// 오른손 채찍으로 정면을 내려찍는 공격
 #define BALROG_ATT02			27			// 발차기
 #define BALROG_BREATH			12			// 브레스 
-#define BALROG_JUMPATT			4			// 점프한 뒤에 착지하면서 공격
+#define BALROG_JUMPATT			4			// 점프한 뒤에 착지하면서 공격 이건 근데 일단 빼자
 #define BALROG_GETREADY			6			// 컷씬에서 재생할 애니메이션
 
 #define DEFAULT_ANIM_SPEED		1.f
@@ -20,6 +20,7 @@
 BEGIN(Client)
 
 class CSubject_Balrog;
+class CObserver_Player;
 
 class CBalrog final : public CMonster
 {
@@ -27,6 +28,8 @@ private:
 	explicit CBalrog(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CBalrog(const CBalrog& rhs);
 	virtual ~CBalrog() = default;
+public:
+	virtual _matrix GetWorldMatrix();
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject_Clone(void* pArg);
@@ -39,7 +42,11 @@ private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
-	CCollider*			m_pHitColliderCom = nullptr;
+	CCollider*			m_pHitColliderCom = nullptr;				// 피격
+	CCollider*			m_pDmgOneColliderCom = nullptr;				// 일반 공격
+	CCollider*			m_pDmgTwoColliderCom = nullptr;				// 발차기
+	CCollider*			m_pOuterIntersectColliderCom = nullptr;		// 외부 교차박스
+	CCollider*			m_pInnerIntersectColliderCom = nullptr;		// 내부 교차박스
 	CTransform*			m_pTransformCom = nullptr;
 	CNavigation*		m_pNavigationCom = nullptr;
 	CMesh_Dynamic*		m_pMeshCom = nullptr;
@@ -49,9 +56,15 @@ private:
 private: // 옵저버패턴
 	CSubject_Balrog*	m_pSubject = nullptr;
 private:
+	CObserver_Player*	m_pObserver = nullptr;
+private:
+	_uint				m_iAttCount = 0;
+private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);
+private:
+	HRESULT LookAtPlayer();
 private:
 	virtual HRESULT State_Machine(_double TimeDelta);
 	virtual HRESULT State_Idle(_double TimeDelta);

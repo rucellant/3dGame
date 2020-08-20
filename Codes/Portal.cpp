@@ -51,7 +51,7 @@ _int CPortal::Update_GameObject(_double TimeDelta)
 		{
 			m_bIsAlive = false;
 			CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
-			((CNavigation*)pPlayer->Get_Component(L"Com_Navigation"))->Set_Mode(CCell::MODE_OPEN);
+			pPlayer->Set_Navigation_Mode(_uint(CCell::MODE_OPEN));
 		}
 	}
 		

@@ -5,6 +5,7 @@
 
 BEGIN(Client)
 
+class CPlayer;
 class CIcicle;
 class CCrystal;
 class CMonster;
@@ -39,10 +40,14 @@ public:
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag);
 	HRESULT Collision_MidBoss_Trigger_Player(_uint iSceneID, CMidBoss_Trigger* pTrigger,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag);
+	HRESULT Collision_Boss_Intersect_Player(_uint iSceneID, CMonster* pMonster, const _tchar* pMonsterComponentTag,
+		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pbIsResult);
 private:
 	CManagement*		m_pManagement = nullptr;
 private:
 	CObserver_Player*	m_pObserver = nullptr;
+private:
+	_bool Is_Player_Collided(CPlayer* pPlayer, const _tchar* pPlayerColldierTag, CGameObject* pGameObject, const _tchar* pColliderTag, CCollider::COLLISIONWAY eWay);
 public:
 	virtual void Free();
 };

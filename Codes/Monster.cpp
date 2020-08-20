@@ -4,6 +4,11 @@
 
 USING(Client)
 
+_matrix CMonster::GetWorldMatrix()
+{
+	return _matrix();
+}
+
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {

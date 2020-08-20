@@ -27,11 +27,11 @@ HRESULT CLoading::Ready_Loading(SCENEID eSceneID)
 
 _uint CLoading::Thread_Main(void * pArg)
 {
-	CLoading*		pLoading = (CLoading*)pArg;
+	CLoading* pLoading = (CLoading*)pArg;
 
 	EnterCriticalSection(&pLoading->m_CS);
 
-	HRESULT			hr;
+	HRESULT hr;
 
 	switch (pLoading->Get_SceneID())
 	{

@@ -267,6 +267,16 @@ HRESULT CPlayer::Set_Look(_vec3 vPosition)
 	return NOERROR;
 }
 
+HRESULT CPlayer::Set_Navigation_Mode(_uint eMode)
+{
+	if (m_pNavigationCom == nullptr)
+		return E_FAIL;
+
+	m_pNavigationCom->Set_Mode(CCell::MODE(eMode));
+
+	return NOERROR;
+}
+
 HRESULT CPlayer::Add_Component(void * pArg)
 {
 	m_tObjDesc = *(OBJDESC*)pArg;

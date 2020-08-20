@@ -20,6 +20,17 @@ CBalrog::CBalrog(const CBalrog & rhs)
 {
 }
 
+_matrix CBalrog::GetWorldMatrix()
+{
+	_matrix matTmp;
+	D3DXMatrixIdentity(&matTmp);
+
+	if (m_pTransformCom == nullptr)
+		return matTmp;
+
+	return m_pTransformCom->Get_WorldMatrix();
+}
+
 HRESULT CBalrog::Ready_GameObject_Prototype()
 {
 	return NOERROR;
@@ -40,7 +51,7 @@ HRESULT CBalrog::Ready_GameObject_Clone(void * pArg)
 
 	CTransform::STATEDESC tStateDesc;
 	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
-	tStateDesc.fSpeedPerSec = 10.f;
+	tStateDesc.fSpeedPerSec = 15.f;
 
 	m_pTransformCom->Set_StateDesc(tStateDesc);
 
@@ -69,6 +80,13 @@ HRESULT CBalrog::Ready_GameObject_Clone(void * pArg)
 	m_pSubject->Notify(CSubject_Balrog::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Balrog::TYPE_MATRIX);
 	m_pSubject->Notify(CSubject_Balrog::TYPE_STATE);
+
+	m_pObserver = CObserver_Player::Create();
+	if (m_pObserver == nullptr)
+		return E_FAIL;
+
+	if (FAILED(CSubject_Player::GetInstance()->Subscribe((CObserver*)m_pObserver)))
+		return E_FAIL;
 
 	m_bIsAlive = true;
 
@@ -199,10 +217,50 @@ HRESULT CBalrog::Add_Component(void * pArg)
 	CCollider::COLLIDER_DESC tHitDesc;
 	tHitDesc.fRadius = 0.f;
 	tHitDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
-	tHitDesc.vLocalPosition = _vec3(0.f, 2.f, 0.f);
-	tHitDesc.vLocalScale = _vec3(5.f, 5.f, 5.f);
+	tHitDesc.vLocalPosition = _vec3(0.f, 5.f, -10.f);
+	tHitDesc.vLocalScale = _vec3(15.f, 10.f, 15.f);
 
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_HitBox", (CComponent**)&m_pHitColliderCom, &tHitDesc)))
+		return E_FAIL;
+
+	// For. Com_DmgOneBox
+	CCollider::COLLIDER_DESC tDmgOneDesc;
+	tDmgOneDesc.fRadius = 0.f;
+	tDmgOneDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tDmgOneDesc.vLocalPosition = _vec3(-7.f, 5.f, 50.f);
+	tDmgOneDesc.vLocalScale = _vec3(10.f, 10.f, 75.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_DmgOneBox", (CComponent**)&m_pDmgOneColliderCom, &tDmgOneDesc)))
+		return E_FAIL;
+
+	// For. Com_DmgTwoBox
+	CCollider::COLLIDER_DESC tDmgTwoDesc;
+	tDmgTwoDesc.fRadius = 5.f;
+	tDmgTwoDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tDmgTwoDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
+	tDmgTwoDesc.vLocalScale = _vec3(0.f, 0.f, 0.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_DmgTwoBox", (CComponent**)&m_pDmgTwoColliderCom, &tDmgTwoDesc)))
+		return E_FAIL;
+
+	// For. Com_OuterIntersectBox
+	CCollider::COLLIDER_DESC tOuterIntersectDesc;
+	tOuterIntersectDesc.fRadius = 22.f;
+	tOuterIntersectDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tOuterIntersectDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
+	tOuterIntersectDesc.vLocalScale = _vec3(0.f, 0.f, 0.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_OuterIntersectBox", (CComponent**)&m_pOuterIntersectColliderCom, &tOuterIntersectDesc)))
+		return E_FAIL;
+
+	// For. Com_InnerIntersectBox
+	CCollider::COLLIDER_DESC tInnerIntersectDesc;
+	tInnerIntersectDesc.fRadius = 4.f;
+	tInnerIntersectDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	tInnerIntersectDesc.vLocalPosition = _vec3(0.f, 0.f, 0.f);
+	tInnerIntersectDesc.vLocalScale = _vec3(0.f, 0.f, 0.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_InnerIntersectBox", (CComponent**)&m_pInnerIntersectColliderCom, &tInnerIntersectDesc)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -258,6 +316,36 @@ HRESULT CBalrog::Render(_uint iPassIndex)
 	m_pShaderCom->End_Shader();
 
 	m_pHitColliderCom->Render_Collider();
+	m_pDmgOneColliderCom->Render_Collider();
+	m_pDmgTwoColliderCom->Render_Collider();
+	m_pOuterIntersectColliderCom->Render_Collider();
+	m_pInnerIntersectColliderCom->Render_Collider();
+
+	return NOERROR;
+}
+
+HRESULT CBalrog::LookAtPlayer()
+{
+	_matrix matPlayer = *(_matrix*)m_pObserver->GetData(CSubject_Player::TYPE_MATRIX);
+
+	matPlayer.m[3][1] = m_pTransformCom->Get_State(CTransform::STATE_POSITION).y;
+
+	_float fScale = m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT);
+
+	_vec3 vRight, vUp, vLook;
+
+	vLook = *(_vec3*)&matPlayer.m[3] - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	D3DXVec3Cross(&vRight, &_vec3(0.f, 1.f, 0.f), &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScale);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScale);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScale);
 
 	return NOERROR;
 }
@@ -299,6 +387,72 @@ HRESULT CBalrog::State_Machine(_double TimeDelta)
 
 HRESULT CBalrog::State_Idle(_double TimeDelta)
 {
+	if (FAILED(LookAtPlayer()))
+		return E_FAIL;
+
+	// 아우터 인터섹트와 충돌 검사 -> 충돌 안하면 플레이어한테 걸어 감
+	_bool bIsResult = false;
+	if (FAILED(CCollisionMgr::GetInstance()->Collision_Boss_Intersect_Player(g_eScene, this, L"Com_OuterIntersectBox", L"Layer_Player", L"Com_HitBox", &bIsResult)))
+		return E_FAIL;
+
+	if (!bIsResult)
+	{
+		m_iAnimation = BALROG_RUN_F;
+		m_eCurState = RUN;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		return NOERROR;
+	}
+
+	// 이너 인터섹트와 충돌 검사 -> 충돌 하면 발차기 함
+	if (FAILED(CCollisionMgr::GetInstance()->Collision_Boss_Intersect_Player(g_eScene, this, L"Com_InnerIntersectBox", L"Layer_Player", L"Com_HitBox", &bIsResult)))
+		return E_FAIL;
+
+	if (bIsResult)
+	{
+		m_iAnimation = BALROG_ATT02;
+		m_eCurState = ATT;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		return NOERROR;
+	}
+
+	if (m_iAttCount < 3)
+	{
+		m_iAnimation = BALROG_ATT01;
+		m_eCurState = ATT;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		m_iAttCount++;
+
+		return NOERROR;
+	}
+
+	if (m_iAttCount >= 3)
+	{
+		m_iAnimation = BALROG_BREATH;
+		m_eCurState = ATT;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		m_iAttCount = 0;
+
+		return NOERROR;
+	}
+
+	////
+
 	m_iAnimation = BALROG_IDLE;
 	m_eCurState = IDLE;
 
@@ -311,11 +465,66 @@ HRESULT CBalrog::State_Idle(_double TimeDelta)
 
 HRESULT CBalrog::State_Run(_double TimeDelta)
 {
+	// 아우터 인터섹트와 충돌 검사 -> 충돌 안하면 플레이어한테 걸어 감
+	_bool bIsResult = false;
+	if (FAILED(CCollisionMgr::GetInstance()->Collision_Boss_Intersect_Player(g_eScene, this, L"Com_OuterIntersectBox", L"Layer_Player", L"Com_HitBox", &bIsResult)))
+		return E_FAIL;
+
+	if (bIsResult)
+	{
+		if (m_iAttCount < 3)
+		{
+			m_iAnimation = BALROG_ATT01;
+			m_eCurState = ATT;
+
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
+			return NOERROR;
+		}
+		else
+		{
+			m_iAnimation = BALROG_BREATH;
+			m_eCurState = ATT;
+
+			m_fNewSpeed = DEFAULT_ANIM_SPEED;
+			m_Duration = DEFAULT_ANIM_DURATION;
+			m_Period = DEFAULT_ANIM_PERIOD;
+
+			return NOERROR;
+		}
+	}
+
+	if (FAILED(LookAtPlayer()))
+		return E_FAIL;
+
+	m_pTransformCom->Move_Forward(TimeDelta);
+
+	m_iAnimation = BALROG_RUN_F;
+	m_eCurState = RUN;
+
+	m_fNewSpeed = DEFAULT_ANIM_SPEED;
+	m_Duration = DEFAULT_ANIM_DURATION;
+	m_Period = DEFAULT_ANIM_PERIOD;
+
 	return NOERROR;
 }
 
 HRESULT CBalrog::State_Att(_double TimeDelta)
 {
+	if (m_pMeshCom->is_Finished())
+	{
+		m_iAnimation = BALROG_IDLE;
+		m_eCurState = IDLE;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		return NOERROR;
+	}
+
 	return NOERROR;
 }
 
@@ -342,6 +551,10 @@ HRESULT CBalrog::State_Dead(_double TimeDelta)
 HRESULT CBalrog::Update_Collider()
 {
 	m_pHitColliderCom->Update_Collider();
+	m_pDmgOneColliderCom->Update_Collider();
+	m_pDmgTwoColliderCom->Update_Collider();
+	m_pOuterIntersectColliderCom->Update_Collider();
+	m_pInnerIntersectColliderCom->Update_Collider();
 
 	return NOERROR;
 }
@@ -390,9 +603,13 @@ void CBalrog::Free()
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pHitColliderCom);
+	Safe_Release(m_pDmgOneColliderCom);
+	Safe_Release(m_pDmgTwoColliderCom);
+	Safe_Release(m_pOuterIntersectColliderCom);
+	Safe_Release(m_pInnerIntersectColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pMeshCom);
-
+		
 	CMonster::Free();
 }

@@ -54,6 +54,7 @@ public: // Get
 		return m_eCurState; }
 	MONSTERINFO GetMonsterInfo() {
 		return m_tMonsterInfo; }
+	virtual _matrix GetWorldMatrix();
 protected:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CMonster(const CMonster& rhs);

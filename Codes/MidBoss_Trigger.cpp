@@ -60,8 +60,10 @@ _int CMidBoss_Trigger::Update_GameObject(_double TimeDelta)
 				{
 					CTransform* pTransform = (CTransform*)pMonster->Get_Component(L"Com_Transform");
 
-					_vec3 vMonsterPosition = pTransform->Get_State(CTransform::STATE_POSITION);
-					_vec3 vMonsterLook = pTransform->Get_State(CTransform::STATE_LOOK);
+					_matrix matMonster = ((CMonster*)pMonster)->GetWorldMatrix();
+
+					_vec3 vMonsterPosition = *(_vec3*)&matMonster.m[3];
+					_vec3 vMonsterLook = *(_vec3*)&matMonster.m[2];
 					D3DXVec3Normalize(&vMonsterLook, &vMonsterLook);
 
 					_vec3 vCameraPosition = vMonsterPosition + vMonsterLook * 30.f;
