@@ -191,6 +191,9 @@
     <Filter Include="03. GameObject\UI\HpBar_Boss">
       <UniqueIdentifier>{840aecaa-0b53-4c90-9e43-67986390eb2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Stage\Trigger\StageEnd_Trigger">
+      <UniqueIdentifier>{b03183f8-ba7e-45fb-81e7-27d2cc585c5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -334,14 +337,17 @@
     <ClInclude Include="..\Headers\Balrog.h">
       <Filter>03. GameObject\Stage\Monster\Balrog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Observer_Balrog.h">
-      <Filter>04. Observer / Subject\Observer\Observer_Balrog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Headers\Subject_Balrog.h">
-      <Filter>04. Observer / Subject\Subject\Subject_Balrog</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\HpBar_Boss.h">
       <Filter>03. GameObject\UI\HpBar_Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\StageEnd_Trigger.h">
+      <Filter>03. GameObject\Stage\Trigger\StageEnd_Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Subject_Boss.h">
+      <Filter>04. Observer / Subject\Subject\Subject_Balrog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Observer_Boss.h">
+      <Filter>04. Observer / Subject\Observer\Observer_Balrog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -474,14 +480,17 @@
     <ClCompile Include="..\Codes\Balrog.cpp">
       <Filter>03. GameObject\Stage\Monster\Balrog</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Observer_Balrog.cpp">
-      <Filter>04. Observer / Subject\Observer\Observer_Balrog</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Codes\Subject_Balrog.cpp">
-      <Filter>04. Observer / Subject\Subject\Subject_Balrog</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\HpBar_Boss.cpp">
       <Filter>03. GameObject\UI\HpBar_Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\StageEnd_Trigger.cpp">
+      <Filter>03. GameObject\Stage\Trigger\StageEnd_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Subject_Boss.cpp">
+      <Filter>04. Observer / Subject\Subject\Subject_Balrog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Observer_Boss.cpp">
+      <Filter>04. Observer / Subject\Observer\Observer_Balrog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ public:
 	HRESULT Collision_Player_Shoulder_Monster(_uint iSceneID, const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag,
 		const _tchar* pMonsterLayerTag, const _tchar* pMonsterComponentTag, CCollider::COLLISIONWAY eWay);
 	HRESULT Collision_Player_Earthquake_Monster(_uint iSceneID, const _tchar* pPlayerLayerTag, const _tchar* pShieldComponentTag, const _tchar* pPlayerComponentTag,
-		const _tchar* pMonsterLayerTag, const _tchar* pMonsterComponentTag, CCollider::COLLISIONWAY eWay);
+		const _tchar* pMonsterLayerTag, const _tchar* pMonsterComponentTag, CCollider::COLLISIONWAY eWay, _bool* pIsSK = nullptr);
 	HRESULT Collision_Monster_Detect_Player(_uint iSceneID, CMonster* pMonster,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, CCollider::COLLISIONWAY eWay, _bool* pIsTrue);
 	HRESULT Collision_Monster_Attack_Player(_uint iSceneID, CMonster* pMonster,
@@ -42,6 +42,8 @@ public:
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag);
 	HRESULT Collision_Boss_Intersect_Player(_uint iSceneID, CMonster* pMonster, const _tchar* pMonsterComponentTag,
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pbIsResult);
+	HRESULT Collision_Boss_Knockback_Player(_uint iSceneID, CMonster* pMonster, const _tchar* pMonsterComponentTag,
+		const _tchar* pPlayerComponentTag, _bool* pbIsResult);
 private:
 	CManagement*		m_pManagement = nullptr;
 private:

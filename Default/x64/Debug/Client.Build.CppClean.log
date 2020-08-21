@@ -7,7 +7,7 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\monster.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mpbar.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\observer_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\portal.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\quatran.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\balrog.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_boss.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_logo.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\scene_stage.obj
@@ -39,7 +39,9 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_background.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_icon.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mainapp.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collidermanager.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\balrog.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\observer_balrog.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\subject_balrog.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\hpbar_boss.obj
 c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_default.cso
@@ -55,6 +57,7 @@ c:\users\zooz2\desktop\portfolio\client\bin\client.ilk
 c:\users\zooz2\desktop\portfolio\client\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\bin\client.pdb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.res
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collisionmgr.obj.enc
 c:\users\zooz2\desktop\portfolio\client\default\..\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.command.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.read.1.tlog

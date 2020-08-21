@@ -19,7 +19,7 @@
 
 BEGIN(Client)
 
-class CSubject_Balrog;
+class CSubject_Boss;
 class CObserver_Player;
 
 class CBalrog final : public CMonster
@@ -38,6 +38,8 @@ public:
 	virtual HRESULT Render_GameObject();
 public:
 	HRESULT GetReady();
+	virtual HRESULT GetHit(_vec3 vPosition, _int iPlayerDmg);
+	virtual HRESULT Attack_Target(_vec3 vPosition);
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
@@ -54,11 +56,18 @@ private:
 	_bool				m_bIsActive = false;
 	_bool				m_bIsRender = false;
 private: // 옵저버패턴
-	CSubject_Balrog*	m_pSubject = nullptr;
+	CSubject_Boss*		m_pSubject = nullptr;
 private:
 	CObserver_Player*	m_pObserver = nullptr;
 private:
 	_uint				m_iAttCount = 0;
+private:
+	_double				m_TimeWaitAcc = 0.0;
+	_double				m_TimeDeadAcc = 0.0;
+	_double				m_TimeAnimationAcc = 0.0;
+private:
+	_bool				m_bIsBreath = false;
+	_bool				m_bIsAtt = false;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();

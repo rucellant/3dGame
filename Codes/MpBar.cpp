@@ -203,5 +203,7 @@ void CMpBar::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
 
+	Safe_Release(m_pObserver);
+
 	CUI::Free();
 }

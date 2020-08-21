@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CObserver_Balrog;
+class CObserver_Boss;
 
 class CHpBar_Boss final : public CUI
 {
@@ -31,7 +31,7 @@ private:
 	CTransform*			m_pTransformCom = nullptr;
 	CVIBuffer_VRect*	m_pVIBufferCom = nullptr;
 private:
-	CObserver_Balrog*	m_pObserver = nullptr;
+	CObserver_Boss*		m_pObserver = nullptr;
 private:
 	DESC				m_tDesc[3]; // 0은 배경의 검은색, 1은 실제 피 텍스쳐 
 private:

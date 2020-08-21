@@ -27,6 +27,7 @@
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
 #include "MidBoss_Trigger.h"
+#include "StageEnd_Trigger.h"
 
 USING(Client)
 
@@ -78,7 +79,7 @@ _int CScene_Stage::Update_Scene(_double TimeDelta)
 
 _int CScene_Stage::LateUpdate_Scene(_double TimeDelta)
 {
-	if ((GetKeyState(VK_SPACE) & 0x8000) && (m_pLoading->Get_Complete() == 1))
+	if (m_bNextStage/*(GetKeyState(VK_SPACE) & 0x8000)*/ && (m_pLoading->Get_Complete() == 1))
 	{
 		CManagement* pManagement = CManagement::GetInstance();
 		if (pManagement == nullptr)
@@ -508,6 +509,13 @@ HRESULT CScene_Stage::Ready_Layer_Trigger()
 		return E_FAIL;
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_MidBoss_Trigger")))
+		return E_FAIL;
+
+	// For. GameObject_StageEnd_Trigger
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_StageEnd_Trigger", CStageEnd_Trigger::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_StageEnd_Trigger", &m_bNextStage)))
 		return E_FAIL;
 
 	Safe_Release(pManagement);

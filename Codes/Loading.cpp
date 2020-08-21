@@ -421,6 +421,10 @@ HRESULT CLoading::Ready_Interact_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Twister", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Interact/IceTwister/", L"IceTwister.X", &matLocal))))
 		return E_FAIL;
 
+	// For. Component_Texture_StageEnd
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_StageEnd", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/StageEnd/StageEnd_%d.tga", 2))))
+		return E_FAIL;
+
 	// Read File Crystal
 	{
 		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Interact_Crystal.dat", GENERIC_READ, 0, 0,

@@ -186,6 +186,8 @@ HRESULT CPlayer::SetUp_PlayerSK(CSK_Slot::SK_ID eID, _double Duration, _double P
 {
 	m_eCurState = SK;
 
+	m_bIsSK = true;
+
 	switch (eID)
 	{
 	case CSK_Slot::SK_TORNADO:
@@ -737,23 +739,34 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		else
 		{
 			//여기서 충돌처리요구
-			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Tornado_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
-				return E_FAIL;
+			if (m_bIsSK)
+			{
+				if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Tornado_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
+					return E_FAIL;
+				m_bIsSK = false;
+			}
 		}
 	}
 
 	if (m_iAnimation == PLAYER_SHOULDER)
 	{
 		//여기서 충돌처리요구
-		if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Shoulder_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
-			return E_FAIL;
+		if (m_bIsSK)
+		{
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Shoulder_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
+				return E_FAIL;
+			m_bIsSK = false;
+		}
 	}
 
 	if (m_iAnimation == PLAYER_EARTHQUAKE)
 	{
 		//여기서 충돌처리요구
-		if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Earthquake_Monster(g_eScene, L"Layer_Player", L"Com_Collider", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
-			return E_FAIL;
+		if (m_bIsSK)
+		{
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Earthquake_Monster(g_eScene, L"Layer_Player", L"Com_Collider", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE, &m_bIsSK)))
+				return E_FAIL;
+		}
 	}
 	
 	if (m_pMeshCom->is_Finished())
@@ -762,6 +775,8 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		m_eCurState = IDLE;
 
 		m_TimeTornadoAcc = 0.0;
+
+		m_bIsSK = false;
 	}
 	return NOERROR;
 }

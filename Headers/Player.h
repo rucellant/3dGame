@@ -105,6 +105,7 @@ private: // 정보들
 	PLAYERINFO			m_tPlayerInfo;
 private: // 제어상태
 	_bool				m_bIsControl = true;
+	_bool				m_bIsSK = false;
 private: // 상태
 	STATE				m_eCurState = IDLE;
 private: // Animation 

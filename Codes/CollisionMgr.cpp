@@ -154,7 +154,12 @@ HRESULT CCollisionMgr::Collision_Player_Tornado_Monster(_uint iSceneID, const _t
 			CPlayer::PLAYERINFO tInfo = *(CPlayer::PLAYERINFO*)m_pObserver->GetData(CSubject_Player::TYPE_INFO);
 			_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
 
-			((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg * 3);
+			CMonster::MONSTER_TYPE eType = ((CMonster*)pMonster)->GetType();
+
+			if (eType == CMonster::TYPE_BALROG)
+				((CMonster*)pMonster)->GetHit(vPlayerPosition, iPlayerDmg * 3);
+			else
+				((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg * 3);
 		}
 	}
 
@@ -227,7 +232,14 @@ HRESULT CCollisionMgr::Collision_Player_Shoulder_Monster(_uint iSceneID, const _
 			_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
 
 			if (0.4f <= D3DXVec3Dot(&vDir, &vPlayerLook) && 1.1f >= D3DXVec3Dot(&vDir, &vPlayerLook))
-				((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg * 2);
+			{
+				CMonster::MONSTER_TYPE eType = ((CMonster*)pMonster)->GetType();
+
+				if (eType == CMonster::TYPE_BALROG)
+					((CMonster*)pMonster)->GetHit(vPlayerPosition, iPlayerDmg * 2);
+				else
+					((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg * 2);
+			}
 		}
 	}
 
@@ -235,7 +247,7 @@ HRESULT CCollisionMgr::Collision_Player_Shoulder_Monster(_uint iSceneID, const _
 }
 
 HRESULT CCollisionMgr::Collision_Player_Earthquake_Monster(_uint iSceneID, const _tchar* pPlayerLayerTag, const _tchar* pShieldComponentTag, const _tchar* pPlayerComponentTag,
-	const _tchar* pMonsterLayerTag, const _tchar* pMonsterComponentTag, CCollider::COLLISIONWAY eWay)
+	const _tchar* pMonsterLayerTag, const _tchar* pMonsterComponentTag, CCollider::COLLISIONWAY eWay, _bool* pIsSK)
 {
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, pPlayerLayerTag, 0);
 	CShield* pShield = (CShield*)m_pManagement->Get_GameObject(g_eScene, pPlayerLayerTag, 2);
@@ -251,6 +263,7 @@ HRESULT CCollisionMgr::Collision_Player_Earthquake_Monster(_uint iSceneID, const
 		return E_FAIL;
 
 	_bool bIsCollision = pBottomCollider->Collision_OBB(pShieldCollider);
+
 	if (!bIsCollision)
 		return NOERROR;
 
@@ -295,7 +308,14 @@ HRESULT CCollisionMgr::Collision_Player_Earthquake_Monster(_uint iSceneID, const
 			CPlayer::PLAYERINFO tInfo = *(CPlayer::PLAYERINFO*)m_pObserver->GetData(CSubject_Player::TYPE_INFO);
 			_int iPlayerDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
 
-			((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg);
+			CMonster::MONSTER_TYPE eType = ((CMonster*)pMonster)->GetType();
+
+			if (eType == CMonster::TYPE_BALROG)
+				((CMonster*)pMonster)->GetHit(vPlayerPosition, iPlayerDmg);
+			else
+				((CMonster*)pMonster)->Knockdown(vPlayerPosition, iPlayerDmg);
+
+			*pIsSK = false;
 		}
 	}
 
@@ -331,7 +351,15 @@ HRESULT CCollisionMgr::Collision_Monster_Attack_Player(_uint iSceneID, CMonster 
 {
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
 
-	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, L"Com_AttRangeBox", CCollider::WAY_BOXSPHERE);
+	//
+	CMonster::MONSTER_TYPE eType = pMonster->GetType();
+
+	_bool bIsCollision = false;
+
+	if (eType == CMonster::TYPE_BALROG)
+		bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, L"Com_DmgOneBox", CCollider::WAY_OBB);
+	else
+		bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, L"Com_AttRangeBox", CCollider::WAY_BOXSPHERE);
 
 	if (!bIsCollision)
 		return NOERROR;
@@ -476,6 +504,41 @@ HRESULT CCollisionMgr::Collision_Boss_Intersect_Player(_uint iSceneID, CMonster*
 	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, pMonsterComponentTag, CCollider::WAY_BOXSPHERE);
 
 	*pbIsResult = bIsCollision;
+
+	return NOERROR;
+}
+
+HRESULT CCollisionMgr::Collision_Boss_Knockback_Player(_uint iSceneID, CMonster * pMonster, const _tchar * pMonsterComponentTag, 
+	const _tchar * pPlayerComponentTag, _bool * pbIsResult)
+{
+	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pMonster, pMonsterComponentTag, CCollider::WAY_BOXSPHERE);
+
+	if (!bIsCollision)
+		return NOERROR;
+	else
+	{
+		//1. 플레이어로 향하는 벡터를 구함
+		_vec3 vPlayerPosition = ((CTransform*)pPlayer->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
+		_vec3 vMonsterPosition = ((CTransform*)pMonster->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
+		vPlayerPosition.y = vMonsterPosition.y;
+
+		_vec3 vDir = vPlayerPosition - vMonsterPosition;
+		D3DXVec3Normalize(&vDir, &vDir);
+
+		//2. 몬스터의 룩을 구함
+		_vec3 vMonsterLook = ((CTransform*)pMonster->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_LOOK);
+		D3DXVec3Normalize(&vMonsterLook, &vMonsterLook);
+		
+		CMonster::MONSTERINFO tInfo = pMonster->GetMonsterInfo();
+		_int iMonsterDmg = rand() % tInfo.iMaxDmg + tInfo.iMinDmg;
+
+		if (0.4f <= D3DXVec3Dot(&vDir, &vMonsterLook) && 1.1f >= D3DXVec3Dot(&vDir, &vMonsterLook))
+			pPlayer->Knockdown(vMonsterPosition, iMonsterDmg);
+
+		*pbIsResult = true;
+	}
 
 	return NOERROR;
 }

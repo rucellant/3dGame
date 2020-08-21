@@ -18,7 +18,8 @@ public:
 	virtual _int LateUpdate_Scene(_double TimeDelta);
 	virtual HRESULT Render_Scene();
 private:
-	CLoading* m_pLoading = nullptr;
+	CLoading*	m_pLoading = nullptr;
+	_bool		m_bNextStage = false;
 private:
 	HRESULT Ready_Layer_Terrain();
 	HRESULT Ready_Layer_Camera();

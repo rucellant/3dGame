@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Management.h"
 #include "CollisionMgr.h"
+#include "Observer_Boss.h"
 #include "Observer_Player.h"
-#include "Observer_Balrog.h"
 
 
 USING(Client)
@@ -71,15 +71,15 @@ HRESULT CBalrog::Ready_GameObject_Clone(void * pArg)
 	m_tMonsterInfo.iMinDmg = 100;
 	m_tMonsterInfo.iGold = 100;
 
-	m_pSubject = CSubject_Balrog::GetInstance();
+	m_pSubject = CSubject_Boss::GetInstance();
 
-	m_pSubject->AddData(CSubject_Balrog::TYPE_MATRIX, m_pTransformCom->Get_WorldMatrixPointer());
-	m_pSubject->AddData(CSubject_Balrog::TYPE_INFO, &m_tMonsterInfo);
-	m_pSubject->AddData(CSubject_Balrog::TYPE_STATE, &m_eCurState);
+	m_pSubject->AddData(CSubject_Boss::TYPE_MATRIX, m_pTransformCom->Get_WorldMatrixPointer());
+	m_pSubject->AddData(CSubject_Boss::TYPE_INFO, &m_tMonsterInfo);
+	m_pSubject->AddData(CSubject_Boss::TYPE_STATE, &m_eCurState);
 
-	m_pSubject->Notify(CSubject_Balrog::TYPE_INFO);
-	m_pSubject->Notify(CSubject_Balrog::TYPE_MATRIX);
-	m_pSubject->Notify(CSubject_Balrog::TYPE_STATE);
+	m_pSubject->Notify(CSubject_Boss::TYPE_INFO);
+	m_pSubject->Notify(CSubject_Boss::TYPE_MATRIX);
+	m_pSubject->Notify(CSubject_Boss::TYPE_STATE);
 
 	m_pObserver = CObserver_Player::Create();
 	if (m_pObserver == nullptr)
@@ -136,9 +136,9 @@ _int CBalrog::Update_GameObject(_double TimeDelta)
 	Update_Collider();
 
 	// 서브젝트에게 정보 갱신함
-	m_pSubject->Notify(CSubject_Balrog::TYPE_INFO);
-	m_pSubject->Notify(CSubject_Balrog::TYPE_MATRIX);
-	m_pSubject->Notify(CSubject_Balrog::TYPE_STATE);
+	m_pSubject->Notify(CSubject_Boss::TYPE_INFO);
+	m_pSubject->Notify(CSubject_Boss::TYPE_MATRIX);
+	m_pSubject->Notify(CSubject_Boss::TYPE_STATE);
 
 	return _int();
 }
@@ -185,6 +185,32 @@ HRESULT CBalrog::GetReady()
 	return NOERROR;
 }
 
+HRESULT CBalrog::GetHit(_vec3 vPosition, _int iPlayerDmg)
+{
+	m_tMonsterInfo.iCurHp -= iPlayerDmg;
+
+	if (m_tMonsterInfo.iCurHp <= 0)
+	{
+		m_iAnimation = BALROG_DEAD;
+		m_eCurState = DEAD;
+
+		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_Duration = DEFAULT_ANIM_DURATION;
+		m_Period = DEFAULT_ANIM_PERIOD;
+
+		m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
+
+		return NOERROR;
+	}
+
+	return NOERROR;
+}
+
+HRESULT CBalrog::Attack_Target(_vec3 vPosition)
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CBalrog::Add_Component(void * pArg)
 {
 	m_tObjDesc = *(OBJDESC*)pArg;
@@ -227,7 +253,7 @@ HRESULT CBalrog::Add_Component(void * pArg)
 	CCollider::COLLIDER_DESC tDmgOneDesc;
 	tDmgOneDesc.fRadius = 0.f;
 	tDmgOneDesc.pTargetMatrix = m_pTransformCom->Get_WorldMatrixPointer();
-	tDmgOneDesc.vLocalPosition = _vec3(-7.f, 5.f, 50.f);
+	tDmgOneDesc.vLocalPosition = _vec3(-5.f, 5.f, 50.f);
 	tDmgOneDesc.vLocalScale = _vec3(10.f, 10.f, 75.f);
 
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_DmgOneBox", (CComponent**)&m_pDmgOneColliderCom, &tDmgOneDesc)))
@@ -390,6 +416,17 @@ HRESULT CBalrog::State_Idle(_double TimeDelta)
 	if (FAILED(LookAtPlayer()))
 		return E_FAIL;
 
+	if ((m_iAttCount == 3 && m_TimeWaitAcc <= 5.0) || m_bIsBreath && m_TimeWaitAcc <= 5.0)
+	{
+		m_TimeWaitAcc += TimeDelta;
+		return NOERROR;
+	}
+	else
+	{
+		m_TimeWaitAcc = 0.0;
+		m_bIsBreath = false;
+	}
+
 	// 아우터 인터섹트와 충돌 검사 -> 충돌 안하면 플레이어한테 걸어 감
 	_bool bIsResult = false;
 	if (FAILED(CCollisionMgr::GetInstance()->Collision_Boss_Intersect_Player(g_eScene, this, L"Com_OuterIntersectBox", L"Layer_Player", L"Com_HitBox", &bIsResult)))
@@ -416,7 +453,7 @@ HRESULT CBalrog::State_Idle(_double TimeDelta)
 		m_iAnimation = BALROG_ATT02;
 		m_eCurState = ATT;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_fNewSpeed = 2.f;//DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
@@ -428,11 +465,15 @@ HRESULT CBalrog::State_Idle(_double TimeDelta)
 		m_iAnimation = BALROG_ATT01;
 		m_eCurState = ATT;
 
-		m_fNewSpeed = DEFAULT_ANIM_SPEED;
+		m_fNewSpeed = 2.f;//DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
 
 		m_iAttCount++;
+
+		/*_bool bIsTrue = false;
+		if (FAILED(CCollisionMgr::GetInstance()->Collision_Monster_Attack_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", &bIsTrue)))
+			return E_FAIL;*/
 
 		return NOERROR;
 	}
@@ -447,6 +488,8 @@ HRESULT CBalrog::State_Idle(_double TimeDelta)
 		m_Period = DEFAULT_ANIM_PERIOD;
 
 		m_iAttCount = 0;
+
+		m_bIsBreath = true;
 
 		return NOERROR;
 	}
@@ -513,6 +556,32 @@ HRESULT CBalrog::State_Run(_double TimeDelta)
 
 HRESULT CBalrog::State_Att(_double TimeDelta)
 {
+	if (!m_pMeshCom->is_Finished() && m_iAnimation == BALROG_ATT01)
+	{
+		m_TimeAnimationAcc += TimeDelta;
+
+		if (m_TimeAnimationAcc >= 1.0 && !m_bIsAtt)
+		{
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Monster_Attack_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", &m_bIsAtt)))
+				return E_FAIL;
+		}
+
+		return NOERROR;
+	}
+
+	if (!m_pMeshCom->is_Finished() && m_iAnimation == BALROG_ATT02)
+	{
+		m_TimeAnimationAcc += TimeDelta;
+
+		if (m_TimeAnimationAcc >= 1.0 && !m_bIsAtt)
+		{
+			if (FAILED(CCollisionMgr::GetInstance()->Collision_Boss_Knockback_Player(g_eScene, this, L"Com_InnerIntersectBox", L"Com_HitBox", &m_bIsAtt)))
+				return E_FAIL;
+		}
+
+		return NOERROR;
+	}
+
 	if (m_pMeshCom->is_Finished())
 	{
 		m_iAnimation = BALROG_IDLE;
@@ -521,6 +590,9 @@ HRESULT CBalrog::State_Att(_double TimeDelta)
 		m_fNewSpeed = DEFAULT_ANIM_SPEED;
 		m_Duration = DEFAULT_ANIM_DURATION;
 		m_Period = DEFAULT_ANIM_PERIOD;
+
+		m_bIsAtt = false;
+		m_TimeAnimationAcc = 0.0;
 
 		return NOERROR;
 	}
@@ -545,6 +617,17 @@ HRESULT CBalrog::State_Groggy(_double TimeDelta)
 
 HRESULT CBalrog::State_Dead(_double TimeDelta)
 {
+	if (m_pMeshCom->is_Finished() && m_iAnimation == BALROG_DEAD)
+		m_iAnimation = BALROG_DEAD_LOOP;
+
+	if (m_iAnimation == BALROG_DEAD_LOOP)
+	{
+		m_TimeDeadAcc += TimeDelta;
+
+		if (m_TimeDeadAcc >= 5.0)
+			m_pManagement->Push_GameObject(g_eScene, L"Layer_Monster", this);
+	}
+
 	return NOERROR;
 }
 

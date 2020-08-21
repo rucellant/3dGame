@@ -2,7 +2,7 @@
 #include "..\Headers\HpBar_Boss.h"
 #include "Balrog.h"
 #include "Management.h"
-#include "Observer_Balrog.h"
+#include "Observer_Boss.h"
 
 
 USING(Client)
@@ -46,11 +46,11 @@ HRESULT CHpBar_Boss::Ready_GameObject_Clone(void * pArg)
 	m_tDesc[2].fX = g_iWinCX * 0.5f;
 	m_tDesc[2].fY = 0.0f + g_iWinCY * 0.06f;
 
-	m_pObserver = CObserver_Balrog::Create();
+	m_pObserver = CObserver_Boss::Create();
 	if (m_pObserver == nullptr)
 		return E_FAIL;
 
-	if (FAILED(CSubject_Balrog::GetInstance()->Subscribe((CObserver*)m_pObserver)))
+	if (FAILED(CSubject_Boss::GetInstance()->Subscribe((CObserver*)m_pObserver)))
 		return E_FAIL;
 
 	m_eType = TYPE_BOSS;
@@ -166,7 +166,7 @@ HRESULT CHpBar_Boss::SetUp_ConstantTable(_uint iIndex)
 		_float fTimeDelta = _float(m_TimeDelta);
 		m_pShaderCom->Set_Value("g_fTimeDelta", &fTimeDelta, sizeof(_float));
 
-		CMonster::MONSTERINFO tInfo = *(CMonster::MONSTERINFO*)m_pObserver->GetData(CSubject_Balrog::TYPE_INFO);
+		CMonster::MONSTERINFO tInfo = *(CMonster::MONSTERINFO*)m_pObserver->GetData(CSubject_Boss::TYPE_INFO);
 		_float fRatio = tInfo.iCurHp / _float(tInfo.iMaxHp);
 		m_pShaderCom->Set_Value("g_fRatio", &fRatio, sizeof(_float));
 	}
@@ -222,6 +222,8 @@ void CHpBar_Boss::Free()
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
+
+	Safe_Release(m_pObserver);
 
 	CUI::Free();
 }

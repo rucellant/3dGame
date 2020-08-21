@@ -217,7 +217,7 @@
     <ClInclude Include="..\Headers\MidBoss_Trigger.h" />
     <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\MpBar.h" />
-    <ClInclude Include="..\Headers\Observer_Balrog.h" />
+    <ClInclude Include="..\Headers\Observer_Boss.h" />
     <ClInclude Include="..\Headers\Observer_Player.h" />
     <ClInclude Include="..\Headers\Portal.h" />
     <ClInclude Include="..\Headers\Balrog.h" />
@@ -228,7 +228,8 @@
     <ClInclude Include="..\Headers\Skeleton.h" />
     <ClInclude Include="..\Headers\SK_Slot.h" />
     <ClInclude Include="..\Headers\Soldier.h" />
-    <ClInclude Include="..\Headers\Subject_Balrog.h" />
+    <ClInclude Include="..\Headers\StageEnd_Trigger.h" />
+    <ClInclude Include="..\Headers\Subject_Boss.h" />
     <ClInclude Include="..\Headers\Subject_Player.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\Player.h" />
@@ -285,7 +286,7 @@
     <ClCompile Include="..\Codes\MidBoss_Trigger.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\MpBar.cpp" />
-    <ClCompile Include="..\Codes\Observer_Balrog.cpp" />
+    <ClCompile Include="..\Codes\Observer_Boss.cpp" />
     <ClCompile Include="..\Codes\Observer_Player.cpp" />
     <ClCompile Include="..\Codes\Portal.cpp" />
     <ClCompile Include="..\Codes\Balrog.cpp" />
@@ -296,7 +297,8 @@
     <ClCompile Include="..\Codes\Skeleton.cpp" />
     <ClCompile Include="..\Codes\SK_Slot.cpp" />
     <ClCompile Include="..\Codes\Soldier.cpp" />
-    <ClCompile Include="..\Codes\Subject_Balrog.cpp" />
+    <ClCompile Include="..\Codes\StageEnd_Trigger.cpp" />
+    <ClCompile Include="..\Codes\Subject_Boss.cpp" />
     <ClCompile Include="..\Codes\Subject_Player.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
