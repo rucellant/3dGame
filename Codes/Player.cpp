@@ -34,7 +34,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, *(_vec3*)&m_tObjDesc.matWorld.m[2]);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&m_tObjDesc.matWorld.m[3]);
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(168.f, 55.f, -132.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(162.f, 28.f, -44.f));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(162.f, 28.f, -44.f));
 
 	CTransform::STATEDESC tStateDesc;
 	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
@@ -131,7 +131,7 @@ HRESULT CPlayer::Render_GameObject()
 	if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
 		return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable()))
+	if (FAILED(SetUp_ConstantTable(0)))
 		return E_FAIL;
 
 	if (FAILED(Render(0)))
@@ -344,25 +344,30 @@ HRESULT CPlayer::Add_Component(void * pArg)
 	return NOERROR;
 }
 
-HRESULT CPlayer::SetUp_ConstantTable()
+HRESULT CPlayer::SetUp_ConstantTable(_uint iPassIndex)
 {
 	if (m_pShaderCom == nullptr || m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+	if (iPassIndex == 0)
+	{
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
 
-	if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
-		return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
 
-	_float fTimeExp = _float(m_TimeExp);
-	if (FAILED(m_pShaderCom->Set_Value("g_fTimeExp", &fTimeExp, sizeof(_float))))
-		return E_FAIL;
+		_float fTimeExp = _float(m_TimeExp);
+		if (FAILED(m_pShaderCom->Set_Value("g_fTimeExp", &fTimeExp, sizeof(_float))))
+			return E_FAIL;
+
+		return NOERROR;
+	}
 
 	return NOERROR;
 }

@@ -2,9 +2,7 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.pch
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\vc140.pdb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\vc140.idb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\stdafx.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\midboss_trigger.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\monster.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mpbar.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\observer_boss.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\observer_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\portal.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\balrog.obj
@@ -15,6 +13,8 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\shield.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\skeleton.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\sk_slot.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\soldier.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\stageend_trigger.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\subject_boss.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\subject_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\terrain.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\player.obj
@@ -31,6 +31,7 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\door_trigger.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\gameobject_static.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\gate.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\hpbar.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\hpbar_boss.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\hpbar_monster.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\icicle.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\iomanager.obj
@@ -38,14 +39,15 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_background.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\loading_icon.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mainapp.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\midboss_trigger.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\monster.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mpbar.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collidermanager.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\observer_balrog.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\subject_balrog.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\hpbar_boss.obj
 c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_default.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_effect.cso
+c:\users\zooz2\desktop\portfolio\client\bin\shader_hdr.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_lightacc.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_mesh_static.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_monster.cso
@@ -57,7 +59,6 @@ c:\users\zooz2\desktop\portfolio\client\bin\client.ilk
 c:\users\zooz2\desktop\portfolio\client\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\bin\client.pdb
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.res
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collisionmgr.obj.enc
 c:\users\zooz2\desktop\portfolio\client\default\..\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.command.1.tlog
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.tlog\cl.read.1.tlog

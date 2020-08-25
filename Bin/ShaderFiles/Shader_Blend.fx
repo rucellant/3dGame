@@ -1,4 +1,4 @@
-
+float A = 2.51f, B = 0.03f, C = 2.43f, D = 0.59f, E = 0.14f;
 
 texture		g_DiffuseTexture;
 
@@ -46,11 +46,14 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector		vDiffuse = tex2D(DiffuseSampler, In.vTexUV);
+	//vector		vDiffuse = tex2D(DiffuseSampler, In.vTexUV);
+	vector		vDiffuse = pow(tex2D(DiffuseSampler, In.vTexUV), 2.2);
 	vector		vShade = tex2D(ShadeSampler, In.vTexUV);
 	vector		vSpecular = tex2D(SpecularSampler, In.vTexUV);
 
-	Out.vColor = tex2D(DiffuseSampler, In.vTexUV);//vDiffuse;// *vShade + vSpecular;
+	vector		vColor = vDiffuse * vShade + vSpecular;
+
+	Out.vColor = vColor;
 
 	return Out;
 }
@@ -59,7 +62,7 @@ technique Default_Technique
 {
 	pass Default_Rendering
 	{
-		AlphaTestEnable = true;
+		AlphaTestEnable = false;
 		AlphaFunc = Greater;
 		AlphaRef = 0;
 

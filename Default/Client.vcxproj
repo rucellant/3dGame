@@ -330,6 +330,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_HDR.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh_Static.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx" />

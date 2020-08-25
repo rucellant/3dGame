@@ -131,9 +131,10 @@ private: // ≈∏¿Ã∏”
 	_double				m_TimeTornadoAcc = 0.0;
 	_double				m_TimeExp = 0.0;
 	_double				m_TimeDownAcc = 0.0;
+	_double				m_TimeAfterImageAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
-	HRESULT SetUp_ConstantTable();
+	HRESULT SetUp_ConstantTable(_uint iPassIndex);
 	HRESULT Render(_uint iPassIndex);
 private:
 	HRESULT State_Machine(_double TimeDelta);

@@ -83,6 +83,22 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
+	/*vector vColor = vector(0.f, 0.f, 0.f, 0.f);
+
+	for (int i = 0; i < 7; i++)
+	{
+		vColor += tex2D(DiffuseSampler, float2(In.vTexUV.x + g_GaussFilterY[i].x * texScalar + texOffset,
+			In.vTexUV.y + g_GaussFilterY[i].y * texScalar + texOffset)) * g_GaussFilterY[i].w;
+	}
+
+	for (int i = 0; i < 7; i++)
+	{
+		vColor += tex2D(DiffuseSampler, float2(In.vTexUV.x + g_GaussFilterX[i].x * texScalar + texOffset,
+			In.vTexUV.y + g_GaussFilterX[i].y * texScalar + texOffset)) * g_GaussFilterX[i].w;
+	}
+
+	Out.vColor = vColor;*/
+
 	Out.vColor = tex2D(DiffuseSampler, In.vTexUV);
 
 	vector vTangentNormal = tex2D(NormalSampler, In.vTexUV);
@@ -95,9 +111,6 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
-
-	/*if (In.vTexUV.y <= g_fTimeExp)
-		Out.vColor.a = 0.f;*/
 
 	return Out;
 }

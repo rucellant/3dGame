@@ -31,6 +31,8 @@ HRESULT CMidBoss_Trigger::Ready_GameObject_Clone(void * pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(239.f, 56.f, -124.f));
 
+	m_pColliderCom->Update_Collider();
+
 	m_bIsAlive = true;
 
 	return NOERROR;

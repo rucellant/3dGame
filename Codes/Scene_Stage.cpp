@@ -129,6 +129,22 @@ HRESULT CScene_Stage::Ready_Layer_Terrain()
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Terrain", L"GameObject_Terrain", szMeshTag)))
 		return E_FAIL;
 
+	// юс╫ц╥н ╨Ш
+	D3DLIGHT9 LightDesc;
+
+	LightDesc.Type = D3DLIGHT_POINT;
+	LightDesc.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightDesc.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightDesc.Specular = LightDesc.Diffuse;
+	//LightDesc.Position = _vec3(0.f, 0.f, 0.f);
+	//LightDesc.Position = _vec3(0.f, 400.f, 0.f);
+	LightDesc.Position = _vec3(175.f, 128.f, -121.f);
+	LightDesc.Range = 1000.0f;
+
+	if (FAILED(pManagement->Add_Light(pGraphic_Device, &LightDesc, SCENE_STATIC, L"Component_Transform", CLight::LIGHT_MAIN)))
+		return E_FAIL;
+	//
+
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);
 
@@ -515,8 +531,8 @@ HRESULT CScene_Stage::Ready_Layer_Trigger()
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_StageEnd_Trigger", CStageEnd_Trigger::Create(pGraphic_Device))))
 		return E_FAIL;
 
-	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_StageEnd_Trigger", &m_bNextStage)))
-		return E_FAIL;
+	/*if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_StageEnd_Trigger", &m_bNextStage)))
+		return E_FAIL;*/
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

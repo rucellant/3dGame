@@ -545,5 +545,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_HDR.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

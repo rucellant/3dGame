@@ -20,7 +20,7 @@ vector		g_vCamPosition;
 matrix		g_matViewInv;
 matrix		g_matProjInv;
 
-float		g_fPower = 30.f;
+float		g_fPower = 50.f;
 
 float		g_fFar = 500.f;
 

@@ -39,6 +39,10 @@ _int CMainApp::Update_MainApp(double TimeDelta)
 	if (FAILED(m_pManagement->Update_Input_Device()))
 		return -1;
 
+	_float fRotY = D3DX_PI / 2;
+
+	_matrix matWorld;
+
 	return 	m_pManagement->Update_Current_Scene(TimeDelta);
 }
 
@@ -48,7 +52,7 @@ HRESULT CMainApp::Render_MainApp()
 		m_pManagement == nullptr)
 		return E_FAIL;
 
-	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
+	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 0.f, 1.f), 1.f, 0);
 	m_pGraphic_Device->BeginScene();
 
 	m_pRenderer->Render_Game();
