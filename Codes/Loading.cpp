@@ -81,6 +81,9 @@ HRESULT CLoading::Ready_Stage()
 	if (FAILED(Ready_Interact_Stage()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Effect_Stage()))
+		return E_FAIL;
+
 	m_iComplete = 1;
 
 	return NOERROR;
@@ -96,7 +99,7 @@ HRESULT CLoading::Ready_Terrain_Stage()
 	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
 	// For. Component_Mesh_Terrain_Stage
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Terrain_Stage", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Terrain/SoulValley/", L"SoulValley.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Terrain_Stage", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Terrain/SoulValley/", L"SoulValley.X", &matLocal, CMesh_Static::TYPE_C9))))
 		return E_FAIL;
 
 	// For. GameObject_Terrain
@@ -402,13 +405,13 @@ HRESULT CLoading::Ready_Interact_Stage()
 	// For. Component_Mesh_Crystal
 	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Crystal", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Cristal_1/", L"Cristal_1.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Crystal", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Cristal_1/", L"Cristal_1.X", &matLocal, CMesh_Static::TYPE_C9))))
 		return E_FAIL;
 
 	// For. Component_Mesh_Icicle
 	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Icicle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Ice_Missile_2/", L"Ice_Missile_2.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Icicle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Ice_Missile_2/", L"Ice_Missile_2.X", &matLocal, CMesh_Static::TYPE_C9))))
 		return E_FAIL;
 
 	// For. Component_Texture_Portal
@@ -418,7 +421,7 @@ HRESULT CLoading::Ready_Interact_Stage()
 	// For. Component_Mesh_Twister
 	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Twister", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Interact/IceTwister/", L"IceTwister.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Twister", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Interact/IceTwister/", L"IceTwister.X", &matLocal, CMesh_Static::TYPE_C9))))
 		return E_FAIL;
 
 	// For. Component_Texture_StageEnd
@@ -544,6 +547,23 @@ HRESULT CLoading::Ready_Interact_Stage()
 
 		CloseHandle(hFile);
 	}
+
+	return NOERROR;
+}
+
+HRESULT CLoading::Ready_Effect_Stage()
+{
+	_matrix matLocal;
+
+	// For. Component_Mesh_Effect_Tornado
+	D3DXMatrixScaling(&matLocal, 0.1f, 0.05f, 0.1f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Effect_Tornado", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Tornado/", L"Tornado.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Texture_Effect_Tornado
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Tornado", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Tornado/Tornado_%d.tga"))))
+		return E_FAIL;
 
 	return NOERROR;
 }

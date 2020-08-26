@@ -1,5 +1,3 @@
-float A = 2.51f, B = 0.03f, C = 2.43f, D = 0.59f, E = 0.14f;
-
 texture		g_DiffuseTexture;
 
 sampler DiffuseSampler = sampler_state
@@ -66,7 +64,7 @@ technique Default_Technique
 		AlphaFunc = Greater;
 		AlphaRef = 0;
 
-		ZWriteEnable = false;
+		zwriteenable = false;
 
 		VertexShader = NULL;
 		PixelShader = compile ps_3_0 PS_MAIN();

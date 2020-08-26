@@ -29,6 +29,7 @@ private:
 	HRESULT Ready_Layer_Interact();
 	HRESULT Ready_Layer_Static();
 	HRESULT Ready_Layer_Trigger();
+	HRESULT Ready_Layer_Effect();
 public:
 	static CScene_Stage* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();

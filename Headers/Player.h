@@ -149,6 +149,7 @@ private:
 	HRESULT Update_CameraPosition(_double TimeDelta);
 	HRESULT SetUp_OnNavigation();
 	HRESULT Update_Collider();
+	HRESULT Create_Tornado();
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

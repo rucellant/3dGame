@@ -107,6 +107,8 @@ PS_OUT PS_CRYSTAL(PS_IN In)
 
 	Out.vColor = tex2D(DiffuseSampler, In.vTexUV);
 
+	//Out.vColor *= 1.5f;
+
 	Out.vColor *= g_fTimeDelta;
 
 	vector vTangentNormal = tex2D(NormalSampler, In.vTexUV);

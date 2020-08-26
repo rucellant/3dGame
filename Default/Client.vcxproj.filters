@@ -194,6 +194,12 @@
     <Filter Include="03. GameObject\Stage\Trigger\StageEnd_Trigger">
       <UniqueIdentifier>{b03183f8-ba7e-45fb-81e7-27d2cc585c5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Effect">
+      <UniqueIdentifier>{dc25ed09-9e51-4e67-9190-177e03759ede}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Effect\Effect_Tornado">
+      <UniqueIdentifier>{888cf864-07ee-4b25-9362-22522277e258}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -349,6 +355,12 @@
     <ClInclude Include="..\Headers\Observer_Boss.h">
       <Filter>04. Observer / Subject\Observer\Observer_Balrog</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Effect_Tornado.h">
+      <Filter>03. GameObject\Static\Effect\Effect_Tornado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Effect.h">
+      <Filter>03. GameObject\Static\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -491,6 +503,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Observer_Boss.cpp">
       <Filter>04. Observer / Subject\Observer\Observer_Balrog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect_Tornado.cpp">
+      <Filter>03. GameObject\Static\Effect\Effect_Tornado</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect.cpp">
+      <Filter>03. GameObject\Static\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

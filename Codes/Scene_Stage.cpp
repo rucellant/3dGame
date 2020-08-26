@@ -26,6 +26,7 @@
 #include "Camera_Event.h"
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
+#include "Effect_Tornado.h"
 #include "MidBoss_Trigger.h"
 #include "StageEnd_Trigger.h"
 
@@ -64,6 +65,9 @@ HRESULT CScene_Stage::Ready_Scene()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Static()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Effect()))
 		return E_FAIL;
 
 	CIOManager::GetInstance()->Clear();
@@ -134,7 +138,7 @@ HRESULT CScene_Stage::Ready_Layer_Terrain()
 
 	LightDesc.Type = D3DLIGHT_POINT;
 	LightDesc.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	LightDesc.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightDesc.Ambient = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.Specular = LightDesc.Diffuse;
 	//LightDesc.Position = _vec3(0.f, 0.f, 0.f);
 	//LightDesc.Position = _vec3(0.f, 400.f, 0.f);
@@ -533,6 +537,28 @@ HRESULT CScene_Stage::Ready_Layer_Trigger()
 
 	/*if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Trigger", L"GameObject_StageEnd_Trigger", &m_bNextStage)))
 		return E_FAIL;*/
+
+	Safe_Release(pManagement);
+	Safe_Release(pGraphic_Device);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_Effect()
+{
+	CManagement* pManagement = CManagement::GetInstance();
+	if (pManagement == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pManagement);
+
+	LPDIRECT3DDEVICE9 pGraphic_Device = pManagement->Get_Graphic_Device();
+	if (pGraphic_Device == nullptr)
+		return E_FAIL;
+	Safe_AddRef(pGraphic_Device);
+
+	// For. GameObject_Effect_Tornado
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Effect_Tornado", CEffect_Tornado::Create(pGraphic_Device))))
+		return E_FAIL;
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

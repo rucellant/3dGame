@@ -3,6 +3,7 @@
 #include "Management.h"
 #include "CollisionMgr.h"
 #include "Subject_Player.h"
+#include "Effect_Tornado.h"
 
 USING(Client)
 
@@ -402,7 +403,7 @@ HRESULT CPlayer::Render(_uint iPassIndex)
 	m_pShaderCom->End_Pass();
 	m_pShaderCom->End_Shader();
 
-	m_pNavigationCom->Render_Navigation();
+	//m_pNavigationCom->Render_Navigation();
 
 	return NOERROR;
 }
@@ -746,6 +747,9 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 			//여기서 충돌처리요구
 			if (m_bIsSK)
 			{
+				if (FAILED(Create_Tornado()))
+					return E_FAIL;
+				
 				if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Tornado_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 					return E_FAIL;
 				m_bIsSK = false;
@@ -944,6 +948,29 @@ HRESULT CPlayer::Update_Collider()
 	m_pHitColliderCom->Update_Collider();
 	m_pDmgColliderCom->Update_Collider();
 	m_pBottomColliderCom->Update_Collider();
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Create_Tornado()
+{
+	CEffect_Tornado* pEffect_Tornado = (CEffect_Tornado*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Tornado");
+
+	if (pEffect_Tornado == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Tornado", L"GameObject_Effect_Tornado")))
+			return E_FAIL;
+		
+		pEffect_Tornado = (CEffect_Tornado*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Tornado");
+	}
+
+	if (pEffect_Tornado == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+
+	pEffect_Tornado->Activate();
 
 	return NOERROR;
 }

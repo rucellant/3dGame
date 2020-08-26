@@ -1,68 +1,43 @@
-static const int    MAX_SAMPLES = 16;    // 최대샘플링수
-float2 g_SampleOffsets[MAX_SAMPLES];	// 샘플링위치
-float4 g_SampleWeights[MAX_SAMPLES];
-
-float A = 2.51, B = 0.03, C = 2.43, D = 0.59, E = 0.14;
+float       g_fExposure;                          // A user configurable bias to under/over expose the image
+float       g_fGaussianScalar;                    // Used in the post-processing, but also useful here
+float       g_rcp_bloom_tex_w;                  // The reciprocal WIDTH of the texture in 'bloom'
+float       g_rcp_bloom_tex_h;                  // The reciprocal HEIGHT of the texture in 'bloom'
 
 texture		g_SrcTexture;
 
 sampler SrcSampler = sampler_state
 {
 	texture = g_SrcTexture;
-	/*minfilter = linear;
-	magfilter = linear;
-	mipfilter = linear;*/
-	minfilter = point;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
-
-texture		g_ScaledTexture;
-
-sampler ScaledSampler = sampler_state
-{
-	texture = g_ScaledTexture;
-	minfilter = point;
-	magfilter = point;
-};
-
-texture		g_BrightTexture;
-
-sampler BrightSampler = sampler_state
-{
-	texture = g_BrightTexture;
-	minfilter = point;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
-
-texture		g_BlurTexture;
-
-sampler BlurSampler = sampler_state
-{
-	texture = g_BlurTexture;
-	magfilter = linear;
 	minfilter = linear;
+	magfilter = linear;
 };
 
-texture		g_HDRTexture;
+texture		g_LumTexture;
 
-sampler HDRSampler = sampler_state
+sampler LumSampler = sampler_state
 {
-	texture = g_HDRTexture;
-	magfilter = point;
-	minfilter = point;
+	texture = g_LumTexture;
+	minfilter = linear;
+	magfilter = linear;
 };
 
+texture		g_BloomTexture;
 
-sampler s0 : register(s0);
-sampler s1 : register(s1);
-sampler s2 : register(s2);
-sampler s3 : register(s3);
-sampler s4 : register(s4);
-sampler s5 : register(s5);
-sampler s6 : register(s6);
-sampler s7 : register(s7);
+sampler BloomSampler = sampler_state
+{
+	texture = g_BloomTexture;
+	minfilter = linear;
+	magfilter = linear;
+};
+
+texture		g_FinalTexture;
+
+sampler FinalSampler = sampler_state
+{
+	texture = g_FinalTexture;
+	minfilter = linear;
+	magfilter = linear;
+};
 
 struct PS_IN
 {
@@ -79,144 +54,76 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector vSource = pow(tex2D(SrcSampler, In.vTexUV), 1.0 / 2.2);
-	vector vHdr = tex2D(HDRSampler, In.vTexUV);
+	vector vSrc = pow(tex2D(SrcSampler, In.vTexUV), 1.0 / 2.2); //tex2D(SrcSampler, In.vTexUV);
+	vector vLum = tex2D(LumSampler, float2(0.5f, 0.5f));
 
-	vector vColor = vSource + vHdr;
+	float xWeight = frac(In.vTexUV.x / g_rcp_bloom_tex_w) - 0.5;
+	float xDir = xWeight;
+	xWeight = abs(xWeight);
+	xDir /= xWeight;
+	xDir *= g_rcp_bloom_tex_w;
 
-	//vColor = saturate((vColor * (A * vColor + B)) / (vColor * (C * vColor + D) + E));
+	float yWeight = frac(In.vTexUV.y / g_rcp_bloom_tex_h) - 0.5;
+	float yDir = yWeight;
+	yWeight = abs(yWeight);
+	yDir /= yWeight;
+	yDir *= g_rcp_bloom_tex_h;
 
-	Out.vColor = vColor;// / (vColor + 1);
+	vector vBloom = ((1.f - xWeight) * (1.f - yWeight)) * tex2D(BloomSampler, In.vTexUV);
+	vBloom += (xWeight * (1.f - yWeight)) * tex2D(BloomSampler, In.vTexUV + float2(xDir, 0.f));
+	vBloom += (yWeight * (1.f - xWeight)) * tex2D(BloomSampler, In.vTexUV + float2(0.f, yDir));
+	vBloom += (xWeight * yWeight) * tex2D(BloomSampler, In.vTexUV + float2(xDir, yDir));
 
-	return Out;
-}
+	vector vFinal = vSrc + 0.25f * vBloom;
 
-PS_OUT PS_SCALED(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
+	float fLp = (g_fExposure / vLum.r) * max(vFinal.r, max(vFinal.g, vFinal.b));
+	float fLmSqr = (vLum.g + g_fGaussianScalar * vLum.g) * (vLum.g + g_fGaussianScalar * vLum.g);
 
-	vector vSample = 0.f;
+	float fToneScalar = (fLp * (1.f + (fLp / (fLmSqr)))) / (1.f + fLp);
 
-	for (int i = 0; i < 16; i++) 
-		vSample += tex2D(SrcSampler, In.vTexUV + g_SampleOffsets[i]);
+	vector vColor = vFinal * fToneScalar;
 
-	Out.vColor = vSample / 16;
-
-	return Out;
-}
-
-PS_OUT PS_BRIGHT(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-	vector vSample = tex2D(ScaledSampler, In.vTexUV);
-
-	vSample.rgb -= 1.f;
-
-	vSample = 3.0f * max(vSample, 0.0f);
-
-	Out.vColor = vSample;
-
-	return Out;
-}
-
-PS_OUT PS_BLUR(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-	vector vSample = 0.f;
-
-	for (int i = 0; i < 13; i++) 
-		vSample += g_SampleWeights[i] * tex2D(BrightSampler, In.vTexUV + g_SampleOffsets[i]);
-		
-	Out.vColor = vSample;
-
-	return Out;
-}
-
-PS_OUT PS_BLURAFTER(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-	vector vColor = 0.f;
-
-	for (int i = 0; i < 8; i++)
-		vColor += g_SampleWeights[i] * tex2D(BlurSampler, In.vTexUV + g_SampleOffsets[i]);
+	vColor.a = 1.0f;
 
 	Out.vColor = vColor;
 
 	return Out;
 }
 
-PS_OUT PS_MERGETEXTURE(PS_IN In)
+PS_OUT PS_FINAL(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	Out.vColor = (tex2D(s0, In.vTexUV) + tex2D(s1, In.vTexUV) + tex2D(s2, In.vTexUV) + tex2D(s3, In.vTexUV) + tex2D(s4, In.vTexUV) + tex2D(s5, In.vTexUV)) / 6.0f;
+	vector vColor = tex2D(FinalSampler, In.vTexUV);
+
+	Out.vColor = vColor;
 
 	return Out;
 }
 
-
 technique Default_Technique
 {
-	pass Source_Rendering
+	pass HDR_Rendering
 	{
-		/*AlphaTestEnable = true;
-		AlphaFunc = Greater;
-		AlphaRef = 0;
-
-		ZWriteEnable = false;*/
-		ZWriteEnable = false;
-
-		AlphaBlendEnable = true;
-		SrcBlend = one;
-		DestBlend = one;
-
 		VertexShader = NULL;
 		PixelShader = compile ps_3_0 PS_MAIN();
-	}		
 
-	pass Scaled_Rendering
+		zwriteenable = false;
+
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
+	}	
+
+	pass Final_Rendering
 	{
 		VertexShader = NULL;
-		PixelShader = compile ps_3_0 PS_SCALED();
-	}
+		PixelShader = compile ps_3_0 PS_FINAL();
 
-	pass Scaled_Rendering
-	{
-		VertexShader = NULL;
-		PixelShader = compile ps_3_0 PS_BRIGHT();
-	}
+		zwriteenable = false;
 
-	pass Blur_Rendering
-	{
-		VertexShader = NULL;
-		PixelShader = compile ps_3_0 PS_BLUR();
-	}
-
-	pass BlurAfter_Rendering
-	{
-		VertexShader = NULL;
-		PixelShader = compile ps_3_0 PS_BLURAFTER();
-	}
-
-	pass MergeTexture_Rendering
-	{
-		VertexShader = NULL;
-		PixelShader = compile ps_3_0 PS_BLURAFTER();
-		
-		magfilter[0] = Point;
-		minfilter[0] = Point;
-		magfilter[1] = Point;
-		minfilter[1] = Point;
-		magfilter[2] = Point;
-		minfilter[2] = Point;
-		magfilter[3] = Point;
-		minfilter[3] = Point;
-		magfilter[4] = Point;
-		minfilter[4] = Point;
-		magfilter[5] = Point;
-		minfilter[5] = Point;
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;
+		DestBlend = InvSrcAlpha;
 	}
 }
