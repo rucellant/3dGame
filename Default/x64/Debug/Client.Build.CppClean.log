@@ -22,12 +22,12 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\twister.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\ui.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\weapon.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_event.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_free.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collisionmgr.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\crystal.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\door_trigger.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_tornado.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\gameobject_static.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\gate.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\hpbar.obj
@@ -42,6 +42,8 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mainapp.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\midboss_trigger.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\monster.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mpbar.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_event.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_free.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collidermanager.obj
 c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso

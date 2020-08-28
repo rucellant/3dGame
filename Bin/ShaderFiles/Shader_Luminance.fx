@@ -78,11 +78,15 @@ technique Default_Technique
 	{
 		VertexShader = NULL;
 		PixelShader = compile ps_3_0 PS_GRAYSCALEDOWNSAMPLE();
+
+		zwriteenable = false;
 	}
 
 	pass Down_Sample_Rendering
 	{
 		VertexShader = NULL;
 		PixelShader = compile ps_3_0 PS_DOWNSAMPLE();
+
+		zwriteenable = false;
 	}
 }

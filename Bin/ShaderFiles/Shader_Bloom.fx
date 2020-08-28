@@ -57,11 +57,15 @@ technique Default_Technique
 	{
 		VertexShader = NULL;
 		PixelShader = compile ps_3_0 PS_HBLOOM();
+
+		zwriteenable = false;
 	}
 
 	pass VBloom_Rendering
 	{
 		VertexShader = NULL;
 		PixelShader = compile ps_3_0 PS_VBLOOM();
+
+		zwriteenable = false;
 	}
 }

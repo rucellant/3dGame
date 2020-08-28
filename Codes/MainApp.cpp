@@ -31,7 +31,7 @@ HRESULT CMainApp::Ready_MainApp()
 	return NOERROR;
 }
 
-_int CMainApp::Update_MainApp(double TimeDelta)
+_int CMainApp::Update_MainApp(_double TimeDelta)
 {
 	if (m_pManagement == nullptr)
 		return -1;

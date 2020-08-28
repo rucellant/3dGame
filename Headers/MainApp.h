@@ -12,7 +12,7 @@ private:
 	virtual ~CMainApp() = default;
 public:
 	HRESULT Ready_MainApp();
-	_int Update_MainApp(double TimeDelta);
+	_int Update_MainApp(_double TimeDelta);
 	HRESULT Render_MainApp();
 private:
 	CManagement*		m_pManagement = nullptr;
