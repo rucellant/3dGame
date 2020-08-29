@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "..\Headers\Player.h"
 #include "Management.h"
+#include "Effect_Hit.h"
 #include "CollisionMgr.h"
 #include "Subject_Player.h"
 #include "Effect_Tornado.h"
+#include "Effect_Shoulder.h"
 
 USING(Client)
 
@@ -227,6 +229,21 @@ HRESULT CPlayer::GetHit(_int iMonsterDmg)
 		m_tPlayerInfo.iCurHp = 1;
 	else
 		m_tPlayerInfo.iCurHp -= iMonsterDmg;
+
+	D3DXFRAME_DERIVED* pFrame_Derived = m_pMeshCom->Get_FrameDerived("Bip01-Pelvis");
+	_matrix matWorld = pFrame_Derived->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
+	CEffect_Hit* pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+
+	if (pEffect_Hit == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Hit", L"GameObject_Effect_Hit")))
+			return E_FAIL;
+
+		pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+	}
+
+	pEffect_Hit->Set_Position(*(_vec3*)matWorld.m[3], 3.f);
 
 	return NOERROR;
 }
@@ -762,6 +779,9 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		//여기서 충돌처리요구
 		if (m_bIsSK)
 		{
+			if (FAILED(Create_Shoulder()))
+				return E_FAIL;
+
 			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Shoulder_Monster(g_eScene, L"Layer_Player", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE)))
 				return E_FAIL;
 			m_bIsSK = false;
@@ -970,7 +990,30 @@ HRESULT CPlayer::Create_Tornado()
 	// 토네이도 실행하기 전에 정보부터 넘겨줌 
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
 
-	pEffect_Tornado->Activate();
+	pEffect_Tornado->Activate(m_TimeDelta);
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Create_Shoulder()
+{
+	CEffect_Shoulder* pEffect_Shoulder = (CEffect_Shoulder*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Shoulder");
+
+	if (pEffect_Shoulder == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Shoulder", L"GameObject_Effect_Shoulder")))
+			return E_FAIL;
+
+		pEffect_Shoulder = (CEffect_Shoulder*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Shoulder");
+	}
+
+	if (pEffect_Shoulder == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+
+	pEffect_Shoulder->Activate();
 
 	return NOERROR;
 }

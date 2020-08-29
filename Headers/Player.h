@@ -150,6 +150,7 @@ private:
 	HRESULT SetUp_OnNavigation();
 	HRESULT Update_Collider();
 	HRESULT Create_Tornado();
+	HRESULT Create_Shoulder();
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

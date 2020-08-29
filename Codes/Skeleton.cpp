@@ -2,6 +2,7 @@
 #include "..\Headers\Skeleton.h"
 #include "Player.h"
 #include "Management.h"
+#include "Effect_Hit.h"
 #include "CollisionMgr.h"
 #include "Observer_Player.h"
 
@@ -166,6 +167,22 @@ HRESULT CSkeleton::Knockdown(_vec3 vPosition, _int iPlayerDmg)
 	
 	m_tMonsterInfo.iCurHp -= iPlayerDmg;
 
+	// 여기서 맞는 이펙트
+	D3DXFRAME_DERIVED* pFrame_Derived = m_pMeshCom->Get_FrameDerived("Bip01-Pelvis");
+	_matrix matWorld = pFrame_Derived->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
+	CEffect_Hit* pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+
+	if (pEffect_Hit == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Hit", L"GameObject_Effect_Hit")))
+			return E_FAIL;
+
+		pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+	}
+
+	pEffect_Hit->Set_Position(*(_vec3*)matWorld.m[3], 3.f);
+
 	return NOERROR;
 }
 
@@ -213,6 +230,22 @@ HRESULT CSkeleton::GetHit(_vec3 vPosition, _int iPlayerDmg)
 		m_iAnimation = SKELETON_DEAD;
 		m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period);
 	}
+
+	// 여기서 맞는 이펙트
+	D3DXFRAME_DERIVED* pFrame_Derived = m_pMeshCom->Get_FrameDerived("Bip01-Pelvis");
+	_matrix matWorld = pFrame_Derived->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
+	CEffect_Hit* pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+
+	if (pEffect_Hit == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Hit", L"GameObject_Effect_Hit")))
+			return E_FAIL;
+
+		pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+	}
+
+	pEffect_Hit->Set_Position(*(_vec3*)matWorld.m[3], 3.f);
 
 	return NOERROR;
 }

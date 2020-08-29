@@ -17,7 +17,7 @@ public:
 	virtual _int LateUpdate_GameObject(_double TimeDelta);
 	virtual HRESULT Render_GameObject();
 public:
-	HRESULT Activate();
+	HRESULT Activate(_double TimeDelta);
 private:
 	CShader*		m_pShaderCom = nullptr;
 	CFrustum*		m_pFrustumCom = nullptr;
@@ -30,7 +30,8 @@ private:
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);
 private:
-	_bool			m_bIsActive = false;
+	_bool			m_bIsWait = false;
+	_bool			m_bIsFade = false;
 public:
 	static CEffect_Tornado* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

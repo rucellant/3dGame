@@ -200,6 +200,15 @@
     <Filter Include="03. GameObject\Static\Effect\Effect_Tornado">
       <UniqueIdentifier>{888cf864-07ee-4b25-9362-22522277e258}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Effect\Effect_Hit">
+      <UniqueIdentifier>{18ce35fb-39c1-4929-ae3d-2335d12942a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Effect\Effect_Shoulder">
+      <UniqueIdentifier>{658a9f0a-6124-482a-944e-6c8d7f1db4e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Effect\Effect_Earthquake">
+      <UniqueIdentifier>{5a33f0e1-cbb9-46e8-82a3-fd2fe2d56bac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -361,6 +370,15 @@
     <ClInclude Include="..\Headers\Effect.h">
       <Filter>03. GameObject\Static\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Effect_Hit.h">
+      <Filter>03. GameObject\Static\Effect\Effect_Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Effect_Shoulder.h">
+      <Filter>03. GameObject\Static\Effect\Effect_Shoulder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Effect_Earthquake.h">
+      <Filter>03. GameObject\Static\Effect\Effect_Earthquake</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -509,6 +527,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Effect.cpp">
       <Filter>03. GameObject\Static\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect_Hit.cpp">
+      <Filter>03. GameObject\Static\Effect\Effect_Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect_Shoulder.cpp">
+      <Filter>03. GameObject\Static\Effect\Effect_Shoulder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect_Earthquake.cpp">
+      <Filter>03. GameObject\Static\Effect\Effect_Earthquake</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,12 @@ HRESULT CEffect_Tornado::Ready_GameObject_Clone(void * pArg)
 	if (FAILED(Add_Component(pArg)))
 		return E_FAIL;
 
+	CTransform::STATEDESC tStateDesc;
+	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
+	tStateDesc.fSpeedPerSec = 1.f;
+
+	m_pTransformCom->Set_StateDesc(tStateDesc);
+
 	m_pObserver = CObserver_Player::Create();
 	if (m_pObserver == nullptr)
 		return E_FAIL;
@@ -43,6 +49,44 @@ _int CEffect_Tornado::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta += TimeDelta;
 
+	/*if (m_pManagement->KeyUp(KEY_RIGHT))
+		m_qwe += 0.1;
+	if (m_pManagement->KeyUp(KEY_LEFT))
+		m_qwe -= 0.1;*/
+
+	if (!m_bIsFade && !m_bIsWait)
+	{
+		if (m_TimeAcc <= 1.0)
+			m_TimeAcc += TimeDelta * 2.3;
+
+		if (m_TimeAcc >= 1.0)
+		{
+			m_TimeAcc = 0.0;
+			m_bIsWait = true;
+		}
+	}
+	else if (!m_bIsFade && m_bIsWait)
+	{
+		m_TimeAcc += TimeDelta;
+
+		if (m_TimeAcc >= 0.5)
+		{
+			m_TimeAcc = 0.0;
+			m_bIsFade = true;
+		}
+	}
+	else
+	{
+		if (m_TimeAcc <= 1.0)
+			m_TimeAcc += TimeDelta * 2.3;
+
+		if (m_TimeAcc >= 1.0)
+		{
+			m_TimeAcc = 0.0;
+			m_pManagement->Push_GameObject(g_eScene, L"Layer_tornado", this);
+		}
+	}
+
 	return _int();
 }
 
@@ -51,7 +95,7 @@ _int CEffect_Tornado::LateUpdate_GameObject(_double TimeDelta)
 	if (m_pRendererCom == nullptr)
 		return -1;
 
-	m_pRendererCom->Add_RenderList(CRenderer::RENDER_ALPHA, this);
+	m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
 }
@@ -70,7 +114,7 @@ HRESULT CEffect_Tornado::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CEffect_Tornado::Activate()
+HRESULT CEffect_Tornado::Activate(_double TimeDelta)
 {
 	_matrix matTarget = *(_matrix*)m_pObserver->GetData(CSubject_Player::TYPE_MATRIX);
 	
@@ -92,7 +136,7 @@ HRESULT CEffect_Tornado::Activate()
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK , vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
 
-	m_pTransformCom->Move_Left(m_TimeDelta * 5.0);
+	m_pTransformCom->Move_Left(TimeDelta * 80.0);
 
 	return NOERROR;
 }
@@ -142,6 +186,31 @@ HRESULT CEffect_Tornado::SetUp_ConstantTable()
 	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 		return E_FAIL;
 
+	if (!m_bIsFade && !m_bIsWait)
+	{
+		_float fTimeAcc = _float(m_TimeAcc);
+		if (FAILED(m_pShaderCom->Set_Value("g_fTimeAcc", &fTimeAcc, sizeof(_float))))
+			return E_FAIL;
+	}
+	else if (!m_bIsFade && m_bIsWait)
+	{
+		_float fTimeAcc = 1.f;
+		if (FAILED(m_pShaderCom->Set_Value("g_fTimeAcc", &fTimeAcc, sizeof(_float))))
+			return E_FAIL;
+	}
+	else
+	{
+		_float fTimeAcc = _float(m_TimeAcc);
+		if (FAILED(m_pShaderCom->Set_Value("g_fTimeAcc", &fTimeAcc, sizeof(_float))))
+			return E_FAIL;
+	}
+
+	if (FAILED(m_pShaderCom->Set_Bool("g_bIsFade", m_bIsFade)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_Texture("g_DiffuseTexture", m_pTextureCom->Get_Texture(0))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -153,17 +222,7 @@ HRESULT CEffect_Tornado::Render(_uint iPassIndex)
 	_ulong dwNumSubset = m_pMeshCom->Get_NumSubset();
 
 	for (_ulong i = 0; i < dwNumSubset; ++i)
-	{
-		if (FAILED(m_pShaderCom->Set_Texture("g_DiffuseTexture", m_pTextureCom->Get_Texture(0))))
-			return E_FAIL;
-
-		/*if (FAILED(m_pShaderCom->Set_Texture("g_DiffuseTexture", m_pMeshCom->Get_MaterialTexture(i, MESHTEXTURE::TYPE_DIFFUSE))))
-			return E_FAIL;*/
-
-		m_pShaderCom->Commit_Change();
-
 		m_pMeshCom->Render_Mesh(i);
-	}
 
 	m_pShaderCom->End_Pass();
 	m_pShaderCom->End_Shader();

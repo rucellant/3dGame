@@ -565,6 +565,36 @@ HRESULT CLoading::Ready_Effect_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Tornado", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Tornado/Tornado_%d.tga"))))
 		return E_FAIL;
 
+	// For. Component_Texture_Effect_Hit
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Hit", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Hit/Effect_Hit_%d.jpg", 5))))
+		return E_FAIL;
+
+	// For. Component_Texture_Effect_Shoulder_Src
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Src", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Shoulder/Effect_Shoulder_Src.tga"))))
+		return E_FAIL;
+
+	// For. Component_Texture_Effect_Shoulder_Dst
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Dst", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Shoulder/Effect_Shoulder_Dst_%d.tga", 16))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Effect_Earthquake_Circle
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Effect_Earthquake_Circle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Earthquake/", L"Circle.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Effect_Earthquake_Cylinder
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Effect_Earthquake_Cylinder", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Earthquake/", L"Cylinder.X", &matLocal))))
+		return E_FAIL;
+
+	// For. Component_Mesh_Effect_Earthquake_Ring
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Effect_Earthquake_Ring", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Earthquake/", L"Ring.X", &matLocal))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 

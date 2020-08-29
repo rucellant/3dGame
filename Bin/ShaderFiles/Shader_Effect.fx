@@ -2,7 +2,7 @@ matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
 float g_fTimeAcc, g_fTimeFade;
 
-bool g_bPortalFade;
+bool g_bPortalFade, g_bIsFade;
 
 texture g_SrcTexture;
 
@@ -191,22 +191,53 @@ PS_OUT PS_PORTAL(PS_IN In)
 	return Out;
 }
 
-PS_MESH_OUT PS_MESH_MAIN(PS_MESH_IN In)
+PS_MESH_OUT PS_TORNADO(PS_MESH_IN In)
 {
 	PS_MESH_OUT Out = (PS_MESH_OUT)0;
 
 	Out.vColor = tex2D(DiffuseSampler, In.vTexUV);
 
-	/*vector vTangentNormal = tex2D(NormalSampler, In.vTexUV);
-	vTangentNormal = normalize(vTangentNormal * 2 - 1);
-	float3x3 TBN = float3x3(In.vTangent, In.vBinormal, In.vNormal);
-	TBN = transpose(TBN);
+	Out.vColor.rgb *= 3.f;
 
-	float3 vNormal = mul(TBN, vTangentNormal.xyz);*/
+	if (g_bIsFade == false)
+	{
+		if (g_fTimeAcc <= In.vTexUV.x)
+			Out.vColor.a = 0.f;
+	}
+	else
+	{
+		if (g_fTimeAcc >= In.vTexUV.x)
+			Out.vColor.a = 0.f;
+	}
+
+	/*if (g_fTimeAcc <= In.vTexUV.x)
+		Out.vColor.a = 0.f;*/
+	
 
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+
+	return Out;
+}
+
+PS_OUT PS_HIT(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = tex2D(SrcSampler, In.vTexUV);
+
+	return Out;
+}
+
+PS_OUT PS_SHOULDER(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector vSrc = tex2D(SrcSampler, In.vTexUV);
+	vector vDst = tex2D(DstSampler, In.vTexUV);
+
+	Out.vColor = vSrc * vDst;
 
 	return Out;
 }
@@ -229,11 +260,33 @@ technique Default_Technique
 	{
 		cullmode = none;
 
+		zwriteenable = false;
+
 		AlphaBlendEnable = true;
 		SrcBlend = SrcAlpha;//one;//SrcAlpha;
 		DestBlend = InvSrcAlpha;//InvSrcAlpha;
 
 		VertexShader = compile vs_3_0 VS_MESH_MAIN();
-		PixelShader = compile ps_3_0 PS_MESH_MAIN();
+		PixelShader = compile ps_3_0 PS_TORNADO();
+	}
+
+	pass Hit_Rendering
+	{
+		AlphaBlendEnable = true;
+		SrcBlend = one;//one;//SrcAlpha;
+		DestBlend = one;//InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_HIT();
+	}
+
+	pass Shoulder_Rendering
+	{
+		AlphaBlendEnable = true;
+		SrcBlend = one;//one;//SrcAlpha;
+		DestBlend = one;//InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_SHOULDER();
 	}
 }

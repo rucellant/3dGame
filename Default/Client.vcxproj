@@ -196,6 +196,9 @@
     <ClInclude Include="..\Headers\Crystal.h" />
     <ClInclude Include="..\Headers\Door_Trigger.h" />
     <ClInclude Include="..\Headers\Effect.h" />
+    <ClInclude Include="..\Headers\Effect_Earthquake.h" />
+    <ClInclude Include="..\Headers\Effect_Hit.h" />
+    <ClInclude Include="..\Headers\Effect_Shoulder.h" />
     <ClInclude Include="..\Headers\Effect_Tornado.h" />
     <ClInclude Include="..\Headers\GameObject_Static.h" />
     <ClInclude Include="..\Headers\Gate.h" />
@@ -267,6 +270,9 @@
     <ClCompile Include="..\Codes\Crystal.cpp" />
     <ClCompile Include="..\Codes\Door_Trigger.cpp" />
     <ClCompile Include="..\Codes\Effect.cpp" />
+    <ClCompile Include="..\Codes\Effect_Earthquake.cpp" />
+    <ClCompile Include="..\Codes\Effect_Hit.cpp" />
+    <ClCompile Include="..\Codes\Effect_Shoulder.cpp" />
     <ClCompile Include="..\Codes\Effect_Tornado.cpp" />
     <ClCompile Include="..\Codes\GameObject_Static.cpp" />
     <ClCompile Include="..\Codes\Gate.cpp" />
