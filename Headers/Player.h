@@ -106,6 +106,7 @@ private: // 정보들
 private: // 제어상태
 	_bool				m_bIsControl = true;
 	_bool				m_bIsSK = false;
+	_bool				m_bIsEarthquake = false;
 private: // 상태
 	STATE				m_eCurState = IDLE;
 private: // Animation 
@@ -151,6 +152,7 @@ private:
 	HRESULT Update_Collider();
 	HRESULT Create_Tornado();
 	HRESULT Create_Shoulder();
+	HRESULT Create_Earthquake();
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

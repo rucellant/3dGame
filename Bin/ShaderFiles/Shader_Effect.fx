@@ -242,6 +242,37 @@ PS_OUT PS_SHOULDER(PS_IN In)
 	return Out;
 }
 
+PS_MESH_OUT PS_EARTHQUAKE_CIRCLE(PS_MESH_IN In)
+{
+	PS_MESH_OUT Out = (PS_MESH_OUT)0;
+
+	Out.vColor = tex2D(SrcSampler, In.vTexUV);
+
+	if (g_fTimeAcc <= In.vTexUV.x)
+		Out.vColor.a = 0.f;
+	
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+
+	return Out;
+}
+
+PS_MESH_OUT PS_EARTHQUAKE_CYLINDER(PS_MESH_IN In)
+{
+	PS_MESH_OUT Out = (PS_MESH_OUT)0;
+
+	In.vTexUV.y -= g_fTimeAcc;
+
+	Out.vColor = tex2D(SrcSampler, In.vTexUV);
+
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+
+	return Out;
+}
+
 technique Default_Technique
 {
 	pass Portal_Rendering
@@ -288,5 +319,33 @@ technique Default_Technique
 
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_SHOULDER();
+	}
+
+	pass Earthquake_Circle_Rendering
+	{
+		cullmode = none;
+
+		zwriteenable = false;
+
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;//one;//SrcAlpha;
+		DestBlend = InvSrcAlpha;//InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MESH_MAIN();
+		PixelShader = compile ps_3_0 PS_EARTHQUAKE_CIRCLE();
+	}
+
+	pass Earthquake_Cylinder_Rendering
+	{
+		//cullmode = none;
+
+		zwriteenable = false;
+
+		AlphaBlendEnable = true;
+		SrcBlend = SrcAlpha;//one;//SrcAlpha;
+		DestBlend = InvSrcAlpha;//InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MESH_MAIN();
+		PixelShader = compile ps_3_0 PS_EARTHQUAKE_CYLINDER();
 	}
 }

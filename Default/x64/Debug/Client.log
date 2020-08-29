@@ -1,6 +1,7 @@
-﻿  Loading.cpp
-c:\users\zooz2\desktop\portfolio\client\codes\loading.cpp(637): warning C4244: '인수': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Effect_Earthquake.cpp
-  코드를 생성하고 있습니다...
+﻿C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_Effect.fx(121,2-68): warning X3206: implicit truncation of vector type
+C:\Users\zooz2\Desktop\Portfolio\Client\Bin\ShaderFiles\Shader_Effect.fx(122,2-67): warning X3206: implicit truncation of vector type
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\zooz2\Desktop\Portfolio\Client\Bin\Shader_Effect.cso
   Client.vcxproj -> C:\Users\zooz2\Desktop\Portfolio\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

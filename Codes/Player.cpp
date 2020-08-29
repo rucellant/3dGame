@@ -6,6 +6,7 @@
 #include "Subject_Player.h"
 #include "Effect_Tornado.h"
 #include "Effect_Shoulder.h"
+#include "Effect_Earthquake.h"
 
 USING(Client)
 
@@ -793,6 +794,9 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		//여기서 충돌처리요구
 		if (m_bIsSK)
 		{
+			if (FAILED(Create_Earthquake()))
+				return E_FAIL;
+
 			if (FAILED(CCollisionMgr::GetInstance()->Collision_Player_Earthquake_Monster(g_eScene, L"Layer_Player", L"Com_Collider", L"Com_DmgBox", L"Layer_Monster", L"Com_HitBox", CCollider::WAY_BOXSPHERE, &m_bIsSK)))
 				return E_FAIL;
 		}
@@ -806,7 +810,9 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		m_TimeTornadoAcc = 0.0;
 
 		m_bIsSK = false;
+		m_bIsEarthquake = false;
 	}
+
 	return NOERROR;
 }
 
@@ -1014,6 +1020,34 @@ HRESULT CPlayer::Create_Shoulder()
 	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
 
 	pEffect_Shoulder->Activate();
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Create_Earthquake()
+{
+	if (m_bIsEarthquake)
+		return NOERROR;
+
+	CEffect_Earthquake* pEffect_Earthquake = (CEffect_Earthquake*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Earthquake");
+
+	if (pEffect_Earthquake == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Earthquake", L"GameObject_Effect_Earthquake")))
+			return E_FAIL;
+
+		pEffect_Earthquake = (CEffect_Earthquake*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Earthquake");
+	}
+
+	if (pEffect_Earthquake == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+
+	pEffect_Earthquake->Activate();
+
+	m_bIsEarthquake = true;
 
 	return NOERROR;
 }

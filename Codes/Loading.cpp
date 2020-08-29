@@ -595,6 +595,10 @@ HRESULT CLoading::Ready_Effect_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Effect_Earthquake_Ring", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Earthquake/", L"Ring.X", &matLocal))))
 		return E_FAIL;
 
+	// For. Component_Texture_Effect_Earthquake
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Earthquake", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Earthquake/Effect_Earthquake_%d.tga", 3))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 

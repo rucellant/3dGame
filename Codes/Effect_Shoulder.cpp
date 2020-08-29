@@ -96,7 +96,7 @@ HRESULT CEffect_Shoulder::Activate()
 	vPosition.y += 2.f;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
-	m_pTransformCom->Set_Scale(_vec3(3.f, 3.f, 3.f));
+	m_pTransformCom->Set_Scale(_vec3(5.f, 5.f, 5.f));
 
 	return NOERROR;
 }
