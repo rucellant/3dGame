@@ -3,6 +3,7 @@
 #include "Management.h"
 #include "CollisionMgr.h"
 #include "Door_Trigger.h"
+#include "Particle_Crystal.h"
 
 USING(Client)
 
@@ -46,7 +47,26 @@ _int CCrystal::Update_GameObject(_double TimeDelta)
 	CCollisionMgr::GetInstance()->Collision_Crystal_Player(g_eScene, this, L"Layer_Player", L"Com_DmgBox", &m_bIsHit);
 
 	if (m_iHitCount >= 3)
+	{
 		m_pManagement->Push_GameObject(g_eScene, L"Layer_Crystal", this);
+		// 여기서 파티크 생성
+		CParticle_Crystal* pParticle = (CParticle_Crystal*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Crystal");
+
+		if (pParticle == nullptr)
+		{
+			if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Crystal", L"GameObject_Particle_Crystal")))
+				return E_FAIL;
+
+			pParticle = (CParticle_Crystal*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Crystal");
+		}
+
+		_vec3 vOrigin = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+		vOrigin.y += 3.f;
+
+		pParticle->Activate(vOrigin);
+	}
+		
 
 	if (m_iHitCount == 1)
 	{

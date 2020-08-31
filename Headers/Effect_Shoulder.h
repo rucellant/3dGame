@@ -20,16 +20,14 @@ public:
 	HRESULT Activate();
 private:
 	CShader*			m_pShaderCom = nullptr;
-	CTexture*			m_pDstTextureCom = nullptr;
-	CTexture*			m_pSrcTextureCom = nullptr;
+	CTexture*			m_pTextureCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
-	CVIBuffer_VRect*	m_pVIBufferCom = nullptr;
+	CMesh_Static*		m_pMeshCom = nullptr;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();
 	HRESULT Render(_uint iPassIndex);
-	HRESULT Set_Billboard();
 public:
 	static CEffect_Shoulder* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

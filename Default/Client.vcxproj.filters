@@ -209,6 +209,15 @@
     <Filter Include="03. GameObject\Static\Effect\Effect_Earthquake">
       <UniqueIdentifier>{5a33f0e1-cbb9-46e8-82a3-fd2fe2d56bac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Static\Effect\Effect_Buff">
+      <UniqueIdentifier>{afb70bf5-3293-40ba-8767-79f5936e45d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Particle">
+      <UniqueIdentifier>{3779cfbf-7d23-4866-920a-612826c30b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Particle\Particle_Crystal">
+      <UniqueIdentifier>{94aa7518-53bf-4e7c-810f-2dfb98f0982a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -379,6 +388,12 @@
     <ClInclude Include="..\Headers\Effect_Earthquake.h">
       <Filter>03. GameObject\Static\Effect\Effect_Earthquake</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Effect_Buff.h">
+      <Filter>03. GameObject\Static\Effect\Effect_Buff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Particle_Crystal.h">
+      <Filter>03. GameObject\Stage\Particle\Particle_Crystal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -537,6 +552,12 @@
     <ClCompile Include="..\Codes\Effect_Earthquake.cpp">
       <Filter>03. GameObject\Static\Effect\Effect_Earthquake</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Effect_Buff.cpp">
+      <Filter>03. GameObject\Static\Effect\Effect_Buff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Particle_Crystal.cpp">
+      <Filter>03. GameObject\Stage\Particle\Particle_Crystal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -591,6 +612,9 @@
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HDR.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Particle.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -196,6 +196,7 @@
     <ClInclude Include="..\Headers\Crystal.h" />
     <ClInclude Include="..\Headers\Door_Trigger.h" />
     <ClInclude Include="..\Headers\Effect.h" />
+    <ClInclude Include="..\Headers\Effect_Buff.h" />
     <ClInclude Include="..\Headers\Effect_Earthquake.h" />
     <ClInclude Include="..\Headers\Effect_Hit.h" />
     <ClInclude Include="..\Headers\Effect_Shoulder.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="..\Headers\MpBar.h" />
     <ClInclude Include="..\Headers\Observer_Boss.h" />
     <ClInclude Include="..\Headers\Observer_Player.h" />
+    <ClInclude Include="..\Headers\Particle_Crystal.h" />
     <ClInclude Include="..\Headers\Portal.h" />
     <ClInclude Include="..\Headers\Balrog.h" />
     <ClInclude Include="..\Headers\Scene_Boss.h" />
@@ -270,6 +272,7 @@
     <ClCompile Include="..\Codes\Crystal.cpp" />
     <ClCompile Include="..\Codes\Door_Trigger.cpp" />
     <ClCompile Include="..\Codes\Effect.cpp" />
+    <ClCompile Include="..\Codes\Effect_Buff.cpp" />
     <ClCompile Include="..\Codes\Effect_Earthquake.cpp" />
     <ClCompile Include="..\Codes\Effect_Hit.cpp" />
     <ClCompile Include="..\Codes\Effect_Shoulder.cpp" />
@@ -298,6 +301,7 @@
     <ClCompile Include="..\Codes\MpBar.cpp" />
     <ClCompile Include="..\Codes\Observer_Boss.cpp" />
     <ClCompile Include="..\Codes\Observer_Player.cpp" />
+    <ClCompile Include="..\Codes\Particle_Crystal.cpp" />
     <ClCompile Include="..\Codes\Portal.cpp" />
     <ClCompile Include="..\Codes\Balrog.cpp" />
     <ClCompile Include="..\Codes\Scene_Boss.cpp" />
@@ -344,6 +348,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh_Static.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Monster.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Particle.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Player.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.fx" />

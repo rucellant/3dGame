@@ -35,6 +35,7 @@ HRESULT CEffect_Earthquake::Ready_GameObject_Clone(void * pArg)
 		return E_FAIL;
 
 	D3DXMatrixIdentity(&m_matCylinder);
+	D3DXMatrixIdentity(&m_matRing);
 
 	m_pManagement->Push_GameObject(g_eScene, L"Layer_Effect_Earthquake", this);
 
@@ -83,7 +84,7 @@ HRESULT CEffect_Earthquake::Render_GameObject()
 			return E_FAIL;
 	}
 
-	if (m_TimeAcc < 2.0)
+	if (m_TimeAcc < 0.8)
 	{
 		if (FAILED(SetUp_ConstantTable(m_iCircleIndex, CYLINDER)))
 			return E_FAIL;
@@ -92,11 +93,23 @@ HRESULT CEffect_Earthquake::Render_GameObject()
 			return E_FAIL;
 	}
 
-	/*
-	m_TimeAcc =0.0;
-	m_iCircleIndex = 0;
-	m_TimeCircleAcc = 0.0;
-	m_pManagement->Push_GameObject(g_eScene, L"Layer_Effect_Earthquake", this);*/
+	if (m_TimeAcc >= 0.8)
+	{
+		if (FAILED(SetUp_ConstantTable(m_iCircleIndex, RING)))
+			return E_FAIL;
+
+		if (FAILED(Render(6, RING)))
+			return E_FAIL;
+	}
+
+	if (m_TimeAcc >= 2.0)
+	{
+		m_TimeAcc =0.0;
+		m_iCircleIndex = 0;
+		m_TimeCircleAcc = 0.0;
+		m_pManagement->Push_GameObject(g_eScene, L"Layer_Effect_Earthquake", this);
+	}
+
 	return NOERROR;
 }
 
@@ -162,6 +175,22 @@ HRESULT CEffect_Earthquake::Activate()
 		memcpy((_vec3*)&m_matCylinder.m[3], (_vec3*)&matTarget.m[3], sizeof(_vec3));
 
 		m_matCylinder.m[3][1] += 2.f;
+	}
+
+	// Ring
+	{
+		_float fScale = 0.1f;
+
+		_vec3 vTmpRight = vRight * fScale;
+		_vec3 vTmpUp = vUp * fScale;
+		_vec3 vTmpLook = vLook * fScale;
+
+		memcpy((_vec3*)&m_matRing.m[0], &vTmpRight, sizeof(_vec3));
+		memcpy((_vec3*)&m_matRing.m[1], &vTmpUp, sizeof(_vec3));
+		memcpy((_vec3*)&m_matRing.m[2], &vTmpLook, sizeof(_vec3));
+		memcpy((_vec3*)&m_matRing.m[3], (_vec3*)&matTarget.m[3], sizeof(_vec3));
+
+		//m_matRing.m[3][1] += 1.f;
 	}
 
 	return NOERROR;
@@ -248,6 +277,22 @@ HRESULT CEffect_Earthquake::SetUp_ConstantTable(_int iIndex, MESH_TYPE eType)
 		if (FAILED(m_pShaderCom->Set_Value("g_fTimeAcc", &fTimeAcc, sizeof(_float))))
 			return E_FAIL;
 	}
+	else if (eType == RING)
+	{
+		_matrix matWVP = m_matRing * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_matRing, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
+			return E_FAIL;
+	}
 
 	return NOERROR;
 }
@@ -272,6 +317,13 @@ HRESULT CEffect_Earthquake::Render(_uint iPassIndex, MESH_TYPE eType)
 
 		for (_ulong i = 0; i < dwNumSubset; ++i)
 			m_pCylinderMeshCom->Render_Mesh(i);
+	}
+	else if (eType == RING)
+	{
+		dwNumSubset = m_pRingMeshCom->Get_NumSubset();
+
+		for (_ulong i = 0; i < dwNumSubset; ++i)
+			m_pRingMeshCom->Render_Mesh(i);
 	}
 
 	m_pShaderCom->End_Pass();

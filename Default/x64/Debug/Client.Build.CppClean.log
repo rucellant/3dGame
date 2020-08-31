@@ -22,11 +22,11 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\twister.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\ui.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\weapon.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\client.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collisionmgr.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\crystal.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\door_trigger.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_hit.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_tornado.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\gameobject_static.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\gate.obj
@@ -44,8 +44,12 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\debug\monster.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\mpbar.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_event.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_free.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\camera_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\debug\collidermanager.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_hit.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_shoulder.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_earthquake.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\effect_buff.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\debug\particle_crystal.obj
 c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_default.cso
@@ -58,6 +62,7 @@ c:\users\zooz2\desktop\portfolio\client\bin\shader_player.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_terrain.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_ui.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_weapon.cso
+c:\users\zooz2\desktop\portfolio\client\bin\shader_particle.cso
 c:\users\zooz2\desktop\portfolio\client\bin\client.ilk
 c:\users\zooz2\desktop\portfolio\client\bin\client.exe
 c:\users\zooz2\desktop\portfolio\client\bin\client.pdb

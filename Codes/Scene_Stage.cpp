@@ -21,6 +21,7 @@
 #include "Management.h"
 #include "Scene_Boss.h"
 #include "Effect_Hit.h"
+#include "Effect_Buff.h"
 #include "Camera_Free.h"
 #include "Door_Trigger.h"
 #include "CollisionMgr.h"
@@ -31,6 +32,7 @@
 #include "MidBoss_Trigger.h"
 #include "Effect_Shoulder.h"
 #include "StageEnd_Trigger.h"
+#include "Particle_Crystal.h"
 #include "Effect_Earthquake.h"
 
 USING(Client)
@@ -573,6 +575,14 @@ HRESULT CScene_Stage::Ready_Layer_Effect()
 
 	// For. GameObject_Effect_Earthquake
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Effect_Earthquake", CEffect_Earthquake::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	// For. GameObject_Effect_Buff
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Effect_Buff", CEffect_Buff::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	// For. GameObject_Particle_Crystal
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Crystal", CParticle_Crystal::Create(pGraphic_Device))))
 		return E_FAIL;
 
 	Safe_Release(pManagement);

@@ -44,6 +44,7 @@ private: // Stage
 	HRESULT Ready_UI_Stage();
 	HRESULT Ready_Interact_Stage();
 	HRESULT Ready_Effect_Stage();
+	HRESULT Ready_Particle_Stage();
 
 private: // Boss
 	HRESULT Ready_Boss();

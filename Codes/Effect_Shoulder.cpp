@@ -54,8 +54,6 @@ _int CEffect_Shoulder::LateUpdate_GameObject(_double TimeDelta)
 	if (m_pRendererCom == nullptr)
 		return -1;
 
-	Set_Billboard();
-	Compute_ViewZ(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	m_pRendererCom->Add_RenderList(CRenderer::RENDER_ALPHA, this);
 
 	return _int();
@@ -95,8 +93,11 @@ HRESULT CEffect_Shoulder::Activate()
 	vPosition += vLook * 2.f;
 	vPosition.y += 2.f;
 
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
-	m_pTransformCom->Set_Scale(_vec3(5.f, 5.f, 5.f));
+	m_pTransformCom->Set_Scale(_vec3(0.1f, 0.1f, 0.1f));
 
 	return NOERROR;
 }
@@ -107,20 +108,16 @@ HRESULT CEffect_Shoulder::Add_Component(void * pArg)
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Effect", L"Com_Shader", (CComponent**)&m_pShaderCom))
 		return E_FAIL;
 
-	// For. Com_Texture_Src
-	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Src", L"Com_Texture_Src", (CComponent**)&m_pSrcTextureCom))
-		return E_FAIL;
-
-	// For. Com_Texture_Dst
-	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Dst", L"Com_Texture_Dst", (CComponent**)&m_pDstTextureCom))
+	// For. Com_Texture
+	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Effect_Shoulder", L"Com_Texture_Src", (CComponent**)&m_pTextureCom))
 		return E_FAIL;
 
 	// For. Com_Renderer
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom))
 		return E_FAIL;
 
-	// For.Com_VIBuffer
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_VIBuffer_VRect", L"Com_VIBuffer", (CComponent**)&m_pVIBufferCom)))
+	// For.Com_Mesh
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Effect_Shoulder_Circle", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For. Com_Transform
@@ -146,10 +143,7 @@ HRESULT CEffect_Shoulder::SetUp_ConstantTable()
 	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 		return E_FAIL;
 
-	_int iTextureIndex = _int(m_TimeAcc * m_pDstTextureCom->Get_Size());
-	if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pSrcTextureCom->Get_Texture(0))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Texture("g_DstTexture", m_pDstTextureCom->Get_Texture(iTextureIndex))))
+	if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -160,26 +154,13 @@ HRESULT CEffect_Shoulder::Render(_uint iPassIndex)
 	m_pShaderCom->Begin_Shader();
 	m_pShaderCom->Begin_Pass(iPassIndex);
 
-	m_pVIBufferCom->Render_VIBuffer();
+	_ulong dwNumSubset = m_pMeshCom->Get_NumSubset();
+
+	for (_ulong i = 0; i < dwNumSubset; ++i)
+		m_pMeshCom->Render_Mesh(i);
 
 	m_pShaderCom->End_Pass();
 	m_pShaderCom->End_Shader();
-
-	return NOERROR;
-}
-
-HRESULT CEffect_Shoulder::Set_Billboard()
-{
-	_matrix matView = m_pManagement->Get_Transform(D3DTS_VIEW);
-	D3DXMatrixInverse(&matView, nullptr, &matView);
-
-	_vec3 vRight = *(_vec3*)&matView.m[0];
-	_vec3 vUp = *(_vec3*)&matView.m[1];
-	_vec3 vLook = *(_vec3*)&matView.m[2];
-
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * m_pTransformCom->Get_Scale(CTransform::STATE_RIGHT));
-	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * m_pTransformCom->Get_Scale(CTransform::STATE_UP));
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * m_pTransformCom->Get_Scale(CTransform::STATE_LOOK));
 
 	return NOERROR;
 }
@@ -213,11 +194,10 @@ CGameObject * CEffect_Shoulder::Clone_GameObject(void * pArg)
 void CEffect_Shoulder::Free()
 {
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pDstTextureCom);
-	Safe_Release(m_pSrcTextureCom);
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pMeshCom);
 
 	Safe_Release(m_pObserver);
 

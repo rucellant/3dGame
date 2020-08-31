@@ -7,7 +7,7 @@ BEGIN(Client)
 class CEffect_Earthquake final : public CEffect
 {
 private:
-	enum MESH_TYPE { CIRCLE, CYLINDER };
+	enum MESH_TYPE { CIRCLE, CYLINDER, RING };
 private:
 	explicit CEffect_Earthquake(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CEffect_Earthquake(const CEffect_Earthquake& rhs);
@@ -31,6 +31,7 @@ private:
 private:
 	_matrix			m_matCircle[3];
 	_matrix			m_matCylinder;
+	_matrix			m_matRing;
 private:
 	_int			m_iCircleIndex = 0;
 private:
