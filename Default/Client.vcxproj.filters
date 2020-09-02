@@ -215,8 +215,17 @@
     <Filter Include="03. GameObject\Stage\Particle">
       <UniqueIdentifier>{3779cfbf-7d23-4866-920a-612826c30b29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. GameObject\Stage\Particle\Particle_Crystal">
+    <Filter Include="03. GameObject\Stage\Particle\Particle_Cohesion">
+      <UniqueIdentifier>{1e252275-0a14-425f-b3c7-833fb074aa7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Particle\Particle_Dead">
       <UniqueIdentifier>{94aa7518-53bf-4e7c-810f-2dfb98f0982a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Particle\Particle_Spread">
+      <UniqueIdentifier>{64c5791f-4bc3-4d8f-a721-f075aec0350b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Particle\Particle_Buff">
+      <UniqueIdentifier>{f735c13d-297c-4328-9cd4-59bc742df754}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -391,8 +400,17 @@
     <ClInclude Include="..\Headers\Effect_Buff.h">
       <Filter>03. GameObject\Static\Effect\Effect_Buff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Particle_Crystal.h">
-      <Filter>03. GameObject\Stage\Particle\Particle_Crystal</Filter>
+    <ClInclude Include="..\Headers\Particle_Dead.h">
+      <Filter>03. GameObject\Stage\Particle\Particle_Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Particle_Cohesion.h">
+      <Filter>03. GameObject\Stage\Particle\Particle_Cohesion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Particle_Spread.h">
+      <Filter>03. GameObject\Stage\Particle\Particle_Spread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Particle_Buff.h">
+      <Filter>03. GameObject\Stage\Particle\Particle_Buff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -555,8 +573,17 @@
     <ClCompile Include="..\Codes\Effect_Buff.cpp">
       <Filter>03. GameObject\Static\Effect\Effect_Buff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Particle_Crystal.cpp">
-      <Filter>03. GameObject\Stage\Particle\Particle_Crystal</Filter>
+    <ClCompile Include="..\Codes\Particle_Dead.cpp">
+      <Filter>03. GameObject\Stage\Particle\Particle_Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Particle_Cohesion.cpp">
+      <Filter>03. GameObject\Stage\Particle\Particle_Cohesion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Particle_Spread.cpp">
+      <Filter>03. GameObject\Stage\Particle\Particle_Spread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Particle_Buff.cpp">
+      <Filter>03. GameObject\Stage\Particle\Particle_Buff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

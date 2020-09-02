@@ -225,7 +225,10 @@
     <ClInclude Include="..\Headers\MpBar.h" />
     <ClInclude Include="..\Headers\Observer_Boss.h" />
     <ClInclude Include="..\Headers\Observer_Player.h" />
-    <ClInclude Include="..\Headers\Particle_Crystal.h" />
+    <ClInclude Include="..\Headers\Particle_Buff.h" />
+    <ClInclude Include="..\Headers\Particle_Cohesion.h" />
+    <ClInclude Include="..\Headers\Particle_Dead.h" />
+    <ClInclude Include="..\Headers\Particle_Spread.h" />
     <ClInclude Include="..\Headers\Portal.h" />
     <ClInclude Include="..\Headers\Balrog.h" />
     <ClInclude Include="..\Headers\Scene_Boss.h" />
@@ -301,7 +304,10 @@
     <ClCompile Include="..\Codes\MpBar.cpp" />
     <ClCompile Include="..\Codes\Observer_Boss.cpp" />
     <ClCompile Include="..\Codes\Observer_Player.cpp" />
-    <ClCompile Include="..\Codes\Particle_Crystal.cpp" />
+    <ClCompile Include="..\Codes\Particle_Buff.cpp" />
+    <ClCompile Include="..\Codes\Particle_Cohesion.cpp" />
+    <ClCompile Include="..\Codes\Particle_Dead.cpp" />
+    <ClCompile Include="..\Codes\Particle_Spread.cpp" />
     <ClCompile Include="..\Codes\Portal.cpp" />
     <ClCompile Include="..\Codes\Balrog.cpp" />
     <ClCompile Include="..\Codes\Scene_Boss.cpp" />

@@ -578,8 +578,12 @@ HRESULT CLoading::Ready_Effect_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Effect_Shoulder_Circle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Shoulder/", L"Circle.X", &matLocal))))
 		return E_FAIL;
 
-	// For. Component_Texture_Effect_Shoulder
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Shoulder", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Shoulder/Wave.dds"))))
+	// For. Component_Texture_Effect_Shoulder_Wave
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Wave", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Shoulder/Wave_%d.dds", 2))))
+		return E_FAIL;
+
+	// For. Component_Texture_Effect_Shoulder_Diffuse
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Diffuse", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Shoulder/Diffuse.tga"))))
 		return E_FAIL;
 
 	// For. Component_Mesh_Effect_Earthquake_Circle
@@ -601,13 +605,7 @@ HRESULT CLoading::Ready_Effect_Stage()
 		return E_FAIL;
 
 	// For. Component_Texture_Effect_Earthquake
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Earthquake", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Earthquake/Effect_Earthquake_%d.tga", 3))))
-		return E_FAIL;
-
-	// For. Component_Mesh_Effect_Buff_Circle
-	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
-
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Effect_Buff_Circle", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Buff/", L"Circle.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Earthquake", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Earthquake/Effect_Earthquake_%d.tga", 5))))
 		return E_FAIL;
 
 	// For. Component_Mesh_Effect_Buff_Cylinder
@@ -623,7 +621,7 @@ HRESULT CLoading::Ready_Effect_Stage()
 		return E_FAIL;
 
 	// For. Component_Texture_Effect_Buff
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Buff", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Buff/Effect_Buff_%d.tga", 3))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Buff", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Buff/Buff_%d.dds", 2))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -635,8 +633,20 @@ HRESULT CLoading::Ready_Particle_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Particle", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Particle.fx"))))
 		return E_FAIL;
 
-	// For. Component_Texture_Particle_Crystal
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Particle_Crystal", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Particle_Crystal/Particle_Crystal_%d.png"))))
+	// For. Component_Texture_Particle_Dead
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Particle_Dead", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Particle_Crystal/Particle_Crystal_%d.png"))))
+		return E_FAIL;
+
+	// For. Component_Texture_Particle_Cohesion 
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Particle_Cohesion", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Particle_Cohesion/Particle_Cohesion_%d.png"))))
+		return E_FAIL;
+
+	// For. Component_Texture_Particle_Spread
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Particle_Spread", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Particle_Spread/Particle_Spread_%d.png"))))
+		return E_FAIL;
+
+	// For. Component_Texture_Particle_Buff
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Particle_Buff", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Particle_Buff/Buff.png"))))
 		return E_FAIL;
 
 	return NOERROR;

@@ -89,6 +89,7 @@ public:
 	HRESULT Set_Position(_vec3 vPosition);
 	HRESULT Set_Look(_vec3 vPosition);
 	HRESULT Set_Navigation_Mode(_uint eMode);
+	HRESULT Update_PlayerInfo();
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
@@ -107,6 +108,8 @@ private: // 제어상태
 	_bool				m_bIsControl = true;
 	_bool				m_bIsSK = false;
 	_bool				m_bIsEarthquake = false;
+	_bool				m_bIsTornadoParticle = false;
+	_bool				m_bIsBuff = false;
 private: // 상태
 	STATE				m_eCurState = IDLE;
 private: // Animation 
@@ -133,6 +136,7 @@ private: // 타이머
 	_double				m_TimeExp = 0.0;
 	_double				m_TimeDownAcc = 0.0;
 	_double				m_TimeAfterImageAcc = 0.0;
+	_double				m_TimeBuffAcc = 0.0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable(_uint iPassIndex);
@@ -153,6 +157,9 @@ private:
 	HRESULT Create_Tornado();
 	HRESULT Create_Shoulder();
 	HRESULT Create_Earthquake();
+	HRESULT Create_Tornado_Particle();
+	HRESULT Create_Buff();
+	HRESULT Create_Buff_Particle();
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

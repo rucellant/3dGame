@@ -46,6 +46,8 @@ _int CEffect_Shoulder::Update_GameObject(_double TimeDelta)
 	m_TimeAcc += TimeDelta;
 	m_TimeDelta = TimeDelta;
 
+	m_pTransformCom->Set_Scale(_vec3(_float(m_TimeAcc * 3.0) + 1.f, _float(m_TimeAcc * 3.0) + 1.f, _float(m_TimeAcc * 3.0) + 1.f));
+
 	return _int();
 }
 
@@ -70,7 +72,7 @@ HRESULT CEffect_Shoulder::Render_GameObject()
 	if (FAILED(Render(3)))
 		return E_FAIL;
 
-	if (m_TimeAcc >= 1.0)
+	if (m_TimeAcc >= 1.5)
 	{
 		m_TimeAcc = 0.0;
 		m_pManagement->Push_GameObject(g_eScene, L"Layer_Effect_Shoulder", this);
@@ -97,7 +99,7 @@ HRESULT CEffect_Shoulder::Activate()
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
-	m_pTransformCom->Set_Scale(_vec3(0.1f, 0.1f, 0.1f));
+	m_pTransformCom->Set_Scale(_vec3(1.f, 1.f, 1.f));
 
 	return NOERROR;
 }
@@ -108,17 +110,25 @@ HRESULT CEffect_Shoulder::Add_Component(void * pArg)
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Effect", L"Com_Shader", (CComponent**)&m_pShaderCom))
 		return E_FAIL;
 
-	// For. Com_Texture
-	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Effect_Shoulder", L"Com_Texture_Src", (CComponent**)&m_pTextureCom))
+	// For. Com_Texture_Wave
+	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Wave", L"Com_Texture_Wave", (CComponent**)&m_pWaveTextureCom))
+		return E_FAIL;
+
+	// For. Com_Texture_Diffuse
+	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Effect_Shoulder_Diffuse", L"Com_Texture_Diffuse", (CComponent**)&m_pDiffuseTextureCom))
 		return E_FAIL;
 
 	// For. Com_Renderer
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom))
 		return E_FAIL;
 
-	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Effect_Shoulder_Circle", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+	// For.Com_VIBuffer
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_VIBuffer_VRect", L"Com_VIBuffer", (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
+
+	// For.Com_Mesh
+	/*if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Effect_Shoulder_Circle", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+		return E_FAIL;*/
 
 	// For. Com_Transform
 	if (CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom))
@@ -143,7 +153,15 @@ HRESULT CEffect_Shoulder::SetUp_ConstantTable()
 	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
+	if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pWaveTextureCom->Get_Texture(0))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_Texture("g_DstTexture", m_pWaveTextureCom->Get_Texture(1))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_Texture("g_DiffuseTexture", m_pDiffuseTextureCom->Get_Texture(0))))
+		return E_FAIL;
+
+	_float fTheta = D3DXToRadian(_float(m_TimeAcc) * 360.f);
+	if (FAILED(m_pShaderCom->Set_Value("g_fAngle", &fTheta, sizeof(_float))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -154,10 +172,12 @@ HRESULT CEffect_Shoulder::Render(_uint iPassIndex)
 	m_pShaderCom->Begin_Shader();
 	m_pShaderCom->Begin_Pass(iPassIndex);
 
-	_ulong dwNumSubset = m_pMeshCom->Get_NumSubset();
+	m_pVIBufferCom->Render_VIBuffer();
+
+	/*_ulong dwNumSubset = m_pMeshCom->Get_NumSubset();
 
 	for (_ulong i = 0; i < dwNumSubset; ++i)
-		m_pMeshCom->Render_Mesh(i);
+		m_pMeshCom->Render_Mesh(i);*/
 
 	m_pShaderCom->End_Pass();
 	m_pShaderCom->End_Shader();
@@ -194,10 +214,12 @@ CGameObject * CEffect_Shoulder::Clone_GameObject(void * pArg)
 void CEffect_Shoulder::Free()
 {
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pWaveTextureCom);
+	Safe_Release(m_pDiffuseTextureCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pMeshCom);
+	Safe_Release(m_pVIBufferCom);
+	//Safe_Release(m_pMeshCom);
 
 	Safe_Release(m_pObserver);
 

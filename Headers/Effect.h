@@ -11,6 +11,7 @@ class CRenderer;
 class CTransform;
 class CMesh_Static;
 class CVIBuffer_VRect;
+class CVIBuffer_HRect;
 END
 
 BEGIN(Client)

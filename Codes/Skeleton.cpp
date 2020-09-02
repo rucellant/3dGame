@@ -4,6 +4,7 @@
 #include "Management.h"
 #include "Effect_Hit.h"
 #include "CollisionMgr.h"
+#include "Particle_Dead.h"
 #include "Observer_Player.h"
 
 USING(Client)
@@ -655,7 +656,25 @@ HRESULT CSkeleton::State_Dead(_double TimeDelta)
 	{
 		m_TimeDeadAcc += TimeDelta;
 		if (m_TimeDeadAcc >= 2.0)
+		{
+			CParticle_Dead* pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
+
+			if (pParticle == nullptr)
+			{
+				if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Dead", L"GameObject_Particle_Dead")))
+					return E_FAIL;
+
+				pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
+			}
+
+			_vec3 vOrigin = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+			vOrigin.y += 1.f;
+
+			pParticle->Activate(vOrigin);
+
 			m_pManagement->Push_GameObject(g_eScene, L"Layer_Monster", this);
+		}
 	}
 
 	if (m_iAnimation == SKELETON_DEAD && m_pMeshCom->is_Finished())

@@ -2,6 +2,7 @@
 #include "..\Headers\Effect_Earthquake.h"
 #include "Management.h"
 #include "Observer_Player.h"
+#include "Particle_Spread.h"
 
 
 USING(Client)
@@ -55,7 +56,32 @@ _int CEffect_Earthquake::Update_GameObject(_double TimeDelta)
 		if (m_iCircleIndex < 3)
 			m_TimeCircleAcc = 0.0;
 	}
-		
+
+	if (m_TimeAcc >= 0.8 && !m_bIsCreateParticle)
+	{
+		//요기서파티클 생성
+		CParticle_Spread* pParticle = (CParticle_Spread*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Spread");
+
+		if (pParticle == nullptr)
+		{
+			if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Spread", L"GameObject_Particle_Spread")))
+				return E_FAIL;
+
+			pParticle = (CParticle_Spread*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Spread");
+		}
+
+		if (pParticle == nullptr)
+			return E_FAIL;
+
+		// 토네이도 실행하기 전에 정보부터 넘겨줌 
+		CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Player");
+
+		pPlayer->Update_PlayerInfo();
+
+		pParticle->Activate();
+
+		m_bIsCreateParticle = true;
+	}
 
 	return _int();
 }
@@ -108,6 +134,7 @@ HRESULT CEffect_Earthquake::Render_GameObject()
 		m_iCircleIndex = 0;
 		m_TimeCircleAcc = 0.0;
 		m_pManagement->Push_GameObject(g_eScene, L"Layer_Effect_Earthquake", this);
+		m_bIsCreateParticle = false;
 	}
 
 	return NOERROR;
@@ -253,6 +280,9 @@ HRESULT CEffect_Earthquake::SetUp_ConstantTable(_int iIndex, MESH_TYPE eType)
 		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
 			return E_FAIL;
 
+		if (FAILED(m_pManagement->SetRenderTarget_OnShader(m_pShaderCom, "g_DepthTexture", L"Target_Depth")))
+			return E_FAIL;
+
 		_float fTimeCircleAcc = _float(m_TimeCircleAcc);
 		if (FAILED(m_pShaderCom->Set_Value("g_fTimeAcc", &fTimeCircleAcc, sizeof(_float))))
 			return E_FAIL;
@@ -270,7 +300,9 @@ HRESULT CEffect_Earthquake::SetUp_ConstantTable(_int iIndex, MESH_TYPE eType)
 		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 			return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
+		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(1))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Texture("g_DstTexture", m_pTextureCom->Get_Texture(4))))
 			return E_FAIL;
 
 		_float fTimeAcc = _float(m_TimeAcc);
@@ -290,7 +322,13 @@ HRESULT CEffect_Earthquake::SetUp_ConstantTable(_int iIndex, MESH_TYPE eType)
 		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 			return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(0))))
+		
+		_float fTimeAcc = _float(D3DXToRadian(m_TimeAcc)); //_float(m_TimeAcc);
+		if (FAILED(m_pShaderCom->Set_Value("g_fTimeAcc", &fTimeAcc, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Texture("g_SrcTexture", m_pTextureCom->Get_Texture(2))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Texture("g_DstTexture", m_pTextureCom->Get_Texture(3))))
 			return E_FAIL;
 	}
 

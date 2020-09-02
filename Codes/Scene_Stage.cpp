@@ -26,14 +26,17 @@
 #include "Door_Trigger.h"
 #include "CollisionMgr.h"
 #include "Camera_Event.h"
+#include "Particle_Dead.h"
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
+#include "Particle_Buff.h"
 #include "Effect_Tornado.h"
+#include "Particle_Spread.h"
 #include "MidBoss_Trigger.h"
 #include "Effect_Shoulder.h"
 #include "StageEnd_Trigger.h"
-#include "Particle_Crystal.h"
 #include "Effect_Earthquake.h"
+#include "Particle_Cohesion.h"
 
 USING(Client)
 
@@ -581,8 +584,20 @@ HRESULT CScene_Stage::Ready_Layer_Effect()
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Effect_Buff", CEffect_Buff::Create(pGraphic_Device))))
 		return E_FAIL;
 
-	// For. GameObject_Particle_Crystal
-	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Crystal", CParticle_Crystal::Create(pGraphic_Device))))
+	// For. GameObject_Particle_Dead
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Dead", CParticle_Dead::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	// For. GameObject_Particle_Cohesion
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Cohesion", CParticle_Cohesion::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_Particle_Spread
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Spread", CParticle_Spread::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_Particle_Buff
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Buff", CParticle_Buff::Create(pGraphic_Device))))
 		return E_FAIL;
 
 	Safe_Release(pManagement);

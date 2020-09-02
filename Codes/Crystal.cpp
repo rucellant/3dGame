@@ -3,7 +3,7 @@
 #include "Management.h"
 #include "CollisionMgr.h"
 #include "Door_Trigger.h"
-#include "Particle_Crystal.h"
+#include "Particle_Dead.h"
 
 USING(Client)
 
@@ -50,14 +50,14 @@ _int CCrystal::Update_GameObject(_double TimeDelta)
 	{
 		m_pManagement->Push_GameObject(g_eScene, L"Layer_Crystal", this);
 		// 여기서 파티크 생성
-		CParticle_Crystal* pParticle = (CParticle_Crystal*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Crystal");
+		CParticle_Dead* pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
 
 		if (pParticle == nullptr)
 		{
-			if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Crystal", L"GameObject_Particle_Crystal")))
+			if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Dead", L"GameObject_Particle_Dead")))
 				return E_FAIL;
 
-			pParticle = (CParticle_Crystal*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Crystal");
+			pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
 		}
 
 		_vec3 vOrigin = m_pTransformCom->Get_State(CTransform::STATE_POSITION);

@@ -2,11 +2,14 @@
 #include "..\Headers\Player.h"
 #include "Management.h"
 #include "Effect_Hit.h"
+#include "Effect_Buff.h"
 #include "CollisionMgr.h"
+#include "Particle_Buff.h"
 #include "Subject_Player.h"
 #include "Effect_Tornado.h"
 #include "Effect_Shoulder.h"
 #include "Effect_Earthquake.h"
+#include "Particle_Cohesion.h"
 
 USING(Client)
 
@@ -294,6 +297,20 @@ HRESULT CPlayer::Set_Navigation_Mode(_uint eMode)
 		return E_FAIL;
 
 	m_pNavigationCom->Set_Mode(CCell::MODE(eMode));
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Update_PlayerInfo()
+{
+	if (m_pSubject == nullptr)
+		return E_FAIL;
+
+	m_pSubject->Notify(CSubject_Player::TYPE_INFO);
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
+	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
+	m_pSubject->Notify(CSubject_Player::TYPE_STATE);
 
 	return NOERROR;
 }
@@ -758,6 +775,14 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 	// 1번 스킬 휘두르는 시각은 애니메이션 시작하고 0.55초 지난 후 부터 휘두름
 	if (m_iAnimation == PLAYER_TORNADO)
 	{
+		if (!m_bIsTornadoParticle)
+		{
+			m_bIsTornadoParticle = !m_bIsTornadoParticle;
+
+			if (FAILED(Create_Tornado_Particle()))
+				return E_FAIL;
+		}
+
 		if (m_TimeTornadoAcc < 0.55)
 			m_TimeTornadoAcc += TimeDelta;
 		else
@@ -789,6 +814,26 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 		}
 	}
 
+	if (m_iAnimation == PLAYER_BUFFMOTION)
+	{
+		//여기서 충돌처리요구
+		if (m_bIsSK)
+		{
+			if (FAILED(Create_Buff()))
+				return E_FAIL;
+
+			if (FAILED(Create_Buff_Particle()))
+				return E_FAIL;
+
+			if (m_bIsBuff)
+				m_TimeBuffAcc = 0.0;
+			
+			m_bIsBuff = true;
+
+			m_bIsSK = false;
+		}
+	}
+
 	if (m_iAnimation == PLAYER_EARTHQUAKE)
 	{
 		//여기서 충돌처리요구
@@ -811,6 +856,7 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 
 		m_bIsSK = false;
 		m_bIsEarthquake = false;
+		m_bIsTornadoParticle = false;
 	}
 
 	return NOERROR;
@@ -872,6 +918,18 @@ HRESULT CPlayer::Post_Update(_double TimeDelta)
 {
 	//콜라이더 업데이트
 	Update_Collider();
+
+	// 버프 시간 기록
+	if (m_bIsBuff)
+	{
+		m_TimeBuffAcc += TimeDelta;
+
+		if (m_TimeBuffAcc >= 60.0)
+		{
+			m_TimeBuffAcc = 0.0;
+			m_bIsBuff = false;
+		}
+	}	
 
 	// 마우스 가로축 회전 판별
 	if (m_bIsControl && (m_eCurState != ATT))
@@ -1048,6 +1106,75 @@ HRESULT CPlayer::Create_Earthquake()
 	pEffect_Earthquake->Activate();
 
 	m_bIsEarthquake = true;
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Create_Tornado_Particle()
+{
+	CParticle_Cohesion* pParticle = (CParticle_Cohesion*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Cohesion");
+
+	if (pParticle == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Cohesion", L"GameObject_Particle_Cohesion")))
+			return E_FAIL;
+
+		pParticle = (CParticle_Cohesion*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Cohesion");
+	}
+
+	if (pParticle == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
+
+	pParticle->Activate();
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Create_Buff()
+{
+	CEffect_Buff* pEffect_Buff = (CEffect_Buff*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Buff");
+
+	if (pEffect_Buff == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Buff", L"GameObject_Effect_Buff")))
+			return E_FAIL;
+
+		pEffect_Buff = (CEffect_Buff*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Buff");
+	}
+
+	if (pEffect_Buff == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+
+	pEffect_Buff->Activate();
+
+	return NOERROR;
+}
+
+HRESULT CPlayer::Create_Buff_Particle()
+{
+	CParticle_Buff* pParticle = (CParticle_Buff*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Buff");
+
+	if (pParticle == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Buff", L"GameObject_Particle_Buff")))
+			return E_FAIL;
+
+		pParticle = (CParticle_Buff*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Buff");
+	}
+
+	if (pParticle == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Player::TYPE_MATRIX);
+
+	pParticle->Activate();
 
 	return NOERROR;
 }

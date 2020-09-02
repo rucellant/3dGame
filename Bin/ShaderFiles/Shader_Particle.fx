@@ -52,7 +52,7 @@ VS_OUT VS_MAIN(VS_IN In)
 	float fSize = (g_fSize * g_fViewPortHeight) / fDistance;
 
 	Out.vPosition = vPosition;
-	Out.vColor = vector(1.f, 1.f, 1.f, 1.f);
+	Out.vColor = In.vColor;//vector(1.f, 1.f, 1.f, 1.f);
 	Out.vTexUV = In.vTexUV;
 	Out.vSize = fSize;
 
@@ -78,9 +78,20 @@ PS_OUT PS_MAIN(PS_IN In) : COLOR
 
 	Out.vColor = tex2D(ParticleSampler, In.vTexUV);
 
-	Out.vColor = Out.vColor * In.vColor;
+	Out.vColor = Out.vColor * vector(1.f, 1.f, 1.f, 1.f);
 
 	return Out;
+}
+
+PS_OUT PS_BUFF(PS_IN In) : COLOR
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+Out.vColor = tex2D(ParticleSampler, In.vTexUV);
+
+Out.vColor = Out.vColor * In.vColor;
+
+return Out;
 }
 
 technique Default_Technique

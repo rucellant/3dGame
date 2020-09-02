@@ -20,10 +20,12 @@ public:
 	HRESULT Activate();
 private:
 	CShader*			m_pShaderCom = nullptr;
-	CTexture*			m_pTextureCom = nullptr;
+	CTexture*			m_pWaveTextureCom = nullptr;
+	CTexture*			m_pDiffuseTextureCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;
-	CMesh_Static*		m_pMeshCom = nullptr;
+	CVIBuffer_VRect*	m_pVIBufferCom = nullptr;
+	//CMesh_Static*		m_pMeshCom = nullptr;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable();

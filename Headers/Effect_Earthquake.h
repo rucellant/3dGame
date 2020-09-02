@@ -37,6 +37,8 @@ private:
 private:
 	_double			m_TimeCircleAcc = 0.0;
 private:
+	_bool			m_bIsCreateParticle = false;
+private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable(_int iIndex, MESH_TYPE eType);
 	HRESULT Render(_uint iPassIndex, MESH_TYPE eType);
