@@ -123,16 +123,16 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 		return E_FAIL;
 
 	// For. Component_Mesh_Soldier
-	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+	/*D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Soldier", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Soldier_00/", L"Soldier_00.X", &matLocal))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	// For. Component_Mesh_Ruisa
-	D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
+	/*D3DXMatrixScaling(&matLocal, 0.5f, 0.5f, 0.5f);
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Ruisa", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/NPC/Ruisa/", L"Ruisa.X", &matLocal))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	// For. Component_Mesh_Lups
 	D3DXMatrixScaling(&matLocal, 0.8f, 0.8f, 0.8f);
@@ -290,10 +290,10 @@ HRESULT CLoading::Ready_Static_Stage()
 		return E_FAIL;
 
 	// For. Component_Mesh_Arrow
-	D3DXMatrixScaling(&matLocal, 4.f, 4.f, 1.f);
+	/*D3DXMatrixScaling(&matLocal, 4.f, 4.f, 1.f);
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Arrow", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Arrow/", L"Arrow.X", &matLocal))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	// For. Component_Shader_Weapon
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Weapon", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Weapon.fx"))))
@@ -309,40 +309,40 @@ HRESULT CLoading::Ready_Static_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon0", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_00.tga"))))
 		return E_FAIL;
 
-	// For. Component_Mesh_Weapon1
-	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+	//// For. Component_Mesh_Weapon1
+	//D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon1", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_01.X", &matLocal))))
-		return E_FAIL;
+	//if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon1", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_01.X", &matLocal))))
+	//	return E_FAIL;
 
-	// For. Component_Texture_Weapon1
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon1", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_01.tga"))))
-		return E_FAIL;
+	//// For. Component_Texture_Weapon1
+	//if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon1", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_01.tga"))))
+	//	return E_FAIL;
 
-	// For. Component_Mesh_Weapon2
-	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+	//// For. Component_Mesh_Weapon2
+	//D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon2", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_02.X", &matLocal))))
-		return E_FAIL;
+	//if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon2", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_02.X", &matLocal))))
+	//	return E_FAIL;
 
-	// For. Component_Texture_Weapon2
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon2", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_02.tga"))))
-		return E_FAIL;
+	//// For. Component_Texture_Weapon2
+	//if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon2", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_02.tga"))))
+	//	return E_FAIL;
 
-	// For. Component_Mesh_Weapon3
-	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+	//// For. Component_Mesh_Weapon3
+	//D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon3", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_03.X", &matLocal))))
-		return E_FAIL;
+	//if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon3", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_03.X", &matLocal))))
+	//	return E_FAIL;
 
-	// For. Component_Texture_Weapon3
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon3", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_03.tga"))))
-		return E_FAIL;
+	//// For. Component_Texture_Weapon3
+	//if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon3", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_03.tga"))))
+	//	return E_FAIL;
 
 	// For. Component_Mesh_Shield
 	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Shield", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Shield/", L"Shield.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Shield", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Shield/", L"Shield.X", &matLocal, CMesh_Static::TYPE_BLESS))))
 		return E_FAIL;
 
 	// For. Component_Mesh_Gate
@@ -353,8 +353,87 @@ HRESULT CLoading::Ready_Static_Stage()
 
 	matLocal = matScale * matRotX * matRotZ;
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Gate", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Gate/", L"Gate_A.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Gate", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Dynamic/Gate/", L"Gate_A.X", &matLocal, CMesh_Static::TYPE_C9))))
 		return E_FAIL;
+
+	// For. Component_Mesh_Torch
+	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Torch", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Torch/", L"Torch1.X", &matLocal, CMesh_Static::TYPE_C9))))
+		return E_FAIL;
+
+	// For. Component_Texture_Torch
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Torch", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Torch/%d.png", 32))))
+		return E_FAIL;
+	
+	// Read File Torch
+	{
+		HANDLE hFile = CreateFile(L"../Bin/Resources/Data/Stage_Light_Desc.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		_ulong dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CTorch::OBJDESC tTorchDesc;
+			tTorchDesc.fFrustumRadius = fFrustumRadius;
+			tTorchDesc.matWorld = matWorld;
+			lstrcpy(tTorchDesc.szFileName, szFileName);
+			tTorchDesc.vColor = D3DXCOLOR(0.94f, 0.64f, 0.03f, 1.f);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_TORCH, &tTorchDesc);
+		}
+
+		CloseHandle(hFile);
+
+		hFile = CreateFile(L"../Bin/Resources/Data/Stage_Light_Desc2.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CTorch::OBJDESC tTorchDesc;
+			tTorchDesc.fFrustumRadius = fFrustumRadius;
+			tTorchDesc.matWorld = matWorld;
+			lstrcpy(tTorchDesc.szFileName, szFileName);
+			tTorchDesc.vColor = D3DXCOLOR(0.97f, 0.83f, 0.29f, 1.f);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_TORCH, &tTorchDesc);
+		}
+
+		CloseHandle(hFile);
+	}
 
 	return NOERROR;
 }

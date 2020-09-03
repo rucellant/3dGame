@@ -3,6 +3,7 @@
 #include "Gate.h"
 #include "HpBar.h"
 #include "MpBar.h"
+#include "Torch.h"
 #include "Portal.h"
 #include "Player.h"
 #include "Icicle.h"
@@ -21,6 +22,7 @@
 #include "Management.h"
 #include "Scene_Boss.h"
 #include "Effect_Hit.h"
+#include "Torch_Fire.h"
 #include "Effect_Buff.h"
 #include "Camera_Free.h"
 #include "Door_Trigger.h"
@@ -506,6 +508,44 @@ HRESULT CScene_Stage::Ready_Layer_Static()
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Static", L"GameObject_Gate")))
 		return E_FAIL;
+
+	// For. GameObject_Torch
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Torch", CTorch::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	// For. GameObject_Torch_Fire
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Torch_Fire", CTorch_Fire::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	vector<CTorch::OBJDESC> vecLoad = *(vector<CTorch::OBJDESC>*)CIOManager::GetInstance()->Load(CIOManager::TYPE_TORCH);
+
+	for (auto& element : vecLoad)
+	{
+		if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Torch", L"GameObject_Torch", &element)))
+			return E_FAIL;
+
+		_vec3 vLook = *(_vec3*)&element.matWorld.m[2];
+		D3DXVec3Normalize(&vLook, &vLook);
+
+		_vec3 vPosition = *(_vec3*)&element.matWorld.m[3];
+
+		vPosition.y += 4.f;
+
+		if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Torch", L"GameObject_Torch_Fire", &vPosition)))
+			return E_FAIL;
+
+		D3DLIGHT9 LightDesc;
+
+		LightDesc.Type = D3DLIGHT_POINT;
+		LightDesc.Diffuse = element.vColor;
+		LightDesc.Ambient = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.f);
+		LightDesc.Specular = LightDesc.Diffuse;
+		LightDesc.Position = vPosition + _vec3(0.f, -2.f, 0.f);
+		LightDesc.Range = 50.f;
+
+		if (FAILED(pManagement->Add_Light(pGraphic_Device, &LightDesc, SCENE_STATIC, L"Component_Transform", CLight::LIGHT_POINT)))
+			return E_FAIL;
+	}
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

@@ -28,6 +28,16 @@ sampler SpecularSampler = sampler_state
 	mipfilter = linear;
 };
 
+texture		g_RimTexture;
+
+sampler RimSampler = sampler_state
+{
+	texture = g_RimTexture;
+	minfilter = linear;
+	magfilter = linear;
+	mipfilter = linear;
+};
+
 
 struct PS_IN
 {
@@ -48,8 +58,9 @@ PS_OUT PS_MAIN(PS_IN In)
 	vector		vDiffuse = pow(tex2D(DiffuseSampler, In.vTexUV), 2.2);
 	vector		vShade = tex2D(ShadeSampler, In.vTexUV);
 	vector		vSpecular = tex2D(SpecularSampler, In.vTexUV);
+	vector		vRim = tex2D(RimSampler, In.vTexUV);
 
-	vector		vColor = vDiffuse * vShade + vSpecular;
+	vector		vColor = (vDiffuse + vRim) * vShade + vSpecular;
 
 	Out.vColor = vColor;
 

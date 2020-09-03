@@ -64,10 +64,10 @@ _int CParticle_Buff::Update_GameObject(_double TimeDelta)
 		{
 			Attribute.bIsAlive = true;
 			_vec3 vPosition;
-			GetRandVec(&vPosition, &_vec3(-2.f, -2.f, -2.f), &_vec3(2.f, 2.f, 2.f));
-			Attribute.vPosition = vPosition;
+			GetRandVec(&vPosition, &_vec3(-1.f, -1.f, -1.f), &_vec3(1.f, 1.f, 1.f));
+			Attribute.vPosition = vPosition + m_vOrigin;
 			Attribute.fAge = 0.f;
-			Attribute.fLifeTime = 1.f;
+			Attribute.fLifeTime = 0.5f;
 			Attribute.fEmissive = 0.5f;
 
 			iEmitPerFrame++;
@@ -84,6 +84,7 @@ _int CParticle_Buff::Update_GameObject(_double TimeDelta)
 
 		Attribute.fAge += _float(TimeDelta) * 2.f;
 		Attribute.fEmissive += Attribute.fAge;
+		Attribute.vPosition.y -= _float(TimeDelta) * 2.f;
 
 		if (Attribute.fAge >= Attribute.fLifeTime)
 			Attribute.bIsAlive = false;
@@ -125,11 +126,11 @@ HRESULT CParticle_Buff::Render_GameObject()
 
 	m_RenderingParticleLst.clear();
 
-	/*if (m_TimeAcc >= 1.2)
+	if (m_TimeAcc >= 30.0)
 	{
 	m_TimeAcc = 0.0;
 	m_pManagement->Push_GameObject(g_eScene, L"Layer_Particle_Spread", this);
-	}*/
+	}
 
 	return NOERROR;
 }
@@ -260,8 +261,8 @@ HRESULT CParticle_Buff::Render_Particle()
 
 	Safe_Release(pGraphic_Device);
 
-	for (auto& Attribute : m_RenderingParticleLst)
-		Attribute.vPosition += m_vOrigin;
+	//for (auto& Attribute : m_RenderingParticleLst)
+	//	Attribute.vPosition += m_vOrigin;
 
 	if (m_dwVBOffset >= m_dwVBSize)
 		m_dwVBOffset = 0;

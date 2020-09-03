@@ -21,7 +21,6 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\release\collisionmgr.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\camera_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\camera_free.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\camera_event.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\release\soldier.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\sk_slot.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\skeleton.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\shield.obj
@@ -33,6 +32,7 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\release\portal.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\particle_spread.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\particle_dead.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\particle_cohesion.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\release\particle_buff.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\observer_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\observer_boss.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\mpbar.obj
@@ -50,7 +50,7 @@ c:\users\zooz2\desktop\portfolio\client\default\x64\release\terrain.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\subject_player.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\subject_boss.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\stageend_trigger.obj
-c:\users\zooz2\desktop\portfolio\client\default\x64\release\particle_buff.obj
+c:\users\zooz2\desktop\portfolio\client\default\x64\release\soldier.obj
 c:\users\zooz2\desktop\portfolio\client\default\x64\release\collidermanager.obj
 c:\users\zooz2\desktop\portfolio\client\bin\shader_blend.cso
 c:\users\zooz2\desktop\portfolio\client\bin\shader_collider.cso

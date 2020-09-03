@@ -1,5 +1,9 @@
 matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
+bool g_bRimMode;
+
+vector g_vCamPosition;
+
 texture g_DiffuseTexture;
 
 sampler	DiffuseSampler = sampler_state
@@ -36,6 +40,7 @@ struct VS_OUT
 	float3	vBinormal : BINORMAL;
 	float2	vTexUV : TEXCOORD0;
 	float4	vProjPos : TEXCOORD1;
+	float4	vWorldPos : TEXCOORD2;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -45,6 +50,10 @@ VS_OUT VS_MAIN(VS_IN In)
 	vector vPosition;
 
 	vPosition = mul(vector(In.vPosition, 1.f), g_matWVP);
+
+	vector vWorldPos = mul(vector(In.vPosition, 1.f), g_matWorld);
+
+	Out.vWorldPos = vWorldPos;
 
 	Out.vPosition = vPosition;
 	Out.vTexUV = In.vTexUV;
@@ -68,6 +77,7 @@ struct PS_IN
 	float3	vBinormal : BINORMAL;
 	float2	vTexUV : TEXCOORD0;
 	float4	vProjPos : TEXCOORD1;
+	float4	vWorldPos : TEXCOORD2;
 };
 
 struct PS_OUT
@@ -89,6 +99,17 @@ PS_OUT PS_MAIN(PS_IN In)
 	TBN = transpose(TBN);
 
 	float3 vNormal = mul(TBN, vTangentNormal.xyz);
+
+	if (g_bRimMode == true)
+	{
+		vector vLook = normalize(g_vCamPosition - In.vWorldPos);
+
+		float Rim = 1 - dot(vLook, vNormal);
+
+		Rim *= Rim;
+
+		Out.vColor.r += Rim;
+	}
 
 	Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
 

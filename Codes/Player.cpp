@@ -76,6 +76,8 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 
 	m_bIsAlive = true;
 
+	m_pNavigationCom->Set_Mode(CCell::MODE_OPEN);
+
 	return NOERROR;
 }
 
@@ -822,11 +824,13 @@ HRESULT CPlayer::State_SK(_double TimeDelta)
 			if (FAILED(Create_Buff()))
 				return E_FAIL;
 
-			if (FAILED(Create_Buff_Particle()))
-				return E_FAIL;
-
 			if (m_bIsBuff)
 				m_TimeBuffAcc = 0.0;
+			else
+			{
+				if (FAILED(Create_Buff_Particle()))
+					return E_FAIL;
+			}
 			
 			m_bIsBuff = true;
 
@@ -924,7 +928,7 @@ HRESULT CPlayer::Post_Update(_double TimeDelta)
 	{
 		m_TimeBuffAcc += TimeDelta;
 
-		if (m_TimeBuffAcc >= 60.0)
+		if (m_TimeBuffAcc >= 30.0)
 		{
 			m_TimeBuffAcc = 0.0;
 			m_bIsBuff = false;

@@ -227,6 +227,12 @@
     <Filter Include="03. GameObject\Stage\Particle\Particle_Buff">
       <UniqueIdentifier>{f735c13d-297c-4328-9cd4-59bc742df754}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Stage\Static\Torch">
+      <UniqueIdentifier>{afad91a5-41b5-40a0-a12d-9f5c5ba54a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Stage\Static\Torch_Fire">
+      <UniqueIdentifier>{79fd4956-33eb-484b-946f-88855855e395}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -412,6 +418,12 @@
     <ClInclude Include="..\Headers\Particle_Buff.h">
       <Filter>03. GameObject\Stage\Particle\Particle_Buff</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Torch.h">
+      <Filter>03. GameObject\Stage\Static\Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Torch_Fire.h">
+      <Filter>03. GameObject\Stage\Static\Torch_Fire</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -584,6 +596,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Particle_Buff.cpp">
       <Filter>03. GameObject\Stage\Particle\Particle_Buff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Torch.cpp">
+      <Filter>03. GameObject\Stage\Static\Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Torch_Fire.cpp">
+      <Filter>03. GameObject\Stage\Static\Torch_Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -85,6 +85,19 @@ HRESULT CIOManager::Store(OBJECT_TYPE eType, void * pArg)
 			m_mapTwister[eType].push_back(*(CTwister::OBJDESC*)pArg);
 	}
 
+	if (eType == TYPE_TORCH)
+	{
+		if (m_mapTorch.empty())
+		{
+			vector<CTorch::OBJDESC> vecElement;
+			vecElement.push_back(*(CTorch::OBJDESC*)pArg);
+
+			m_mapTorch.insert({ eType,vecElement });
+		}
+		else
+			m_mapTorch[eType].push_back(*(CTorch::OBJDESC*)pArg);
+	}
+
 	return NOERROR;
 }
 
@@ -110,6 +123,9 @@ void * CIOManager::Load(OBJECT_TYPE eType)
 
 	if (eType == TYPE_BALROG)
 		return &m_mapBalrog[eType];
+
+	if (eType == TYPE_TORCH)
+		return &m_mapTorch[eType];
 
 	return nullptr;
 }
@@ -145,6 +161,11 @@ HRESULT CIOManager::Clear()
 		Pair.second.clear();
 
 	m_mapBalrog.clear();
+
+	for (auto& Pair : m_mapTorch)
+		Pair.second.clear();
+
+	m_mapTorch.clear();
 
 	return NOERROR;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Torch.h"
 #include "Icicle.h"
 #include "Player.h"
 #include "Balrog.h"
@@ -16,7 +17,7 @@ class CIOManager final : public CBase
 {
 	DECLARE_SINGLETON(CIOManager)
 public:
-	enum OBJECT_TYPE { TYPE_PLAYER, TYPE_MONSTER, TYPE_INTERACT, TYPE_ICICLE, TYPE_TWISTER, TYPE_BALROG, TYPE_END };
+	enum OBJECT_TYPE { TYPE_PLAYER, TYPE_MONSTER, TYPE_INTERACT, TYPE_ICICLE, TYPE_TWISTER, TYPE_BALROG, TYPE_TORCH, TYPE_END };
 private:
 	explicit CIOManager();
 	virtual ~CIOManager() = default;
@@ -31,6 +32,7 @@ private:
 	unordered_map<OBJECT_TYPE, vector<CIcicle::OBJDESC>> m_mapIcicle;
 	unordered_map<OBJECT_TYPE, vector<CTwister::OBJDESC>> m_mapTwister;
 	unordered_map<OBJECT_TYPE, vector<CBalrog::OBJDESC>> m_mapBalrog;
+	unordered_map<OBJECT_TYPE, vector<CTorch::OBJDESC>> m_mapTorch;
 public:
 	virtual void Free();
 };

@@ -236,9 +236,6 @@ PS_OUT PS_SHOULDER(PS_IN In)
 
 	float2 vUV = (In.vTexUV * 2.f - 1.f);
 
-	//float2 vWaveUV = float2(In.vTexUV.x * cos(g_fAngle) - In.vTexUV.y * sin(g_fAngle)/* + 0.5f*/, In.vTexUV.x * sin(g_fAngle) + In.vTexUV.y * cos(g_fAngle)/* + 0.5f*/);
-	//float2 vReverseWaveUV = float2(In.vTexUV.x * cos(-g_fAngle) - In.vTexUV.y * sin(-g_fAngle)/* + 0.5f*/, In.vTexUV.x * sin(-g_fAngle) + In.vTexUV.y * cos(-g_fAngle)/* + 0.5f*/);
-
 	float2 vWaveUV = float2(vUV.x * cos(g_fAngle) - vUV.y * sin(g_fAngle), vUV.x * sin(g_fAngle) + vUV.y * cos(g_fAngle));
 	float2 vReverseWaveUV = float2(vUV.x * cos(-g_fAngle) - vUV.y * sin(-g_fAngle), vUV.x * sin(-g_fAngle) + vUV.y * cos(-g_fAngle));
 
@@ -378,6 +375,15 @@ PS_MESH_OUT PS_BUFF_CYLINDER(PS_MESH_IN In)
 	return Out;
 }
 
+PS_OUT PS_TORCH(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = tex2D(SrcSampler, In.vTexUV);
+
+	return Out;
+}
+
 technique Default_Technique
 {
 	pass Portal_Rendering
@@ -498,5 +504,19 @@ technique Default_Technique
 
 		VertexShader = compile vs_3_0 VS_MESH_MAIN();
 		PixelShader = compile ps_3_0 PS_BUFF_CYLINDER();
+	}
+
+	pass Torch_Rendering
+	{
+		cullmode = none;
+
+		zwriteenable = false;
+
+		AlphaBlendEnable = true;
+		SrcBlend = one;//one;//SrcAlpha;
+		DestBlend = one;//InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_TORCH();
 	}
 }
