@@ -31,6 +31,7 @@
 #define DEFAULT_ANIM_PERIOD		0.09
 
 BEGIN(Engine)
+class CTrail;
 class CShader;
 class CFrustum;
 class CRenderer;
@@ -91,6 +92,7 @@ public:
 	HRESULT Set_Navigation_Mode(_uint eMode);
 	HRESULT Update_PlayerInfo();
 private:
+	CTrail*				m_pTrailCom = nullptr;
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
@@ -137,6 +139,8 @@ private: // ≈∏¿Ã∏”
 	_double				m_TimeDownAcc = 0.0;
 	_double				m_TimeAfterImageAcc = 0.0;
 	_double				m_TimeBuffAcc = 0.0;
+private:
+	_int				m_iRenderIndex = 0;
 private:
 	HRESULT Add_Component(void* pArg);
 	HRESULT SetUp_ConstantTable(_uint iPassIndex);

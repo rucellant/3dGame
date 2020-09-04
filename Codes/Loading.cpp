@@ -299,15 +299,15 @@ HRESULT CLoading::Ready_Static_Stage()
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Weapon", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Weapon.fx"))))
 		return E_FAIL;
 
-	// For. Component_Mesh_Weapon0
-	D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
+	// For. Component_Mesh_Weapon
+	D3DXMatrixScaling(&matLocal, 2.f, 2.f, 2.f);
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon0", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Weapon/", L"Weapon_00.X", &matLocal))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Mesh/Static/Sword/", L"OSW_00.X", &matLocal, CMesh_Static::TYPE_BLESS))))
 		return E_FAIL;
 
 	// For. Component_Texture_Weapon0
-	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon0", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_00.tga"))))
-		return E_FAIL;
+	/*if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Weapon0", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Weapon/Weapon_00.tga"))))
+		return E_FAIL;*/
 
 	//// For. Component_Mesh_Weapon1
 	//D3DXMatrixScaling(&matLocal, 1.f, 1.f, 1.f);
@@ -701,6 +701,12 @@ HRESULT CLoading::Ready_Effect_Stage()
 
 	// For. Component_Texture_Effect_Buff
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Buff", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Buff/Buff_%d.dds", 2))))
+		return E_FAIL;
+
+	// 여기부터는 트레일
+
+	// For. Component_Trail_Player
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Trail_Player", CTrail::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Trail_Player/Trail.dds"))))
 		return E_FAIL;
 
 	return NOERROR;

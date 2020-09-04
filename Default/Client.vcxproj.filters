@@ -662,5 +662,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Particle.fx">
       <Filter>98. Headers\ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.fx">
+      <Filter>98. Headers\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

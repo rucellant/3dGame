@@ -211,7 +211,7 @@ HRESULT CScene_Stage::Ready_Layer_Camera()
 	tCameraDesc_Player.fFovy = D3DXToRadian(60.f);
 	tCameraDesc_Player.fAspect = g_iWinCX / _float(g_iWinCY);
 	tCameraDesc_Player.iSceneID = SCENE_STAGE;
-
+	
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Player", &tCameraDesc_Player)))
 		return E_FAIL;
 

@@ -87,10 +87,6 @@ HRESULT CWeapon::Add_Component(void * pArg)
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
 		return E_FAIL;
 
-	// for. Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Weapon0", L"Com_Texture", (CComponent**)&m_pTextureCom)))
-		return E_FAIL;
-
 	// For. Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
@@ -100,7 +96,7 @@ HRESULT CWeapon::Add_Component(void * pArg)
 		return E_FAIL;
 
 	// For. Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Weapon0", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Weapon", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For. Com_Collider
@@ -132,6 +128,13 @@ HRESULT CWeapon::SetUp_ConstantTable()
 	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 		return E_FAIL;
 
+	_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+
+	D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+
+	if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -144,7 +147,10 @@ HRESULT CWeapon::Render(_uint iPassIndex)
 
 	for (_ulong i = 0; i < dwNumSubset; ++i)
 	{
-		if (FAILED(m_pShaderCom->Set_Texture("g_DiffuseTexture", m_pTextureCom->Get_Texture(0))))
+		if (FAILED(m_pShaderCom->Set_Texture("g_DiffuseTexture", m_pMeshCom->Get_MaterialTexture(i, MESHTEXTURE::TYPE_DIFFUSE))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Set_Texture("g_NormalTexture", m_pMeshCom->Get_MaterialTexture(i, MESHTEXTURE::TYPE_NORMAL))))
 			return E_FAIL;
 
 		m_pShaderCom->Commit_Change();
@@ -208,7 +214,6 @@ void CWeapon::Free()
 {
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pFrustumCom);
-	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);

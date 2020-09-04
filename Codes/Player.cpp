@@ -42,6 +42,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&m_tObjDesc.matWorld.m[3]);
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(168.f, 55.f, -132.f));
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(162.f, 28.f, -44.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(0.f, 0.f, 0.f));
 
 	CTransform::STATEDESC tStateDesc;
 	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
@@ -126,6 +127,9 @@ _int CPlayer::LateUpdate_GameObject(_double TimeDelta)
 	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius))
 		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
 
+	if (m_eCurState == ATT)
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_ALPHA, this);
+
 	return _int();
 }
 
@@ -134,18 +138,29 @@ HRESULT CPlayer::Render_GameObject()
 	if (m_pShaderCom == nullptr || m_pMeshCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
-		return E_FAIL;
+	if (m_iRenderIndex == 0)
+	{
+		if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
+			return E_FAIL;
 
-	if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
-		return E_FAIL;
+		if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable(0)))
-		return E_FAIL;
+		if (FAILED(SetUp_ConstantTable(0)))
+			return E_FAIL;
 
-	if (FAILED(Render(0)))
-		return E_FAIL;
+		if (FAILED(Render(0)))
+			return E_FAIL;
 
+		if (m_eCurState == ATT)
+			m_iRenderIndex++;
+	}
+	else if (m_iRenderIndex == 1)
+	{
+		m_pTrailCom->Render_Trail();
+		m_iRenderIndex = 0;
+	}
+	
 	//m_pHitColliderCom->Render_Collider();
 	//m_pDmgColliderCom->Render_Collider();
 	//m_pBottomColliderCom->Render_Collider();
@@ -321,6 +336,10 @@ HRESULT CPlayer::Add_Component(void * pArg)
 {
 	m_tObjDesc = *(OBJDESC*)pArg;
 
+	// For Com_Trail
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Trail_Player", L"Com_Trail", (CComponent**)&m_pTrailCom)))
+		return E_FAIL;
+
 	// For Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Player", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
@@ -402,6 +421,13 @@ HRESULT CPlayer::SetUp_ConstantTable(_uint iPassIndex)
 
 		_float fTimeExp = _float(m_TimeExp);
 		if (FAILED(m_pShaderCom->Set_Value("g_fTimeExp", &fTimeExp, sizeof(_float))))
+			return E_FAIL;
+
+		_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+
+		D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+
+		if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
 			return E_FAIL;
 
 		return NOERROR;
@@ -961,6 +987,23 @@ HRESULT CPlayer::Post_Update(_double TimeDelta)
 	// 스프링암 관련
 	Update_CameraPosition(TimeDelta);
 
+	// 트레일
+	if (m_eCurState == ATT)
+	{
+		_vec3 vNearPosition = *(_vec3*)&m_matHandWorld[0].m[3];
+
+		_vec3 vUpTrail = *(_vec3*)&m_matHandWorld[0].m[1];
+		D3DXVec3Normalize(&vUpTrail, &vUpTrail);
+
+		vUpTrail *= 5.f;
+
+		_vec3 vFarPosition = vNearPosition + vUpTrail;
+		m_pTrailCom->Push_Point(vFarPosition, vNearPosition);
+	}
+	else
+		m_pTrailCom->Clear_Point();
+	
+
 	return NOERROR;
 }
 
@@ -1211,6 +1254,7 @@ CGameObject * CPlayer::Clone_GameObject(void * pArg)
 
 void CPlayer::Free()
 {
+	Safe_Release(m_pTrailCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pRendererCom);

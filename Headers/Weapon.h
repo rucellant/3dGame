@@ -7,7 +7,6 @@
 BEGIN(Engine)
 class CShader;
 class CFrustum;
-class CTexture;
 class CRenderer;
 class CCollider;
 class CTransform;
@@ -31,7 +30,6 @@ public:
 private:
 	CShader*			m_pShaderCom = nullptr;
 	CFrustum*			m_pFrustumCom = nullptr;
-	CTexture*			m_pTextureCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CCollider*			m_pColliderCom = nullptr;
 	CTransform*			m_pTransformCom = nullptr;

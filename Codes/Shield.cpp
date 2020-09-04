@@ -136,6 +136,13 @@ HRESULT CShield::SetUp_ConstantTable()
 	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 		return E_FAIL;
 
+	_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+
+	D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+
+	if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 

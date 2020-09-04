@@ -361,6 +361,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Particle.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Player.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Weapon.fx" />
   </ItemGroup>
