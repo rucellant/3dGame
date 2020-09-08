@@ -233,6 +233,15 @@
     <Filter Include="03. GameObject\Stage\Static\Torch_Fire">
       <UniqueIdentifier>{79fd4956-33eb-484b-946f-88855855e395}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\Stage\Particle\Particle_Breath">
+      <UniqueIdentifier>{69d0495a-258a-4943-b268-4717a5243580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Effect\Effect_Breath">
+      <UniqueIdentifier>{0189d7c2-0739-4238-8a74-ad25e2fb2a58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Static\Camera\Camera_Light">
+      <UniqueIdentifier>{d9a699e7-d671-415d-acf4-9d53b1f0790d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -424,6 +433,15 @@
     <ClInclude Include="..\Headers\Torch_Fire.h">
       <Filter>03. GameObject\Stage\Static\Torch_Fire</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Particle_Breath.h">
+      <Filter>03. GameObject\Stage\Particle\Particle_Breath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Effect_Breath.h">
+      <Filter>03. GameObject\Static\Effect\Effect_Breath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Light.h">
+      <Filter>03. GameObject\Static\Camera\Camera_Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -602,6 +620,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Torch_Fire.cpp">
       <Filter>03. GameObject\Stage\Static\Torch_Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Particle_Breath.cpp">
+      <Filter>03. GameObject\Stage\Particle\Particle_Breath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect_Breath.cpp">
+      <Filter>03. GameObject\Static\Effect\Effect_Breath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Light.cpp">
+      <Filter>03. GameObject\Static\Camera\Camera_Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

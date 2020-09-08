@@ -2,6 +2,8 @@ matrix g_matWVP, g_matWorld, g_matView, g_matProj;
 
 vector g_vCamPosition;
 
+bool g_bIsBuff;
+
 texture g_DiffuseTexture;
 
 sampler	DiffuseSampler = sampler_state
@@ -98,14 +100,18 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	float3 vNormal = mul(TBN, vTangentNormal.xyz);
 
-	//vector vLook = normalize(g_vCamPosition - In.vWorldPos);
+	if (g_bIsBuff == true)
+	{
+		vector vLook = normalize(g_vCamPosition - In.vWorldPos);
 
-	//float Rim = dot(vLook, vNormal);//1 - dot(vLook, vNormal);
+		float Rim = dot(vLook, vNormal);//1 - dot(vLook, vNormal);
 
-	//Rim = pow(Rim, 5.f);
-	//Rim *= Rim;
+		//Rim = pow(Rim, 5.f);
+		//Rim *= Rim;
+		Rim = smoothstep(0.f, 1.f, Rim);
 
-	//Out.vColor.b += Rim;
+		Out.vColor.rgb += Rim;
+	}
 
 	Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
 

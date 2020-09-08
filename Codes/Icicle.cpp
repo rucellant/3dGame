@@ -2,6 +2,7 @@
 #include "..\Headers\Icicle.h"
 #include "Management.h"
 #include "CollisionMgr.h"
+#include "Particle_Dead.h"
 
 
 USING(Client)
@@ -62,6 +63,23 @@ _int CIcicle::Update_GameObject(_double TimeDelta)
 			// 이펙트도 만들어줌
 			m_bIsActive = false;
 			m_pManagement->Push_GameObject(g_eScene, L"Layer_Interact", this);
+
+			// 여기서 파티크 생성
+			CParticle_Dead* pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
+
+			if (pParticle == nullptr)
+			{
+				if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Dead", L"GameObject_Particle_Dead")))
+					return E_FAIL;
+
+				pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
+			}
+
+			_vec3 vOrigin = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+			vOrigin.y += 3.f;
+
+			pParticle->Activate(vOrigin);
 		}
 	}
 
@@ -100,8 +118,8 @@ HRESULT CIcicle::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
-	m_pDmgColliderCom->Render_Collider();
-	m_pIntersectColliderCom->Render_Collider();
+	//m_pDmgColliderCom->Render_Collider();
+	//m_pIntersectColliderCom->Render_Collider();
 
 	return NOERROR;
 }

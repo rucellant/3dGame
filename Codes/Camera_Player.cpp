@@ -62,6 +62,43 @@ _int CCamera_Player::Update_GameObject(_double TimeDelta)
 	_vec3 vInterpolationPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION) * (1.f - _float(TimeDelta * 10.f)) + vCameraPosition * _float(TimeDelta * 10.f);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vInterpolationPosition);
 
+	// 쉐이크 모드면
+	if (m_bIsShake)
+	{
+		if (!m_bIsMovingShake) // 현재 어느 방향으로 흔들기가 진행되고 있지 않으면
+		{
+			m_iShakeDir = rand() % 4;
+
+			m_bIsMovingShake = true;
+		}
+		else // 흔드는 중 
+		{
+			switch (m_iShakeDir)
+			{
+			case 0:
+				m_pTransformCom->Move_Right(TimeDelta);
+				break;
+			case 1:
+				m_pTransformCom->Move_Left(TimeDelta);
+				break;
+			case 2:
+				m_pTransformCom->Move_Up(TimeDelta);
+				break;
+			case 3:
+				m_pTransformCom->Move_Down(TimeDelta);
+				break;
+			}
+
+			m_ShakeTimeAcc += TimeDelta;
+
+			if (m_ShakeTimeAcc >= 0.001)
+			{
+				m_ShakeTimeAcc = 0.0;
+				m_bIsMovingShake = false;
+			}
+		}
+	}
+
 	return CCamera::Update_GameObject(TimeDelta);
 }
 
@@ -73,6 +110,56 @@ _int CCamera_Player::LateUpdate_GameObject(_double TimeDelta)
 HRESULT CCamera_Player::Render_GameObject()
 {
 	return NOERROR;
+}
+
+HRESULT CCamera_Player::Camera_Shake_On()
+{
+	if (m_bIsShake)
+		return NOERROR;
+
+	m_bIsShake = true;
+
+	m_iShakeDir = 0;
+	m_ShakeTimeAcc = 0.0;
+
+	return NOERROR;
+}
+
+HRESULT CCamera_Player::Camera_Shake_Off()
+{
+	if (!m_bIsShake)
+		return NOERROR;
+
+	m_bIsShake = false;
+
+	m_iShakeDir = 0;
+	m_ShakeTimeAcc = 0.0;
+
+	return NOERROR;
+}
+
+HRESULT CCamera_Player::GetRandVec(_vec3 * vOut, _vec3 * vMin, _vec3 * vMax)
+{
+	if (vOut == nullptr || vMin == nullptr || vMax == nullptr)
+		return E_FAIL;
+
+	vOut->x = GetRandFloat(vMin->x, vMax->x);
+	vOut->y = GetRandFloat(vMin->y, vMax->y);
+	vOut->z = GetRandFloat(vMin->z, vMax->z);
+
+	return NOERROR;
+}
+
+_float CCamera_Player::GetRandFloat(_float fLowBound, _float fHighBound)
+{
+	if (fLowBound >= fHighBound) // bad input
+		return fLowBound;
+
+	// get random float in [0, 1] interval
+	_float f = (rand() % 10000) * 0.0001f;
+
+	// return float in [lowBound, highBound] interval. 
+	return (f * (fHighBound - fLowBound)) + fLowBound;
 }
 
 CCamera_Player * CCamera_Player::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

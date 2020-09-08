@@ -9,6 +9,8 @@
 #include "Crystal.h"
 #include "Twister.h"
 #include "Camera_Event.h"
+#include "Effect_Breath.h"
+#include "Particle_Dead.h"
 #include "MidBoss_Trigger.h"
 #include "Observer_Player.h"
 
@@ -451,6 +453,23 @@ HRESULT CCollisionMgr::Collision_Icicle_Player(_uint iSceneID, CIcicle * pIcicle
 			_vec3 vPosition = pTransform->Get_State(CTransform::STATE_POSITION);
 			pPlayer->Knockdown(vPosition, 200);
 			pIcicle->SetIsAlive(false);
+
+			// 여기서 파티크 생성
+			CParticle_Dead* pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
+
+			if (pParticle == nullptr)
+			{
+				if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Particle_Dead", L"GameObject_Particle_Dead")))
+					return E_FAIL;
+
+				pParticle = (CParticle_Dead*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Particle_Dead");
+			}
+
+			_vec3 vOrigin = ((CTransform*)pIcicle->Get_Component(L"Com_Transform"))->Get_State(CTransform::STATE_POSITION);
+
+			vOrigin.y += 3.f;
+
+			pParticle->Activate(vOrigin);
 		}
 	}
 	
@@ -538,6 +557,28 @@ HRESULT CCollisionMgr::Collision_Boss_Knockback_Player(_uint iSceneID, CMonster 
 			pPlayer->Knockdown(vMonsterPosition, iMonsterDmg);
 
 		*pbIsResult = true;
+	}
+
+	return NOERROR;
+}
+
+HRESULT CCollisionMgr::Collision_Breath_Player(_uint iSceneID, CEffect_Breath * pEffect_Breath, const _tchar * pPlayerLayerTag, const _tchar * pPlayerComponentTag, _bool* pResult)
+{
+	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(g_eScene, pPlayerLayerTag);
+
+	_bool bIsCollision = Is_Player_Collided(pPlayer, pPlayerComponentTag, pEffect_Breath, L"Com_Collider", CCollider::WAY_OBB);
+
+	if (!bIsCollision)
+		return NOERROR;
+	else
+	{
+		CPlayer::STATE eState = *(CPlayer::STATE*)m_pObserver->GetData(CSubject_Player::TYPE_STATE);
+
+		if (eState != CPlayer::IDLE && eState != CPlayer::RUN)
+			return NOERROR;
+
+		*pResult = true;
+		pPlayer->GetHit(10);
 	}
 
 	return NOERROR;

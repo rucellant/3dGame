@@ -8,7 +8,7 @@ class CSubject_Boss final : public CSubject
 {
 	DECLARE_SINGLETON(CSubject_Boss)
 public:
-	enum DATA_TYPE { TYPE_MATRIX, TYPE_INFO, TYPE_STATE, TYPE_END };
+	enum DATA_TYPE { TYPE_MATRIX, TYPE_INFO, TYPE_STATE, TYPE_MOUSE, TYPE_END };
 private:
 	explicit CSubject_Boss();
 	virtual ~CSubject_Boss() = default;

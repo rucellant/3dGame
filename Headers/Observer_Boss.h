@@ -24,6 +24,7 @@ private:
 	_matrix m_matWorld;
 	CMonster::MONSTERINFO m_tInfo;
 	CMonster::STATE m_eCurState;
+	_matrix m_matMouse;
 public:
 	static CObserver_Boss* Create();
 	virtual void Free();

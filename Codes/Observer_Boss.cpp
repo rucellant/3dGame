@@ -28,6 +28,9 @@ void * CObserver_Boss::GetData(_int iMsg)
 	case CSubject_Boss::TYPE_STATE:
 		pData = &m_eCurState;
 		break;
+	case CSubject_Boss::TYPE_MOUSE:
+		pData = &m_matMouse;
+		break;
 	}
 
 	return pData;
@@ -50,6 +53,9 @@ HRESULT CObserver_Boss::Update(_int iMsg)
 		break;
 	case CSubject_Boss::TYPE_STATE:
 		m_eCurState = *(CMonster::STATE*)pData;
+		break;
+	case CSubject_Boss::TYPE_MOUSE:
+		m_matMouse = *(_matrix*)pData;
 		break;
 	}
 

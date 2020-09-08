@@ -26,6 +26,7 @@ private:
 	_matrix m_matRightHandWorld;
 	_matrix m_matLeftHandWorld;
 	CPlayer::STATE m_eCurState;
+	_bool m_bIsBuff;
 public:
 	static CObserver_Player* Create();
 	virtual void Free();

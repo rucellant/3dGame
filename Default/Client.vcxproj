@@ -185,6 +185,7 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Camera_Event.h" />
     <ClInclude Include="..\Headers\Camera_Free.h" />
+    <ClInclude Include="..\Headers\Camera_Light.h" />
     <ClInclude Include="..\Headers\Camera_Player.h" />
     <ClInclude Include="..\Headers\Client_Defines.h" />
     <ClInclude Include="..\Headers\Client_Macro.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\Headers\Crystal.h" />
     <ClInclude Include="..\Headers\Door_Trigger.h" />
     <ClInclude Include="..\Headers\Effect.h" />
+    <ClInclude Include="..\Headers\Effect_Breath.h" />
     <ClInclude Include="..\Headers\Effect_Buff.h" />
     <ClInclude Include="..\Headers\Effect_Earthquake.h" />
     <ClInclude Include="..\Headers\Effect_Hit.h" />
@@ -225,6 +227,7 @@
     <ClInclude Include="..\Headers\MpBar.h" />
     <ClInclude Include="..\Headers\Observer_Boss.h" />
     <ClInclude Include="..\Headers\Observer_Player.h" />
+    <ClInclude Include="..\Headers\Particle_Breath.h" />
     <ClInclude Include="..\Headers\Particle_Buff.h" />
     <ClInclude Include="..\Headers\Particle_Cohesion.h" />
     <ClInclude Include="..\Headers\Particle_Dead.h" />
@@ -268,6 +271,7 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Event.cpp" />
     <ClCompile Include="..\Codes\Camera_Free.cpp" />
+    <ClCompile Include="..\Codes\Camera_Light.cpp" />
     <ClCompile Include="..\Codes\Camera_Player.cpp" />
     <ClCompile Include="..\Codes\ColliderManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -277,6 +281,7 @@
     <ClCompile Include="..\Codes\Crystal.cpp" />
     <ClCompile Include="..\Codes\Door_Trigger.cpp" />
     <ClCompile Include="..\Codes\Effect.cpp" />
+    <ClCompile Include="..\Codes\Effect_Breath.cpp" />
     <ClCompile Include="..\Codes\Effect_Buff.cpp" />
     <ClCompile Include="..\Codes\Effect_Earthquake.cpp" />
     <ClCompile Include="..\Codes\Effect_Hit.cpp" />
@@ -306,6 +311,7 @@
     <ClCompile Include="..\Codes\MpBar.cpp" />
     <ClCompile Include="..\Codes\Observer_Boss.cpp" />
     <ClCompile Include="..\Codes\Observer_Player.cpp" />
+    <ClCompile Include="..\Codes\Particle_Breath.cpp" />
     <ClCompile Include="..\Codes\Particle_Buff.cpp" />
     <ClCompile Include="..\Codes\Particle_Cohesion.cpp" />
     <ClCompile Include="..\Codes\Particle_Dead.cpp" />

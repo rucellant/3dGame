@@ -384,6 +384,29 @@ PS_OUT PS_TORCH(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_BREATH(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector vColor = tex2D(SrcSampler, In.vTexUV);
+
+	float2 vTexUV;
+
+	vTexUV.x = (In.vProjPos.x / In.vProjPos.w) * 0.5f + 0.5f;
+	vTexUV.y = (In.vProjPos.y / In.vProjPos.w) * -0.5f + 0.5f;
+
+	vector vDepthInfo = tex2D(DepthSampler, vTexUV);
+
+	float fOldViewZ = vDepthInfo.y * 500.0f;
+	float fViewZ = In.vProjPos.w;
+
+	vColor.a = vColor.a * saturate(fOldViewZ - fViewZ) * 2.f;
+
+	Out.vColor = vColor;
+
+	return Out;
+}
+
 technique Default_Technique
 {
 	pass Portal_Rendering
@@ -518,5 +541,19 @@ technique Default_Technique
 
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_TORCH();
+	}
+
+	pass Breath_Rendering
+	{
+		cullmode = none;
+
+		zwriteenable = false;
+
+		AlphaBlendEnable = true;
+		SrcBlend = one;//one;//SrcAlpha;
+		DestBlend = one;//InvSrcAlpha;
+
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_BREATH();
 	}
 }

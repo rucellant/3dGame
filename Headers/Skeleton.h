@@ -51,8 +51,10 @@ private: // ≈∏¿Ã∏”
 	_double				m_TimeDownAcc = 0.0;
 	_double				m_TimeDeadAcc = 0.0;
 private:
+	_uint				m_iRenderIndex = 0;
+private:
 	HRESULT Add_Component(void* pArg);
-	HRESULT SetUp_ConstantTable();
+	HRESULT SetUp_ConstantTable(_uint iRenderIndex);
 	HRESULT Render(_uint iPassIndex);
 private:
 	virtual HRESULT State_Machine(_double TimeDelta);

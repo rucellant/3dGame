@@ -54,8 +54,10 @@ private:
 private:
 	_double				m_TimeShader = 0.0;
 private:
+	_uint				m_iRenderIndex = 0;
+private:
 	HRESULT Add_Component(void* pArg);
-	HRESULT SetUp_ConstantTable();
+	HRESULT SetUp_ConstantTable(_uint iRenderIndex);
 	HRESULT Render(_uint iPassIndex);
 public:
 	static CCrystal* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

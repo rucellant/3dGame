@@ -47,6 +47,8 @@ _int CWeapon::Update_GameObject(_double TimeDelta)
 
 	Update_Collider();
 
+	m_bIsBuff = *(_bool*)m_pObserver->GetData(CSubject_Player::TYPE_BUFF);
+
 	return _int();
 }
 
@@ -72,7 +74,7 @@ HRESULT CWeapon::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
-	m_pColliderCom->Render_Collider();
+	//m_pColliderCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -133,6 +135,9 @@ HRESULT CWeapon::SetUp_ConstantTable()
 	D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
 
 	if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_Bool("g_bIsBuff", m_bIsBuff)))
 		return E_FAIL;
 
 	return NOERROR;

@@ -8,6 +8,7 @@ class CShader;
 class CFrustum;
 class CTexture;
 class CRenderer;
+class CCollider;
 class CTransform;
 class CMesh_Static;
 class CVIBuffer_VRect;
@@ -16,6 +17,7 @@ END
 
 BEGIN(Client)
 
+class CObserver_Boss;
 class CObserver_Player;
 
 class CEffect abstract : public CGameObject

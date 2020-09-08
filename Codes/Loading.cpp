@@ -194,7 +194,7 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 
 		_ulong dwBytes = 0;
 
-	/*	while (1)
+		while (1)
 		{
 			_tchar szFileName[MAX_STR];
 			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
@@ -220,9 +220,9 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 			lstrcpy(tMonsterDesc.szFileName, szFileName);
 
 			CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);
-		}*/
+		}
 
-		_tchar szFileName[MAX_STR];
+		/*_tchar szFileName[MAX_STR];
 		ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
 
 		_tchar szFilePath[MAX_STR];
@@ -242,7 +242,7 @@ HRESULT CLoading::Ready_Dynamic_Stage()
 		tMonsterDesc.matWorld = matWorld;
 		lstrcpy(tMonsterDesc.szFileName, szFileName);
 
-		CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);
+		CIOManager::GetInstance()->Store(CIOManager::TYPE_MONSTER, &tMonsterDesc);*/
 
 		CloseHandle(hFile);
 	}
@@ -428,6 +428,72 @@ HRESULT CLoading::Ready_Static_Stage()
 			tTorchDesc.matWorld = matWorld;
 			lstrcpy(tTorchDesc.szFileName, szFileName);
 			tTorchDesc.vColor = D3DXCOLOR(0.97f, 0.83f, 0.29f, 1.f);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_TORCH, &tTorchDesc);
+		}
+
+		CloseHandle(hFile);
+
+		hFile = CreateFile(L"../Bin/Resources/Data/Stage_Light_Desc3.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CTorch::OBJDESC tTorchDesc;
+			tTorchDesc.fFrustumRadius = fFrustumRadius;
+			tTorchDesc.matWorld = matWorld;
+			lstrcpy(tTorchDesc.szFileName, szFileName);
+			tTorchDesc.vColor = D3DXCOLOR(0.93f, 0.56f, 0.03f, 1.f);
+
+			CIOManager::GetInstance()->Store(CIOManager::TYPE_TORCH, &tTorchDesc);
+		}
+
+		CloseHandle(hFile);
+
+		hFile = CreateFile(L"../Bin/Resources/Data/Stage_Light_Desc4.dat", GENERIC_READ, 0, 0,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+		dwBytes = 0;
+
+		while (1)
+		{
+			_tchar szFileName[MAX_STR];
+			ReadFile(hFile, szFileName, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_tchar szFilePath[MAX_STR];
+			ReadFile(hFile, szFilePath, sizeof(_tchar) * MAX_STR, &dwBytes, nullptr);
+
+			_float fFrustumRadius;
+			ReadFile(hFile, &fFrustumRadius, sizeof(_float), &dwBytes, nullptr);
+
+			_matrix matWorld;
+			ReadFile(hFile, &matWorld, sizeof(_matrix), &dwBytes, nullptr);
+
+			if (dwBytes == 0)
+				break;
+
+			CTorch::OBJDESC tTorchDesc;
+			tTorchDesc.fFrustumRadius = fFrustumRadius;
+			tTorchDesc.matWorld = matWorld;
+			lstrcpy(tTorchDesc.szFileName, szFileName);
+			tTorchDesc.vColor = D3DXCOLOR(0.93f, 0.56f, 0.03f, 1.f);
 
 			CIOManager::GetInstance()->Store(CIOManager::TYPE_TORCH, &tTorchDesc);
 		}
@@ -701,6 +767,10 @@ HRESULT CLoading::Ready_Effect_Stage()
 
 	// For. Component_Texture_Effect_Buff
 	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Buff", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Buff/Buff_%d.dds", 2))))
+		return E_FAIL;
+
+	// For. Component_Texture_Effect_Breath
+	if (FAILED(m_pManagement->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Effect_Breath", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect_Breath/%d.png", 32))))
 		return E_FAIL;
 
 	// 여기부터는 트레일

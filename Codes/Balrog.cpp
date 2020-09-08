@@ -2,8 +2,12 @@
 #include "..\Headers\Balrog.h"
 #include "Player.h"
 #include "Management.h"
+#include "Effect_Hit.h"
 #include "CollisionMgr.h"
+#include "Camera_Light.h"
 #include "Observer_Boss.h"
+#include "Effect_Breath.h"
+#include "Camera_Player.h"
 #include "Observer_Player.h"
 
 
@@ -73,13 +77,18 @@ HRESULT CBalrog::Ready_GameObject_Clone(void * pArg)
 
 	m_pSubject = CSubject_Boss::GetInstance();
 
+	D3DXFRAME_DERIVED* pFrame_Derived = m_pMeshCom->Get_FrameDerived("Bip01-Head");
+	m_matMouse = pFrame_Derived->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
 	m_pSubject->AddData(CSubject_Boss::TYPE_MATRIX, m_pTransformCom->Get_WorldMatrixPointer());
 	m_pSubject->AddData(CSubject_Boss::TYPE_INFO, &m_tMonsterInfo);
 	m_pSubject->AddData(CSubject_Boss::TYPE_STATE, &m_eCurState);
+	m_pSubject->AddData(CSubject_Boss::TYPE_MOUSE, &m_matMouse);
 
 	m_pSubject->Notify(CSubject_Boss::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Boss::TYPE_MATRIX);
 	m_pSubject->Notify(CSubject_Boss::TYPE_STATE);
+	m_pSubject->Notify(CSubject_Boss::TYPE_MOUSE);
 
 	m_pObserver = CObserver_Player::Create();
 	if (m_pObserver == nullptr)
@@ -96,9 +105,6 @@ HRESULT CBalrog::Ready_GameObject_Clone(void * pArg)
 _int CBalrog::Update_GameObject(_double TimeDelta)
 {
 	m_TimeDelta = TimeDelta;
-
-	if (m_pManagement->KeyUp(KEY_LEFT))
-		m_tMonsterInfo.iCurHp -= 100;
 
 	/*if (m_pManagement->KeyUp(KEY_UP))
 		m_TmpDuration += 0.01;
@@ -135,10 +141,14 @@ _int CBalrog::Update_GameObject(_double TimeDelta)
 
 	Update_Collider();
 
+	D3DXFRAME_DERIVED* pFrame_Derived = m_pMeshCom->Get_FrameDerived("Bip01-Head");
+	m_matMouse = pFrame_Derived->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
 	// 서브젝트에게 정보 갱신함
 	m_pSubject->Notify(CSubject_Boss::TYPE_INFO);
 	m_pSubject->Notify(CSubject_Boss::TYPE_MATRIX);
 	m_pSubject->Notify(CSubject_Boss::TYPE_STATE);
+	m_pSubject->Notify(CSubject_Boss::TYPE_MOUSE);
 
 	return _int();
 }
@@ -149,7 +159,10 @@ _int CBalrog::LateUpdate_GameObject(_double TimeDelta)
 		return -1;
 
 	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius) && m_bIsRender)
+	{
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_SHADOW, this);
 		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
+	}
 
 	return _int();
 }
@@ -159,17 +172,32 @@ HRESULT CBalrog::Render_GameObject()
 	if (m_pShaderCom == nullptr || m_pMeshCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
-		return E_FAIL;
+	if (m_iRenderIndex == 0)
+	{
+		if (FAILED(SetUp_ConstantTable(0)))
+			return E_FAIL;
 
-	if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render(1)))
+			return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable()))
-		return E_FAIL;
+		m_iRenderIndex++;
+	}
+	else if (m_iRenderIndex == 1)
+	{
+		if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
+			return E_FAIL;
 
-	if (FAILED(Render(0)))
-		return E_FAIL;
+		if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
+			return E_FAIL;
+
+		if (FAILED(SetUp_ConstantTable(1)))
+			return E_FAIL;
+
+		if (FAILED(Render(0)))
+			return E_FAIL;
+
+		m_iRenderIndex = 0;
+	}
 
 	return NOERROR;
 }
@@ -187,7 +215,28 @@ HRESULT CBalrog::GetReady()
 
 HRESULT CBalrog::GetHit(_vec3 vPosition, _int iPlayerDmg)
 {
-	m_tMonsterInfo.iCurHp -= iPlayerDmg;
+	_bool bIsBuff = *(_bool*)m_pObserver->GetData(CSubject_Player::TYPE_BUFF);
+
+	if (bIsBuff)
+		iPlayerDmg = _int(iPlayerDmg * 1.3f);
+
+	m_tMonsterInfo.iCurHp -= _int(iPlayerDmg);
+
+	// 여기서 맞는 이펙트
+	D3DXFRAME_DERIVED* pFrame_Derived = m_pMeshCom->Get_FrameDerived("Bip01-Pelvis");
+	_matrix matWorld = pFrame_Derived->CombinedTransformationMatrix * m_pTransformCom->Get_WorldMatrix();
+
+	CEffect_Hit* pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+
+	if (pEffect_Hit == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Hit", L"GameObject_Effect_Hit")))
+			return E_FAIL;
+
+		pEffect_Hit = (CEffect_Hit*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Hit");
+	}
+
+	pEffect_Hit->Set_Position(*(_vec3*)matWorld.m[3], 3.f);
 
 	if (m_tMonsterInfo.iCurHp <= 0)
 	{
@@ -292,39 +341,59 @@ HRESULT CBalrog::Add_Component(void * pArg)
 	return NOERROR;
 }
 
-HRESULT CBalrog::SetUp_ConstantTable()
+HRESULT CBalrog::SetUp_ConstantTable(_uint iRenderIndex)
 {
 	if (m_pShaderCom == nullptr || m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
-
-	if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
-		return E_FAIL;
-
-	if (m_eCurState == ATT)
+	if (iRenderIndex == 0)
 	{
-		if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", true)))
+		CCamera_Light* pCamera_Light = (CCamera_Light*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Camera", 3);
+		_matrix matLightView = pCamera_Light->GetViewMatrix_Inverse();
+		_matrix matLightProj = pCamera_Light->GetProjMatrix();
+
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * matLightView * matLightProj;
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &matLightView, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &matLightProj, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 			return E_FAIL;
 	}
-	else
+	else if (iRenderIndex == 1)
 	{
-		if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", false)))
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
+
+		if (m_eCurState == ATT)
+		{
+			if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", true)))
+				return E_FAIL;
+		}
+		else
+		{
+			if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", false)))
+				return E_FAIL;
+		}
+
+		_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+
+		D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+
+		if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
 			return E_FAIL;
 	}
-
-	_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
-
-	D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
-
-	if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
-		return E_FAIL;
 
 	return NOERROR;
 }
@@ -359,11 +428,11 @@ HRESULT CBalrog::Render(_uint iPassIndex)
 	m_pShaderCom->End_Pass();
 	m_pShaderCom->End_Shader();
 
-	m_pHitColliderCom->Render_Collider();
-	m_pDmgOneColliderCom->Render_Collider();
-	m_pDmgTwoColliderCom->Render_Collider();
-	m_pOuterIntersectColliderCom->Render_Collider();
-	m_pInnerIntersectColliderCom->Render_Collider();
+	//m_pHitColliderCom->Render_Collider();
+	//m_pDmgOneColliderCom->Render_Collider();
+	//m_pDmgTwoColliderCom->Render_Collider();
+	//m_pOuterIntersectColliderCom->Render_Collider();
+	//m_pInnerIntersectColliderCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -582,7 +651,14 @@ HRESULT CBalrog::State_Att(_double TimeDelta)
 		{
 			if (FAILED(CCollisionMgr::GetInstance()->Collision_Monster_Attack_Player(g_eScene, this, L"Layer_Player", L"Com_HitBox", &m_bIsAtt)))
 				return E_FAIL;
+
+			// 카메라 쉐이크 온
+			CCamera_Player* pCamera = (CCamera_Player*)m_pManagement->Get_Camera(g_eScene, L"Camera_Player");
+
+			pCamera->Camera_Shake_On();
 		}
+
+		
 
 		return NOERROR;
 	}
@@ -600,6 +676,24 @@ HRESULT CBalrog::State_Att(_double TimeDelta)
 		return NOERROR;
 	}
 
+	if (!m_pMeshCom->is_Finished() && m_iAnimation == BALROG_BREATH)
+	{
+		m_TimeBreathStartAcc += TimeDelta;
+
+		if (m_TimeBreathStartAcc >= 3.0)
+		{
+			m_TimeBreathAcc += TimeDelta;
+
+			if (m_TimeBreathAcc >= 0.1)
+			{
+				if (FAILED(Create_Breath()))
+					return E_FAIL;
+
+				m_TimeBreathAcc = 0.0;
+			}
+		}
+	}
+
 	if (m_pMeshCom->is_Finished())
 	{
 		m_iAnimation = BALROG_IDLE;
@@ -611,6 +705,12 @@ HRESULT CBalrog::State_Att(_double TimeDelta)
 
 		m_bIsAtt = false;
 		m_TimeAnimationAcc = 0.0;
+		m_TimeBreathStartAcc = 0.0;
+
+		// 카메라 쉐이크 오프
+		CCamera_Player* pCamera = (CCamera_Player*)m_pManagement->Get_Camera(g_eScene, L"Camera_Player");
+
+		pCamera->Camera_Shake_Off();
 
 		return NOERROR;
 	}
@@ -668,6 +768,29 @@ HRESULT CBalrog::SetUp_OnNavigation()
 	vPosition.y = fHeight;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+
+	return NOERROR;
+}
+
+HRESULT CBalrog::Create_Breath()
+{
+	CEffect_Breath* pEffect_Breath = (CEffect_Breath*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Breath");
+
+	if (pEffect_Breath == nullptr)
+	{
+		if (FAILED(m_pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Breath", L"GameObject_Effect_Breath")))
+			return E_FAIL;
+
+		pEffect_Breath = (CEffect_Breath*)m_pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Breath");
+	}
+
+	if (pEffect_Breath == nullptr)
+		return E_FAIL;
+
+	// 토네이도 실행하기 전에 정보부터 넘겨줌 
+	m_pSubject->Notify(CSubject_Boss::TYPE_MOUSE);
+
+	pEffect_Breath->Activate();
 
 	return NOERROR;
 }

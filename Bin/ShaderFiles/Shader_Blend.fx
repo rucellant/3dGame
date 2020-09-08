@@ -62,6 +62,8 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	vector		vColor = (vDiffuse + vRim) * vShade + vSpecular;
 
+	//vColor = pow(vColor, 2.2);
+
 	Out.vColor = vColor;
 
 	return Out;

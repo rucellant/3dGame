@@ -34,6 +34,9 @@ void * CObserver_Player::GetData(_int iMsg)
 	case CSubject_Player::TYPE_STATE:
 		pData = &m_eCurState;
 		break;
+	case CSubject_Player::TYPE_BUFF:
+		pData = &m_bIsBuff;
+		break;
 	}
 
 	return pData;
@@ -62,6 +65,9 @@ HRESULT CObserver_Player::Update(_int iMsg)
 		break;
 	case CSubject_Player::TYPE_STATE:
 		m_eCurState = *(CPlayer::STATE*)pData;
+		break;
+	case CSubject_Player::TYPE_BUFF:
+		m_bIsBuff = *(_bool*)pData;
 		break;
 	}
 

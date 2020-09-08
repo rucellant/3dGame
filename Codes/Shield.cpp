@@ -80,7 +80,7 @@ HRESULT CShield::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
-	m_pColliderCom->Render_Collider();
+	//m_pColliderCom->Render_Collider();
 
 	return NOERROR;
 }

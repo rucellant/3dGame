@@ -43,6 +43,12 @@ struct VS_OUT
 	float4	vWorldPos : TEXCOORD2;
 };
 
+struct VS_SHADOWOUT
+{
+	float4	vPosition : POSITION;
+	float4	vShadowPosition : TEXCOORD1;
+};
+
 VS_OUT VS_MAIN(VS_IN In)
 {
 	VS_OUT Out = (VS_OUT)0;
@@ -71,6 +77,25 @@ VS_OUT VS_MAIN(VS_IN In)
 	return Out;
 }
 
+VS_SHADOWOUT VS_SHADOW(VS_IN In)
+{
+	VS_SHADOWOUT		Out = (VS_SHADOWOUT)0;
+
+	vector		vPosition;
+
+	vPosition = mul(vector(In.vPosition, 1.f), g_matWorld);
+
+	vPosition = mul(vPosition, g_matView);
+	vPosition = mul(vPosition, g_matProj);
+
+	//vPosition = mul(vector(In.vPosition, 1.f), g_matWVP);
+
+	Out.vPosition = vPosition;
+	Out.vShadowPosition = vPosition;
+
+	return Out;
+}
+
 struct PS_IN
 {
 	float4	vPosition : POSITION;
@@ -82,12 +107,24 @@ struct PS_IN
 	float4	vWorldPos : TEXCOORD2;
 };
 
+struct PS_SHADOWIN
+{
+	float4	vPosition : POSITION;
+	float4	vShadowPosition : TEXCOORD1;
+};
+
 struct PS_OUT
 {
 	vector  vColor : COLOR0;
 	vector	vNormal : COLOR1;
 	vector	vDepth : COLOR2;
 };
+
+struct PS_SHADOWOUT
+{
+	vector  vColor : COLOR0;
+};
+
 
 PS_OUT PS_MAIN(PS_IN In)
 {
@@ -139,6 +176,19 @@ PS_OUT PS_CRYSTAL(PS_IN In)
 	return Out;
 }
 
+PS_SHADOWOUT PS_SHADOW(PS_SHADOWIN In)
+{
+	PS_SHADOWOUT		Out = (PS_SHADOWOUT)0;
+
+	float Shadow = In.vShadowPosition.z / In.vShadowPosition.w;
+
+	//Out.vColor = vector(Shadow.xxx, 1.f);
+
+	Out.vColor = vector(Shadow, In.vShadowPosition.w / 500.f, 0.f, 1.f);
+
+	return Out;
+}
+
 technique Default_Technique
 {
 	pass Default_Rendering
@@ -158,5 +208,11 @@ technique Default_Technique
 	{
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_CRYSTAL();
+	}
+
+	pass Shadow_Rendering
+	{
+		VertexShader = compile vs_3_0 VS_SHADOW();
+		PixelShader = compile ps_3_0 PS_SHADOW();
 	}
 }

@@ -3,6 +3,7 @@
 #include "Management.h"
 #include "CollisionMgr.h"
 #include "Door_Trigger.h"
+#include "Camera_Light.h"
 #include "Particle_Dead.h"
 
 USING(Client)
@@ -91,7 +92,11 @@ _int CCrystal::LateUpdate_GameObject(_double TimeDelta)
 		return -1;
 
 	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius))
+	{
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_SHADOW, this);
 		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
+	}
+		
 
 	return _int();
 }
@@ -101,13 +106,28 @@ HRESULT CCrystal::Render_GameObject()
 	if (m_pShaderCom == nullptr || m_pMeshCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable()))
-		return E_FAIL;
+	if (m_iRenderIndex == 0)
+	{
+		if (FAILED(SetUp_ConstantTable(0)))
+			return E_FAIL;
 
-	if (FAILED(Render(1)))
-		return E_FAIL;
+		if (FAILED(Render(2)))
+			return E_FAIL;
 
-	m_pColliderCom->Render_Collider();
+		m_iRenderIndex++;
+	}
+	else if (m_iRenderIndex == 1)
+	{
+		if (FAILED(SetUp_ConstantTable(1)))
+			return E_FAIL;
+
+		if (FAILED(Render(1)))
+			return E_FAIL;
+
+		m_iRenderIndex = 0;
+	}
+
+	//m_pColliderCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -149,32 +169,52 @@ HRESULT CCrystal::Add_Component(void * pArg)
 	return NOERROR;
 }
 
-HRESULT CCrystal::SetUp_ConstantTable()
+HRESULT CCrystal::SetUp_ConstantTable(_uint iRenderIndex)
 {
 	if (m_pShaderCom == nullptr || m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+	if (iRenderIndex == 0)
+	{
+		CCamera_Light* pCamera_Light = (CCamera_Light*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Camera", 3);
+		_matrix matLightView = pCamera_Light->GetViewMatrix_Inverse();
+		_matrix matLightProj = pCamera_Light->GetProjMatrix();
 
-	if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
-		return E_FAIL;
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * matLightView * matLightProj;
 
-	_float fTimeShader = _float(m_TimeShader);
-	if (FAILED(m_pShaderCom->Set_Value("g_fTimeDelta", &fTimeShader, sizeof(_float))))
-		return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &matLightView, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &matLightProj, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
+	}
+	else if (iRenderIndex == 1)
+	{
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
 
-	_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
 
-	D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+		_float fTimeShader = _float(m_TimeShader);
+		if (FAILED(m_pShaderCom->Set_Value("g_fTimeDelta", &fTimeShader, sizeof(_float))))
+			return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
-		return E_FAIL;
+		_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+
+		D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+
+		if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
+			return E_FAIL;
+	}
 
 	return NOERROR;
 }

@@ -10,6 +10,7 @@ class CIcicle;
 class CCrystal;
 class CMonster;
 class CTwister;
+class CEffect_Breath;
 class CMidBoss_Trigger;
 class CObserver_Player;
 
@@ -44,6 +45,8 @@ public:
 		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pbIsResult);
 	HRESULT Collision_Boss_Knockback_Player(_uint iSceneID, CMonster* pMonster, const _tchar* pMonsterComponentTag,
 		const _tchar* pPlayerComponentTag, _bool* pbIsResult);
+	HRESULT Collision_Breath_Player(_uint iSceneID, CEffect_Breath* pEffect_Breath,
+		const _tchar* pPlayerLayerTag, const _tchar* pPlayerComponentTag, _bool* pResult);
 private:
 	CManagement*		m_pManagement = nullptr;
 private:

@@ -34,7 +34,21 @@ PS_OUT PS_GRAYSCALEDOWNSAMPLE(PS_IN In)
 	{
 		vColor = tex2D(SrcSampler, In.vTexUV + float2(g_vTCLumOffsets[i].x, g_vTCLumOffsets[i].y));
 
-		float fGreyValue = max(vColor.r, max(vColor.g, vColor.b));
+		// 1. Do a very simple mathematical average:
+		//float fGreyValue = dot( color.rgb, float3( 0.33f, 0.33f, 0.33f ) );
+
+		// 2. Perform a more accurately weighted average:
+		//float fGreyValue = dot(vColor.rgb, vWeight);
+
+		// 3. Take the maximum value of the incoming, same as computing the
+		//    brightness/value for an HSV/HSB conversion:
+		//float fGreyValue = max(color.r, max(color.g, color.b));
+
+		// 4. Compute the luminance component as per the HSL colour space:
+		float fGreyValue = 0.5f * (max(vColor.r, max(vColor.g, vColor.b)) + min(vColor.r, min(vColor.g, vColor.b)));
+
+		// 5. Use the magnitude of the colour
+		//float fGreyValue = length( color.rgb );
 
 		fMaximum = max(fMaximum, fGreyValue);
 		fAverage += (0.25f * log(1e-5 + fGreyValue));

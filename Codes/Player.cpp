@@ -4,6 +4,7 @@
 #include "Effect_Hit.h"
 #include "Effect_Buff.h"
 #include "CollisionMgr.h"
+#include "Camera_Light.h"
 #include "Particle_Buff.h"
 #include "Subject_Player.h"
 #include "Effect_Tornado.h"
@@ -42,7 +43,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, *(_vec3*)&m_tObjDesc.matWorld.m[3]);
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(168.f, 55.f, -132.f));
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(162.f, 28.f, -44.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(0.f, 0.f, 0.f));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _vec3(0.f, 0.f, 0.f));
 
 	CTransform::STATEDESC tStateDesc;
 	tStateDesc.fRotationPerSec = D3DXToRadian(90.f);
@@ -57,6 +58,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pSubject->AddData(CSubject_Player::TYPE_RIGHTHAND, &m_matHandWorld[0]);
 	m_pSubject->AddData(CSubject_Player::TYPE_LEFTHAND, &m_matHandWorld[1]);
 	m_pSubject->AddData(CSubject_Player::TYPE_STATE, &m_eCurState);
+	m_pSubject->AddData(CSubject_Player::TYPE_BUFF, &m_bIsBuff);
 
 	m_tPlayerInfo = m_tObjDesc.tPlayerInfo;
 
@@ -65,6 +67,7 @@ HRESULT CPlayer::Ready_GameObject_Clone(void * pArg)
 	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
 	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
 	m_pSubject->Notify(CSubject_Player::TYPE_STATE);
+	m_pSubject->Notify(CSubject_Player::TYPE_BUFF);
 
 	m_vSpringArm = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _vec3(1.1f, 3.f, -6.f);
 
@@ -89,6 +92,31 @@ _int CPlayer::Update_GameObject(_double TimeDelta)
 	m_TimeExp += TimeDelta;
 	if (m_TimeExp >= 1.0)
 		m_TimeExp = 0.0;
+
+	//if (m_pManagement->KeyUp(KEY_UP))
+	//{
+	//	_vec3 vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+	//	_vec3 vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+	//	_vec3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+	//	static _float asd = 0.f;
+
+	//	asd += 10.f;
+
+	//	_matrix matRotation;
+	//	D3DXMatrixRotationAxis(&matRotation, &vRight, D3DXToRadian(asd));
+
+	//	D3DXVec3TransformNormal(&vUp, &vUp, &matRotation);
+	//	D3DXVec3Normalize(&vUp, &vUp);
+
+	//	D3DXVec3TransformNormal(&vLook, &vLook, &matRotation);
+	//	D3DXVec3Normalize(&vLook, &vLook);
+
+	//	_float fScale = m_pTransformCom->Get_Scale(CTransform::STATE_UP);
+
+	//	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScale);
+	//	m_pTransformCom->Set_State(CTransform::STATE_LOOK , vLook * fScale);
+	//}
 
 	/*if (m_pManagement->KeyUp(KEY_UP))
 		m_TmpDuration += 0.01;
@@ -125,7 +153,11 @@ _int CPlayer::LateUpdate_GameObject(_double TimeDelta)
 		return -1;
 
 	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius))
+	{
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_SHADOW, this);
 		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
+	}
+		
 
 	if (m_eCurState == ATT)
 		m_pRendererCom->Add_RenderList(CRenderer::RENDER_ALPHA, this);
@@ -140,13 +172,23 @@ HRESULT CPlayer::Render_GameObject()
 
 	if (m_iRenderIndex == 0)
 	{
+		if (FAILED(SetUp_ConstantTable(0)))
+			return E_FAIL;
+
+		if (FAILED(Render(1)))
+			return E_FAIL;
+
+		m_iRenderIndex++;
+	}
+	else if (m_iRenderIndex == 1)
+	{
 		if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
 			return E_FAIL;
 
 		if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
 			return E_FAIL;
 
-		if (FAILED(SetUp_ConstantTable(0)))
+		if (FAILED(SetUp_ConstantTable(1)))
 			return E_FAIL;
 
 		if (FAILED(Render(0)))
@@ -154,8 +196,10 @@ HRESULT CPlayer::Render_GameObject()
 
 		if (m_eCurState == ATT)
 			m_iRenderIndex++;
+		else
+			m_iRenderIndex = 0;
 	}
-	else if (m_iRenderIndex == 1)
+	else if (m_iRenderIndex == 2)
 	{
 		m_pTrailCom->Render_Trail();
 		m_iRenderIndex = 0;
@@ -406,7 +450,7 @@ HRESULT CPlayer::SetUp_ConstantTable(_uint iPassIndex)
 	if (m_pShaderCom == nullptr || m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	if (iPassIndex == 0)
+	if (iPassIndex == 1)
 	{
 		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
 
@@ -417,6 +461,18 @@ HRESULT CPlayer::SetUp_ConstantTable(_uint iPassIndex)
 		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
 			return E_FAIL;
 		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
+
+		if (FAILED(m_pManagement->SetRenderTarget_OnShader(m_pShaderCom, "g_ShadowTexture", L"Target_Shadow")))
+			return E_FAIL;
+
+		CCamera_Light* pCamera_Light = (CCamera_Light*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Camera", 3);
+		_matrix matLightView = pCamera_Light->GetViewMatrix_Inverse();
+		_matrix matLightProj = pCamera_Light->GetProjMatrix();
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matLightView", &matLightView, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matLightProj", &matLightProj, sizeof(_matrix))))
 			return E_FAIL;
 
 		_float fTimeExp = _float(m_TimeExp);
@@ -431,6 +487,23 @@ HRESULT CPlayer::SetUp_ConstantTable(_uint iPassIndex)
 			return E_FAIL;
 
 		return NOERROR;
+	}
+	else if (iPassIndex == 0)
+	{
+		CCamera_Light* pCamera_Light = (CCamera_Light*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Camera", 3);
+		_matrix matLightView = pCamera_Light->GetViewMatrix_Inverse();
+		_matrix matLightProj = pCamera_Light->GetProjMatrix();
+
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * matLightView * matLightProj;
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &matLightView, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &matLightProj, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
 	}
 
 	return NOERROR;
@@ -983,6 +1056,7 @@ HRESULT CPlayer::Post_Update(_double TimeDelta)
 	m_pSubject->Notify(CSubject_Player::TYPE_RIGHTHAND);
 	m_pSubject->Notify(CSubject_Player::TYPE_LEFTHAND);
 	m_pSubject->Notify(CSubject_Player::TYPE_STATE);
+	m_pSubject->Notify(CSubject_Player::TYPE_BUFF);
 
 	// 스프링암 관련
 	Update_CameraPosition(TimeDelta);

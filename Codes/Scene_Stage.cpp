@@ -25,9 +25,11 @@
 #include "Torch_Fire.h"
 #include "Effect_Buff.h"
 #include "Camera_Free.h"
+#include "Camera_Light.h"
 #include "Door_Trigger.h"
 #include "CollisionMgr.h"
 #include "Camera_Event.h"
+#include "Effect_Breath.h"
 #include "Particle_Dead.h"
 #include "Camera_Player.h"
 #include "HpBar_Monster.h"
@@ -152,7 +154,7 @@ HRESULT CScene_Stage::Ready_Layer_Terrain()
 	LightDesc.Specular = LightDesc.Diffuse;
 	//LightDesc.Position = _vec3(0.f, 0.f, 0.f);
 	//LightDesc.Position = _vec3(0.f, 400.f, 0.f);
-	LightDesc.Position = _vec3(175.f, 128.f, -121.f);
+	LightDesc.Position = _vec3(-25.f, 137.f, -222.f);
 	LightDesc.Range = 1000.0f;
 
 	if (FAILED(pManagement->Add_Light(pGraphic_Device, &LightDesc, SCENE_STATIC, L"Component_Transform", CLight::LIGHT_MAIN)))
@@ -232,6 +234,25 @@ HRESULT CScene_Stage::Ready_Layer_Camera()
 	tCameraDesc_Event.iSceneID = SCENE_STAGE;
 
 	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Event", &tCameraDesc_Event)))
+		return E_FAIL;
+
+	// For. GameObject_Camera_Light
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Camera_Light", CCamera_Light::Create(pGraphic_Device))))
+		return E_FAIL;
+
+	CCamera::CAMERADESC tCameraDesc_Light;
+	tCameraDesc_Light.vEye = _vec3(-25.f, 137.f, -222.f);
+	tCameraDesc_Light.vAt = _vec3(0.f, 0.f, 0.f);
+	tCameraDesc_Light.vAxisY = _vec3(0.f, 1.f, 0.f);
+	tCameraDesc_Light.fRotationPerSec = D3DXToRadian(90.f);
+	tCameraDesc_Light.fSpeedPerSec = 60.f;
+	tCameraDesc_Light.fFar = 500.f;
+	tCameraDesc_Light.fNear = 0.2f;
+	tCameraDesc_Light.fFovy = D3DXToRadian(60.f);
+	tCameraDesc_Light.fAspect = g_iWinCX / _float(g_iWinCY);
+	tCameraDesc_Light.iSceneID = SCENE_STAGE;
+
+	if (FAILED(pManagement->Add_GameObject_Clone(SCENE_STAGE, L"Layer_Camera", L"GameObject_Camera_Light", &tCameraDesc_Light)))
 		return E_FAIL;
 
 	// Play Camera
@@ -624,6 +645,10 @@ HRESULT CScene_Stage::Ready_Layer_Effect()
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Effect_Buff", CEffect_Buff::Create(pGraphic_Device))))
 		return E_FAIL;
 
+	// For. GameObject_Effect_Breath
+	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Effect_Breath", CEffect_Breath::Create(pGraphic_Device))))
+		return E_FAIL;
+
 	// For. GameObject_Particle_Dead
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Dead", CParticle_Dead::Create(pGraphic_Device))))
 		return E_FAIL;
@@ -639,6 +664,11 @@ HRESULT CScene_Stage::Ready_Layer_Effect()
 	// For.GameObject_Particle_Buff
 	if (FAILED(pManagement->Add_GameObject_Prototype(L"GameObject_Particle_Buff", CParticle_Buff::Create(pGraphic_Device))))
 		return E_FAIL;
+
+	/*if (FAILED(pManagement->Add_GameObject_Clone(g_eScene, L"Layer_Effect_Breath", L"GameObject_Effect_Breath")))
+		return E_FAIL;
+
+	pManagement->Pop_GameObject(g_eScene, L"Layer_Effect_Breath");*/
 
 	Safe_Release(pManagement);
 	Safe_Release(pGraphic_Device);

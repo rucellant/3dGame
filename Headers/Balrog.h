@@ -65,12 +65,18 @@ private:
 	_double				m_TimeWaitAcc = 0.0;
 	_double				m_TimeDeadAcc = 0.0;
 	_double				m_TimeAnimationAcc = 0.0;
+	_double				m_TimeBreathAcc = 0.0;
+	_double				m_TimeBreathStartAcc = 0.0;
+private:
+	_uint				m_iRenderIndex = 0;
 private:
 	_bool				m_bIsBreath = false;
 	_bool				m_bIsAtt = false;
 private:
+	_matrix				m_matMouse;
+private:
 	HRESULT Add_Component(void* pArg);
-	HRESULT SetUp_ConstantTable();
+	HRESULT SetUp_ConstantTable(_uint iRenderIndex);
 	HRESULT Render(_uint iPassIndex);
 private:
 	HRESULT LookAtPlayer();
@@ -86,6 +92,7 @@ private:
 private:
 	HRESULT Update_Collider();
 	HRESULT SetUp_OnNavigation();
+	HRESULT Create_Breath();
 public:
 	static CBalrog* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone_GameObject(void* pArg);

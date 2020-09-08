@@ -4,6 +4,7 @@
 #include "Management.h"
 #include "Effect_Hit.h"
 #include "CollisionMgr.h"
+#include "Camera_Light.h"
 #include "Particle_Dead.h"
 #include "Observer_Player.h"
 
@@ -103,7 +104,11 @@ _int CSkeleton::LateUpdate_GameObject(_double TimeDelta)
 		return -1;
 
 	if (!m_pFrustumCom->Culling_ToFrustum(m_pTransformCom, m_tObjDesc.fFrustumRadius))
+	{
+		m_pRendererCom->Add_RenderList(CRenderer::RENDER_SHADOW, this);
 		m_pRendererCom->Add_RenderList(CRenderer::RENDER_NONALPHA, this);
+	}
+		
 
 	return _int();
 }
@@ -113,17 +118,32 @@ HRESULT CSkeleton::Render_GameObject()
 	if (m_pShaderCom == nullptr || m_pMeshCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
-		return E_FAIL;
+	if (m_iRenderIndex == 0)
+	{
+		if (FAILED(SetUp_ConstantTable(0)))
+			return E_FAIL;
 
-	if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render(1)))
+			return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable()))
-		return E_FAIL;
+		m_iRenderIndex++;
+	}
+	else if (m_iRenderIndex == 1)
+	{
+		if (FAILED(m_pMeshCom->SetUp_AnimationSet(m_iAnimation, m_fNewSpeed, m_Duration, m_Period)))
+			return E_FAIL;
 
-	if (FAILED(Render(0)))
-		return E_FAIL;
+		if (FAILED(m_pMeshCom->Play_AnimationSet(m_TimeDelta)))
+			return E_FAIL;
+
+		if (FAILED(SetUp_ConstantTable(1)))
+			return E_FAIL;
+
+		if (FAILED(Render(0)))
+			return E_FAIL;
+
+		m_iRenderIndex = 0;
+	}
 
 	//m_pHitColliderCom->Render_Collider();
 	//m_pDmgColliderCom->Render_Collider();
@@ -222,6 +242,11 @@ HRESULT CSkeleton::GetHit(_vec3 vPosition, _int iPlayerDmg)
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * fScaleRight);
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * fScaleUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * fScaleLook);
+
+	_bool bIsBuff = *(_bool*)m_pObserver->GetData(CSubject_Player::TYPE_BUFF);
+
+	if (bIsBuff)
+		iPlayerDmg = _int(iPlayerDmg * 1.3f);
 
 	m_tMonsterInfo.iCurHp -= iPlayerDmg;
 
@@ -402,39 +427,60 @@ HRESULT CSkeleton::Add_Component(void * pArg)
 	return NOERROR;
 }
 
-HRESULT CSkeleton::SetUp_ConstantTable()
+HRESULT CSkeleton::SetUp_ConstantTable(_uint iRenderIndex)
 {
 	if (m_pShaderCom == nullptr || m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
-
-	if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
-		return E_FAIL;
-
-	if (m_eCurState == HIT || m_eCurState == DOWN)
+	if (iRenderIndex == 0)
 	{
-		if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", true)))
+		CCamera_Light* pCamera_Light = (CCamera_Light*)m_pManagement->Get_GameObject(g_eScene, L"Layer_Camera", 3);
+		_matrix matLightView = pCamera_Light->GetViewMatrix_Inverse();
+		_matrix matLightProj = pCamera_Light->GetProjMatrix();
+
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * matLightView * matLightProj;
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &matLightView, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &matLightProj, sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
 			return E_FAIL;
 	}
-	else
+	else if (iRenderIndex == 1)
 	{
-		if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", false)))
+		_matrix matWVP = m_pTransformCom->Get_WorldMatrix() * m_pManagement->Get_Transform(D3DTS_VIEW) * m_pManagement->Get_Transform(D3DTS_PROJECTION);
+
+		if (FAILED(m_pShaderCom->Set_Value("g_matWorld", &m_pTransformCom->Get_WorldMatrix(), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matView", &m_pManagement->Get_Transform(D3DTS_VIEW), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matProj", &m_pManagement->Get_Transform(D3DTS_PROJECTION), sizeof(_matrix))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_Value("g_matWVP", &matWVP, sizeof(_matrix))))
+			return E_FAIL;
+
+		if (m_eCurState == HIT || m_eCurState == DOWN)
+		{
+			if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", true)))
+				return E_FAIL;
+		}
+		else
+		{
+			if (FAILED(m_pShaderCom->Set_Bool("g_bRimMode", false)))
+				return E_FAIL;
+		}
+
+		_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
+
+		D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
+
+		if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
 			return E_FAIL;
 	}
-
-	_matrix matCamera = m_pManagement->Get_Transform(D3DTS_VIEW);
-
-	D3DXMatrixInverse(&matCamera, nullptr, &CManagement::GetInstance()->Get_Transform(D3DTS_VIEW));
-
-	if (FAILED(m_pShaderCom->Set_Value("g_vCamPosition", &matCamera.m[3][0], sizeof(_vec4))))
-		return E_FAIL;
+	
 
 	return NOERROR;
 }

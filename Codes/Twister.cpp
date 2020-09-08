@@ -81,7 +81,7 @@ HRESULT CTwister::Render_GameObject()
 	if (FAILED(Render(0)))
 		return E_FAIL;
 
-	m_pDmgColliderCom->Render_Collider();
+	//m_pDmgColliderCom->Render_Collider();
 
 	return NOERROR;
 }
